@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Validator;
@@ -44,6 +46,9 @@ class AuthController extends BaseController
         $input = $request->all();
         $input['password'] = bcrypt($input['password']);
         $user = User::create($input);
+
+        event(new Registered($user));
+
         $success['token'] = $user->createToken('User Register Token')->plainTextToken;
         $success['name'] = $user->name;
 
@@ -64,20 +69,22 @@ class AuthController extends BaseController
         return $this->sendResponse(null, 'Verification link sent');
     }
 
-    public function verify(EmailVerificationRequest $request)
+//    public function verify(Request $request): RedirectResponse
+     public function verify(Request $request)
     {
-        if($request->user()->hasVerifiedEmail()) {
-            return [
-                'message' => 'Email already verified'
-            ];
+        $user = User::find($request->route('id'));
+
+        if ($user->hasVerifiedEmail()) {
+            //return redirect(env('FRONT_URL') . '/email/verify/already-success');
+            return $this->sendResponse(null, 'Email already verified');
         }
 
-        if ($request->user()->markEmailAsVerified())
-        {
-            event(new Verified($request->user()));
+        if ($user->markEmailAsVerified()) {
+            event(new Verified($user));
         }
 
-        return $this->sendResponse(null, 'Email has been verified');
+        return $this->sendResponse(null, 'Email is verified');
+        //return redirect(env('FRONT_URL') . '/email/verify/success');
     }
 
     public function logout(Request $request)

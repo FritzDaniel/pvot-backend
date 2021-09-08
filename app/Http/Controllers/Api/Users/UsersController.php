@@ -4,8 +4,15 @@ namespace App\Http\Controllers\Api\Users;
 
 use App\Http\Controllers\Api\BaseController;
 use App\Http\Controllers\Controller;
+use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
+use Mockery\Generator\StringManipulation\Pass\Pass;
+use Throwable;
+use Validator;
 
 class UsersController extends BaseController
 {
@@ -18,64 +25,56 @@ class UsersController extends BaseController
 
     public function forgotPassword(Request $request)
     {
-        $input = $request->all();
-        $rules = array(
-            'email' => "required|email",
-        );
-        $validator = Validator::make($input, $rules);
-        if ($validator->fails()) {
-            $arr = array("status" => 400, "message" => $validator->errors()->first(), "data" => array());
-        } else {
-            try {
-                $response = Password::sendResetLink($request->only('email'), function (Message $message) {
-                    $message->subject($this->getEmailSubject());
-                });
-                switch ($response) {
-                    case Password::RESET_LINK_SENT:
-                        return \Response::json(array("status" => 200, "message" => trans($response), "data" => array()));
-                    case Password::INVALID_USER:
-                        return \Response::json(array("status" => 400, "message" => trans($response), "data" => array()));
-                }
-            } catch (\Swift_TransportException $ex) {
-                $arr = array("status" => 400, "message" => $ex->getMessage(), "data" => []);
-            } catch (Exception $ex) {
-                $arr = array("status" => 400, "message" => $ex->getMessage(), "data" => []);
-            }
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+        ]);
+
+        if($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->errors());
         }
-        return $this->sendResponse($arr);
+
+        $status = Password::sendResetLink(
+            $request->only('email')
+        );
+
+        if($status == Password::RESET_LINK_SENT) {
+            return $this->sendResponse(null, "Change password link has been sent to your email");
+        }
+
+        throw ValidationException::withMessages([
+            'email' => [trans($status)],
+        ]);
     }
 
     public function changePassword(Request $request)
     {
-        $input = $request->all();
-        $userid = Auth::guard('api')->user()->id;
-        $rules = array(
-            'old_password' => 'required',
-            'new_password' => 'required|min:6',
-            'confirm_password' => 'required|same:new_password',
-        );
-        $validator = Validator::make($input, $rules);
-        if ($validator->fails()) {
-            $arr = array("status" => 400, "message" => $validator->errors()->first(), "data" => array());
-        } else {
-            try {
-                if ((Hash::check(request('old_password'), Auth::user()->password)) == false) {
-                    $arr = array("status" => 400, "message" => "Check your old password.", "data" => array());
-                } else if ((Hash::check(request('new_password'), Auth::user()->password)) == true) {
-                    $arr = array("status" => 400, "message" => "Please enter a password which is not similar then current password.", "data" => array());
-                } else {
-                    User::where('id', $userid)->update(['password' => Hash::make($input['new_password'])]);
-                    $arr = array("status" => 200, "message" => "Password updated successfully.", "data" => array());
-                }
-            } catch (\Exception $ex) {
-                if (isset($ex->errorInfo[2])) {
-                    $msg = $ex->errorInfo[2];
-                } else {
-                    $msg = $ex->getMessage();
-                }
-                $arr = array("status" => 400, "message" => $msg, "data" => array());
-            }
+        $validator = Validator::make($request->all(), [
+            'token' => 'required',
+            'email' => 'required|email',
+            'password' => 'required',
+            'c_password' => 'required|same:password',
+        ]);
+
+        if($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->errors());
         }
-        return \Response::json($arr);
+
+        $status = Password::reset(
+            $request->only('email','password','c_password','token'),
+            function ($user) use ($request) {
+                $user->forceFill([
+                    'password' => bcrypt($request->password),
+                    'remember_token' => Str::random(60),
+                ])->save();
+
+                event(new PasswordReset($user));
+            }
+        );
+
+        if($status == Password::PASSWORD_RESET) {
+            return $this->sendResponse(null, 'Password reset successfully');
+        }
+
+        return $this->sendError(null, $status,500);
     }
 }
