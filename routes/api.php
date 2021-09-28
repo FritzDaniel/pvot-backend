@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\Payment\XenditController;
+use App\Http\Controllers\Api\Users\MembershipController;
 use App\Http\Controllers\Api\Users\UsersController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,23 +18,8 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-// Test Route
-Route::get('/test',function (){
-    return response()->json([
-        'success' => true,
-        'message' => "API test Successfully"
-    ]);
-});
 
 Route::group([ 'prefix' => 'v1'], function (){
-    // Routes for verified
-    Route::group(['middleware' => ['auth:sanctum','verified']], function() {
-        # Profile
-        Route::get(
-            'profile',
-            [UsersController::class, 'profile']
-        );
-    });
     // Routes for send Email verification
     Route::group(['middleware' => 'auth:sanctum'], function() {
         # Email Verification
@@ -44,6 +31,26 @@ Route::group([ 'prefix' => 'v1'], function (){
         Route::post(
             'logout',
             [AuthController::class, 'logout']
+        );
+        # Profile
+        Route::get(
+            'profile',
+            [UsersController::class, 'profile']
+        );
+        # Get Balance
+        Route::get(
+            'wallet',
+            [UsersController::class, 'getWallet']
+        );
+        # Get User Detail
+        Route::get(
+            'userDetail',
+            [MembershipController::class, 'getUserDetail']
+        );
+        # Create User Detail
+        Route::post(
+            'userDetail/store',
+            [MembershipController::class, 'storeUserDetail']
         );
     });
     // Route for guest
@@ -72,6 +79,23 @@ Route::group([ 'prefix' => 'v1'], function (){
         Route::post(
             'resetPassword',
             [UsersController::class, 'changePassword']
+        );
+    });
+    Route::group([ 'prefix' => 'xendit'], function (){
+
+        Route::get(
+            'va/list',
+            [XenditController::class,'getListVa']
+        );
+
+        Route::post(
+           'va/invoice',
+           [XenditController::class,'createVa']
+        );
+
+        Route::post(
+            'va/callback',
+            [XenditController::class,'callbackVa']
         );
     });
 });

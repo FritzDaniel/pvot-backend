@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Wallet;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
@@ -21,6 +22,11 @@ class AuthController extends BaseController
             $user = Auth::user();
             $success['token'] = $user->createToken('User Login Token')->plainTextToken;
             $success['name'] = $user->name;
+
+            activity()
+                ->causedBy($user->id)
+                ->createdAt(now())
+                ->log($user->name.' is Login to your apps!');
 
             return $this->sendResponse($success, 'User login successfully.');
         }
@@ -40,7 +46,7 @@ class AuthController extends BaseController
         ]);
 
         if($validator->fails()){
-            return $this->sendError('Validation Error.', $validator->errors());
+            return $this->sendError('Validation Error.', $validator->errors(),400);
         }
 
         $input = $request->all();
@@ -52,45 +58,67 @@ class AuthController extends BaseController
         $success['token'] = $user->createToken('User Register Token')->plainTextToken;
         $success['name'] = $user->name;
 
+        $dataWallet = [
+            'user_id' => $user->id,
+            'balance' => 0
+        ];
+        Wallet::create($dataWallet);
+
+        activity()
+            ->causedBy($user->id)
+            ->createdAt(now())
+            ->log('Someone is Registered to your apps!');
+
         return $this->sendResponse($success, 'User register successfully.');
     }
 
     public function sendVerificationEmail(Request $request)
     {
-        if($request->user()->hasVerifiedEmail())
-        {
-            return [
-                'message' => 'Already Verified'
-            ];
+        try {
+            if($request->user()->hasVerifiedEmail())
+            {
+                return $this->sendError('Already Verified', null, 400);
+            }
+
+            $request->user()->sendEmailVerificationNotification();
+
+            activity()->log($request->user()->name.' is Send Verification Email');
+
+            return $this->sendResponse(null, 'Verification link sent');
+        }catch (\Exception $e) {
+            return $this->sendError($e,'Error Send Email');
         }
-
-        $request->user()->sendEmailVerificationNotification();
-
-        return $this->sendResponse(null, 'Verification link sent');
     }
 
-//    public function verify(Request $request): RedirectResponse
-     public function verify(Request $request)
+    public function verify(Request $request): RedirectResponse
     {
         $user = User::find($request->route('id'));
 
         if ($user->hasVerifiedEmail()) {
-            //return redirect(env('FRONT_URL') . '/email/verify/already-success');
-            return $this->sendResponse(null, 'Email already verified');
+            return redirect(env('FRONT_URL') . 'email/verify/already-success');
         }
 
         if ($user->markEmailAsVerified()) {
             event(new Verified($user));
         }
 
-        return $this->sendResponse(null, 'Email is verified');
-        //return redirect(env('FRONT_URL') . '/email/verify/success');
+        activity()
+            ->causedBy($user->id)
+            ->createdAt(now())
+            ->log($user->name.' Email is Verified');
+
+        return redirect(env('FRONT_URL') . 'register/verified');
     }
 
     public function logout(Request $request)
     {
         $user = $request->user();
         $user->currentAccessToken()->delete();
+
+        activity()
+            ->causedBy($user->id)
+            ->createdAt(now())
+            ->log($user->name.' is Logout');
 
         return $this->sendResponse($user, 'User logout successfully.');
     }
