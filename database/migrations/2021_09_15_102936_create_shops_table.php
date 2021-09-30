@@ -22,8 +22,9 @@ class CreateShopsTable extends Migration
             $table->string('alamatToko');
             $table->string('fotoToko');
             $table->string('fotoHeaderToko');
-            $table->string('kategoryToko');
-            $table->string('template')->nullable();
+            $table->integer('kategoriToko');
+            $table->integer('supplier');
+            $table->integer('design')->nullable();
             $table->timestamps();
         });
     }

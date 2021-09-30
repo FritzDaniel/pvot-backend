@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\Landing\LandingController;
 use App\Http\Controllers\Api\Payment\XenditController;
 use App\Http\Controllers\Api\Users\MembershipController;
+use App\Http\Controllers\Api\Users\ShopsController;
 use App\Http\Controllers\Api\Users\UsersController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,8 +21,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::group([ 'prefix' => 'v1'], function (){
-    // Routes for send Email verification
+Route::group([ 'prefix' => 'v1'], function () {
+
     Route::group(['middleware' => 'auth:sanctum'], function() {
         # Email Verification
         Route::post(
@@ -52,6 +54,16 @@ Route::group([ 'prefix' => 'v1'], function (){
             'userDetail/store',
             [MembershipController::class, 'storeUserDetail']
         );
+        # Create Shop
+        Route::get(
+            'shop/list',
+            [ShopsController::class, 'myShop']
+        );
+        # Create Shop
+        Route::post(
+            'shop/store',
+            [ShopsController::class, 'shopCreate']
+        );
     });
     // Route for guest
     Route::group(['middleware' => ['guest:api']], function () {
@@ -79,6 +91,16 @@ Route::group([ 'prefix' => 'v1'], function (){
         Route::post(
             'resetPassword',
             [UsersController::class, 'changePassword']
+        );
+        # List Supplier
+        Route::get(
+            'getSupplier',
+            [LandingController::class, 'getSupplier']
+        );
+        # List Category
+        Route::get(
+            'getCategory',
+            [LandingController::class, 'getCategory']
         );
     });
     Route::group([ 'prefix' => 'xendit'], function (){

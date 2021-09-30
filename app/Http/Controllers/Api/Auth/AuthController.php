@@ -19,15 +19,16 @@ class AuthController extends BaseController
     public function login(Request $request)
     {
         if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
-            $user = Auth::user();
+            $user = $request->user();
+            $user->getRoleNames();
             $success['token'] = $user->createToken('User Login Token')->plainTextToken;
             $success['name'] = $user->name;
+            $success['role'] = $user->roles[0]->name;
 
             activity()
-                ->causedBy($user->id)
+                ->causedBy($user)
                 ->createdAt(now())
                 ->log($user->name.' is Login to your apps!');
-
             return $this->sendResponse($success, 'User login successfully.');
         }
         else{
@@ -52,6 +53,8 @@ class AuthController extends BaseController
         $input = $request->all();
         $input['password'] = bcrypt($input['password']);
         $user = User::create($input);
+
+        $user->assignRole('Dropshipper');
 
         event(new Registered($user));
 
@@ -116,7 +119,7 @@ class AuthController extends BaseController
         $user->currentAccessToken()->delete();
 
         activity()
-            ->causedBy($user->id)
+            ->causedBy($user)
             ->createdAt(now())
             ->log($user->name.' is Logout');
 

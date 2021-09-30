@@ -3,18 +3,13 @@
 namespace App\Http\Controllers\Api\Users;
 
 use App\Http\Controllers\Api\BaseController;
-use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Models\Wallet;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\Request;
-use Illuminate\Mail\Message;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
-use Mockery\Generator\StringManipulation\Pass\Pass;
-use Throwable;
 use Validator;
 
 class UsersController extends BaseController
@@ -33,12 +28,11 @@ class UsersController extends BaseController
     public function profile(Request $request)
     {
         $user = $request->user();
+        $data = User::with(['roles','userDetail'])
+            ->where('id','=',$user->id)
+            ->first();
 
-        if($user->hasVerifiedEmail()) {
-            return $this->sendResponse($user, 'Profile Data.');
-        } else {
-            return $this->sendError('Verify email first', null,400);
-        }
+        return $this->sendResponse($data, 'Profile Data.');
     }
 
     public function forgotPassword(Request $request)

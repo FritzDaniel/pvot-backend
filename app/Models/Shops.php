@@ -19,8 +19,14 @@ class Shops extends Model
         'alamatToko',
         'fotoToko',
         'fotoHeaderToko',
-        'kategoryToko',
-        'template'
+        'kategoriToko',
+        'supplier',
+        'design',
     ];
     public $timestamps = true;
+
+    public function userDetail()
+    {
+        return $this->belongsTo(User::class,'user_id');
+    }
 }
