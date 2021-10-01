@@ -29,7 +29,8 @@ class ShopsController extends BaseController
             'fotoHeaderToko' => 'required|mimes:jpg,png,jpeg|max:2048',
             'kategoriToko' => 'required',
             'supplier' => 'required',
-            'design' => 'required'
+            'design' => 'required',
+            'descToko' => 'required'
         ]);
 
         if($validator->fails()) {
@@ -62,7 +63,8 @@ class ShopsController extends BaseController
             'fotoHeaderToko' => isset($name_fotoHeaderToko) ? $name_fotoHeaderToko : null,
             'kategoriToko' => $request['kategoriToko'],
             'design' => $request['design'],
-            'supplier' => $request['supplier']
+            'supplier' => $request['supplier'],
+            'descToko' => $request['descToko']
         ];
         $data = Shops::create($store);
 

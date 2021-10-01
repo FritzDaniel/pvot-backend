@@ -25,6 +25,7 @@ class CreateShopsTable extends Migration
             $table->integer('kategoriToko');
             $table->integer('supplier');
             $table->integer('design')->nullable();
+            $table->text('descToko')->nullable();
             $table->timestamps();
         });
     }
