@@ -6,7 +6,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
-class CategorySeeder extends Seeder
+class DesignSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,10 +15,10 @@ class CategorySeeder extends Seeder
      */
     public function run()
     {
-        for ($i=0; $i<40; $i++)
+        for ($i=0; $i<10; $i++)
         {
-            DB::table('category')->insert([
-                'name' => Str::random(10),
+            DB::table('design')->insert([
+                'designName' => Str::random(50),
             ]);
         }
     }

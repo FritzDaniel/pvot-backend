@@ -19,4 +19,14 @@ class Product extends Model
         'productPrice'
     ];
     public $timestamps = true;
+
+    public function userDetail()
+    {
+        return $this->belongsTo(User::class,'user_id');
+    }
+
+    public function productPhoto()
+    {
+        return $this->hasMany(ProductPicture::class,'product_id','id');
+    }
 }

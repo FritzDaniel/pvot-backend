@@ -102,6 +102,16 @@ Route::group([ 'prefix' => 'v1'], function () {
             'getCategory',
             [LandingController::class, 'getCategory']
         );
+        # List Design
+        Route::get(
+            'getDesign',
+            [LandingController::class, 'getDesign']
+        );
+        # List Product
+        Route::get(
+            'getProduct',
+            [LandingController::class, 'getProduct']
+        );
     });
     Route::group([ 'prefix' => 'xendit'], function (){
 
