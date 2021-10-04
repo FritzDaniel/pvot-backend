@@ -7,9 +7,19 @@ use App\Models\Category;
 use App\Models\Design;
 use App\Models\Product;
 use App\Models\User;
+use Illuminate\Support\Facades\File;
 
 class LandingController extends BaseController
 {
+    public function storageLink()
+    {
+        File::link(
+            storage_path('app/public'), public_path('storage')
+        );
+
+        return $this->sendResponse(null,'Storage Link Successfully.');
+    }
+
     public function getCategory()
     {
         $data = Category::orderBy('name','ASC')

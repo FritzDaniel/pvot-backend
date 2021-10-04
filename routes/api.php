@@ -112,6 +112,12 @@ Route::group([ 'prefix' => 'v1'], function () {
             'getProduct',
             [LandingController::class, 'getProduct']
         );
+
+        # List Product
+        Route::get(
+            'linkStorage',
+            [LandingController::class, 'storageLink']
+        );
     });
     Route::group([ 'prefix' => 'xendit'], function (){
 
