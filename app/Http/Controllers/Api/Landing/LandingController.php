@@ -7,15 +7,13 @@ use App\Models\Category;
 use App\Models\Design;
 use App\Models\Product;
 use App\Models\User;
-use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Artisan;
 
 class LandingController extends BaseController
 {
     public function storageLink()
     {
-        File::link(
-            storage_path('app/public'), public_path('storage')
-        );
+        Artisan::call('storage:link');
 
         return $this->sendResponse(null,'Storage Link Successfully.');
     }
