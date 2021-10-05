@@ -13,10 +13,12 @@ class Payment extends Model
     protected $primaryKey ='id';
     protected $fillable = [
         'external_id',
+        'user_id',
         'payment_channel',
         'email',
         'price',
-        'status'
+        'status',
+        'description'
     ];
     public $timestamps = true;
 }

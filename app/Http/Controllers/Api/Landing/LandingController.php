@@ -11,13 +11,6 @@ use Illuminate\Support\Facades\Artisan;
 
 class LandingController extends BaseController
 {
-    public function storageLink()
-    {
-        Artisan::call('storage:link');
-
-        return $this->sendResponse(null,'Storage Link Successfully.');
-    }
-
     public function getCategory()
     {
         $data = Category::orderBy('name','ASC')

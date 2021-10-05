@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\Landing\LandingController;
+use App\Http\Controllers\Api\Payment\InvoiceController;
 use App\Http\Controllers\Api\Payment\XenditController;
 use App\Http\Controllers\Api\Users\MembershipController;
 use App\Http\Controllers\Api\Users\ShopsController;
@@ -64,6 +65,18 @@ Route::group([ 'prefix' => 'v1'], function () {
             'shop/store',
             [ShopsController::class, 'shopCreate']
         );
+        # Xendit
+        Route::group([ 'prefix' => 'xendit'], function (){
+
+            Route::post('invoice/retrieve/{id}',
+                [InvoiceController::class,'getInvoice']
+            );
+
+            Route::post('invoice/create',
+                [InvoiceController::class,'createInvoice']
+            );
+
+        });
     });
     // Route for guest
     Route::group(['middleware' => ['guest:api']], function () {
@@ -111,29 +124,6 @@ Route::group([ 'prefix' => 'v1'], function () {
         Route::get(
             'getProduct',
             [LandingController::class, 'getProduct']
-        );
-
-        # List Product
-        Route::get(
-            'linkStorage',
-            [LandingController::class, 'storageLink']
-        );
-    });
-    Route::group([ 'prefix' => 'xendit'], function (){
-
-        Route::get(
-            'va/list',
-            [XenditController::class,'getListVa']
-        );
-
-        Route::post(
-           'va/invoice',
-           [XenditController::class,'createVa']
-        );
-
-        Route::post(
-            'va/callback',
-            [XenditController::class,'callbackVa']
         );
     });
 });
