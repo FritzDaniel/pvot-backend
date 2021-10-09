@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Api\Payment;
 
 use App\Http\Controllers\Api\BaseController;
 use App\Models\Payment;
+use App\Models\User;
 use App\Notifications\SuccessPaymentMembership;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Xendit\Xendit;
@@ -94,7 +96,14 @@ class InvoiceController extends BaseController
                 $update->update();
                 if($update->status == "Paid")
                 {
-                    Mail::to($update->email)->send(new SuccessPaymentMembership());
+                    $updateMembership = Payment::where('user_id','=',$update->user_id)->first();
+                    $updateMembership->expiredDate = Carbon::now()->addYear();
+                    $updateMembership->status = "Active";
+                    $updateMembership->update();
+                    
+                    $user = User::find($update->user_id);
+                    $user->notify(new SuccessPaymentMembership());
+
                     return $this->sendResponse($update,'Sukses Membayar.');
                 }
                 return $this->sendError('Pembayaran Masih Pending', null, 400);

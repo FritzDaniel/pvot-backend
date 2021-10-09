@@ -72,7 +72,7 @@ class XenditController extends BaseController
                 $update->update();
                 if($update->status == "Paid")
                 {
-                    Mail::to($update->email)->send(new SuccessPaymentMembership());
+                    //$user->notify(new SuccessPaymentMembership());
                     return $this->sendResponse($update,'Sukses Membayar Va');
                 }
                 return $this->sendError('Pembayaran Masih Pending', null, 400);

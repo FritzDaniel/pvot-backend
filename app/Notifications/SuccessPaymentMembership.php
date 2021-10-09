@@ -18,7 +18,7 @@ class SuccessPaymentMembership extends Notification
      */
     public function __construct()
     {
-        //
+
     }
 
     /**
