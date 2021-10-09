@@ -73,6 +73,10 @@ Route::group([ 'prefix' => 'v1'], function () {
             Route::post('invoice/create',
                 [InvoiceController::class,'createInvoice']
             );
+
+            Route::post('invoice/callback',
+                [InvoiceController::class,'callbackInvoice']
+            );
         });
         # Admin
         Route::group([ 'prefix' => 'admin'], function (){
