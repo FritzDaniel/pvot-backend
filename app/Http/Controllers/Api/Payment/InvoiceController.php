@@ -4,10 +4,9 @@ namespace App\Http\Controllers\Api\Payment;
 
 use App\Http\Controllers\Api\BaseController;
 use App\Models\Payment;
-use App\Models\User;
-use Carbon\Carbon;
+use App\Notifications\SuccessPaymentMembership;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Xendit\Xendit;
 
 class InvoiceController extends BaseController
@@ -87,26 +86,21 @@ class InvoiceController extends BaseController
     {
         $external_id = $request['external_id'];
         $status = $request['status'];
-        $data = [
-            'external_id' => $external_id,
-            'status' => $status
-        ];
-//        $payment = Payment::where('external_id','=',$external_id)->exists();
-        $this->sendResponse($data,'Callback Success');
-//        if($payment){
-//            if($status == "ACTIVE") {
-//                $update = Payment::where('external_id','=',$external_id)->first();
-//                $update->status = "Paid";
-//                $update->update();
-//                if($update->status == "Paid")
-//                {
-//                    Mail::to($update->email)->send(new SuccessPaymentMembership());
-//                    return $this->sendResponse($update,'Sukses Membayar Va');
-//                }
-//                return $this->sendError('Pembayaran Masih Pending', null, 400);
-//            }
-//        }else {
-//            return $this->sendError('Data tidak ada', null, 400);
-//        }
+        $payment = Payment::where('external_id','=',$external_id)->exists();
+        if($payment){
+            if($status == "PAID") {
+                $update = Payment::where('external_id','=',$external_id)->first();
+                $update->status = "Paid";
+                $update->update();
+                if($update->status == "Paid")
+                {
+                    Mail::to($update->email)->send(new SuccessPaymentMembership());
+                    return $this->sendResponse($update,'Sukses Membayar.');
+                }
+                return $this->sendError('Pembayaran Masih Pending', null, 400);
+            }
+        }else {
+            return $this->sendError('Data tidak ada', null, 400);
+        }
     }
 }
