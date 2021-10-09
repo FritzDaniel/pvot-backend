@@ -84,7 +84,7 @@ class InvoiceController extends BaseController
 
     public function callbackInvoice(Request $request)
     {
-        $external_id = $request['external_id'];
+        $external_id = $request['id'];
         $status = $request['status'];
         $payment = Payment::where('external_id','=',$external_id)->exists();
         if($payment){
