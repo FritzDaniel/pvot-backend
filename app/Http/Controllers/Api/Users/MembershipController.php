@@ -33,6 +33,7 @@ class MembershipController extends BaseController
             'kodepos' => 'required',
             'nomorTelepon' => 'required',
             'marketplaceCount' => 'required',
+            'marketplaceSelect' => 'required',
             'paymentChannel' => 'required',
             'price' => 'required'
         ]);
@@ -62,6 +63,7 @@ class MembershipController extends BaseController
             $dataMembership = [
                 'user_id' => $user->id,
                 'marketplaceCount' => $request['marketplaceCount'],
+                'marketplaceSelect' => $request['marketplaceSelect'],
                 'paymentChannel' => $request['paymentChannel'],
                 'price' => $request['price'],
             ];

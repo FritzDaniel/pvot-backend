@@ -17,6 +17,7 @@ class CreateMembershipsTable extends Migration
             $table->id();
             $table->integer('user_id');
             $table->integer('marketplaceCount');
+            $table->string('marketplaceSelect');
             $table->string('status')->default('Pending');
             $table->string('paymentChannel');
             $table->double('price');
