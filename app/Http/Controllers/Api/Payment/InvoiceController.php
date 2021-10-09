@@ -94,19 +94,16 @@ class InvoiceController extends BaseController
                 $update = Payment::where('external_id','=',$external_id)->first();
                 $update->status = "Paid";
                 $update->update();
-                if($update->status == "Paid")
-                {
-                    $updateMembership = Payment::where('user_id','=',$update->user_id)->first();
-                    $updateMembership->expiredDate = Carbon::now()->addYear();
-                    $updateMembership->status = "Active";
-                    $updateMembership->update();
-                    
-                    $user = User::find($update->user_id);
-                    $user->notify(new SuccessPaymentMembership());
+                
+                $updateMembership = Payment::where('user_id','=',$update->user_id)->first();
+                $updateMembership->expiredDate = Carbon::now()->addYear();
+                $updateMembership->status = "Active";
+                $updateMembership->update();
 
-                    return $this->sendResponse($update,'Sukses Membayar.');
-                }
-                return $this->sendError('Pembayaran Masih Pending', null, 400);
+                $user = User::find($update->user_id);
+                $user->notify(new SuccessPaymentMembership());
+
+                return $this->sendResponse($update,'Sukses Membayar.');
             }
         }else {
             return $this->sendError('Data tidak ada', null, 400);
