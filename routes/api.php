@@ -1,14 +1,12 @@
 <?php
 
+use App\Http\Controllers\Api\Admin\CategoryController;
 use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\Landing\LandingController;
 use App\Http\Controllers\Api\Payment\InvoiceController;
-use App\Http\Controllers\Api\Payment\XenditController;
 use App\Http\Controllers\Api\Users\MembershipController;
 use App\Http\Controllers\Api\Users\ShopsController;
 use App\Http\Controllers\Api\Users\UsersController;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -75,7 +73,15 @@ Route::group([ 'prefix' => 'v1'], function () {
             Route::post('invoice/create',
                 [InvoiceController::class,'createInvoice']
             );
+        });
+        # Admin
+        Route::group([ 'prefix' => 'admin'], function (){
 
+            # Create Kategori
+            Route::post(
+                'storeCategory',
+                [CategoryController::class, 'storeCategory']
+            );
         });
     });
     // Route for guest
