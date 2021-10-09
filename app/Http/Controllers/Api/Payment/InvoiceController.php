@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Payment;
 
 use App\Http\Controllers\Api\BaseController;
+use App\Models\Memberships;
 use App\Models\Payment;
 use App\Models\User;
 use App\Notifications\SuccessPaymentMembership;
@@ -88,20 +89,24 @@ class InvoiceController extends BaseController
     {
         $external_id = $request['id'];
         $status = $request['status'];
+
         $payment = Payment::where('external_id','=',$external_id)->exists();
         if($payment){
             if($status == "PAID") {
                 $update = Payment::where('external_id','=',$external_id)->first();
                 $update->status = "Paid";
                 $update->update();
-                
-                $updateMembership = Payment::where('user_id','=',$update->user_id)->first();
-                $updateMembership->expiredDate = Carbon::now()->addYear();
-                $updateMembership->status = "Active";
-                $updateMembership->update();
 
-                $user = User::find($update->user_id);
-                $user->notify(new SuccessPaymentMembership());
+                if($update->description == "Payment Membership")
+                {
+                    $updateMembership = Memberships::where('user_id','=',$update->user_id)->first();
+                    $updateMembership->expiredDate = Carbon::now()->addYear();
+                    $updateMembership->status = "Active";
+                    $updateMembership->update();
+
+                    $user = User::find($update->user_id);
+                    $user->notify(new SuccessPaymentMembership());
+                }
 
                 return $this->sendResponse($update,'Sukses Membayar.');
             }
