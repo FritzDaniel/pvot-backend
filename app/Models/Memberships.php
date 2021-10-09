@@ -14,6 +14,7 @@ class Memberships extends Model
     protected $fillable = [
         'user_id',
         'marketplaceCount',
+        'marketplaceSelect',
         'status',
         'paymentChannel',
         'price',
