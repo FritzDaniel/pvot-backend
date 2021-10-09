@@ -19,6 +19,23 @@ class CategorySeeder extends Seeder
         {
             DB::table('category')->insert([
                 'name' => Str::random(10),
+                'logo' => "dummy.jpg"
+            ]);
+        }
+
+        for ($i=0; $i<40; $i++)
+        {
+            DB::table('sub_category')->insert([
+                'category_id' => rand(1, 40),
+                'name' => Str::random(10),
+            ]);
+        }
+
+        for ($i=0; $i<40; $i++)
+        {
+            DB::table('sub_child_category')->insert([
+                'sub_category_id' => rand(1, 40),
+                'name' => Str::random(10),
             ]);
         }
     }

@@ -81,4 +81,26 @@ class InvoiceController extends BaseController
             return $this->sendError('Error Create Invoice', $e->getMessage(), 400);
         }
     }
+
+    public function callbackInvoice(Request $request)
+    {
+        $external_id = $request->external_id;
+        $status = $request->status;
+        $payment = Payment::where('external_id','=',$external_id)->exists();
+        if($payment){
+            if($status == "ACTIVE") {
+                $update = Payment::where('external_id','=',$external_id)->first();
+                $update->status = "Paid";
+                $update->update();
+                if($update->status == "Paid")
+                {
+                    Mail::to($update->email)->send(new SuccessPaymentMembership());
+                    return $this->sendResponse($update,'Sukses Membayar Va');
+                }
+                return $this->sendError('Pembayaran Masih Pending', null, 400);
+            }
+        }else {
+            return $this->sendError('Data tidak ada', null, 400);
+        }
+    }
 }

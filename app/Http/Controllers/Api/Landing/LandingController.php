@@ -13,7 +13,8 @@ class LandingController extends BaseController
 {
     public function getCategory()
     {
-        $data = Category::orderBy('name','ASC')
+        $data = Category::with("Child")
+            ->orderBy('name','ASC')
             ->get();
 
         return $this->sendResponse($data, 'Category List.');
