@@ -85,10 +85,14 @@ class InvoiceController extends BaseController
 
     public function callbackInvoice(Request $request)
     {
-        $external_id = $request->external_id;
-        $status = $request->status;
+        $external_id = $request['external_id'];
+        $status = $request['status'];
+        $data = [
+            'external_id' => $external_id,
+            'status' => $status
+        ];
 //        $payment = Payment::where('external_id','=',$external_id)->exists();
-        $this->sendResponse($external_id,'Callback Success');
+        $this->sendResponse($data,'Callback Success');
 //        if($payment){
 //            if($status == "ACTIVE") {
 //                $update = Payment::where('external_id','=',$external_id)->first();
