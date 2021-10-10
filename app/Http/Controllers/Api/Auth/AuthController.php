@@ -18,6 +18,15 @@ class AuthController extends BaseController
 {
     public function login(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        if($validator->fails()){
+            return $this->sendError($validator->errors(),'Validation Error.',400);
+        }
+
         if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
             $user = $request->user();
             $user->getRoleNames();
@@ -29,10 +38,11 @@ class AuthController extends BaseController
                 ->causedBy($user)
                 ->createdAt(now())
                 ->log($user->name.' is Login to your apps!');
-            return $this->sendResponse($success, 'User login successfully.');
+
+            return $this->sendResponse($success, 'User login successfully.',200);
         }
         else{
-            return $this->sendError('Unauthorised.', ['error'=>'Unauthorised']);
+            return $this->sendError(['message'=>'Unauthorized'],'Unauthorized.',401);
         }
     }
 
@@ -47,7 +57,7 @@ class AuthController extends BaseController
         ]);
 
         if($validator->fails()){
-            return $this->sendError('Validation Error.', $validator->errors(),400);
+            return $this->sendError($validator->errors(),'Validation Error.',400);
         }
 
         $input = $request->all();
@@ -80,7 +90,7 @@ class AuthController extends BaseController
         try {
             if($request->user()->hasVerifiedEmail())
             {
-                return $this->sendError('Already Verified', null, 400);
+                return $this->sendError(null,'Already Verified', 400);
             }
 
             $request->user()->sendEmailVerificationNotification();
@@ -89,7 +99,7 @@ class AuthController extends BaseController
 
             return $this->sendResponse(null, 'Verification link sent');
         }catch (\Exception $e) {
-            return $this->sendError($e,'Error Send Email');
+            return $this->sendError($e,'Error Send Email',400);
         }
     }
 
@@ -98,7 +108,7 @@ class AuthController extends BaseController
         $user = User::find($request->route('id'));
 
         if ($user->hasVerifiedEmail()) {
-            return redirect(env('FRONT_URL') . 'email/verify/already-success');
+            return redirect(env('FRONT_URL') . 'email/already-verified');
         }
 
         if ($user->markEmailAsVerified()) {
@@ -110,7 +120,7 @@ class AuthController extends BaseController
             ->createdAt(now())
             ->log($user->name.' Email is Verified');
 
-        return redirect(env('FRONT_URL') . 'register/verified');
+        return redirect(env('FRONT_URL') . 'email/verified');
     }
 
     public function logout(Request $request)

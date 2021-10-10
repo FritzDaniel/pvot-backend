@@ -81,7 +81,7 @@ class InvoiceController extends BaseController
             return $this->sendResponse($createInvoice,'Create Url Invoice.');
 
         }catch (\Xendit\Exceptions\ApiException $e) {
-            return $this->sendError('Error Create Invoice', $e->getMessage(), 400);
+            return $this->sendError($e->getMessage(),'Error Create Invoice', 400);
         }
     }
 
@@ -111,7 +111,7 @@ class InvoiceController extends BaseController
                 return $this->sendResponse($update,'Sukses Membayar.');
             }
         }else {
-            return $this->sendError('Data tidak ada', null, 400);
+            return $this->sendError(null, 'Data tidak ada', 400);
         }
     }
 }

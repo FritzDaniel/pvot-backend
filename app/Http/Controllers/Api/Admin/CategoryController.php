@@ -26,7 +26,7 @@ class CategoryController extends BaseController
         }
 
         if($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            return $this->sendError($validator->errors(),'Error input data.',400);
         }
 
         $store = [
@@ -47,6 +47,6 @@ class CategoryController extends BaseController
             }
         }
 
-        return $this->sendResponse($data,'Category Created Successfully.');
+        return $this->sendResponse($data,'Category Created Successfully.',201);
     }
 }
