@@ -56,7 +56,7 @@ class XenditController extends BaseController
             return $this->sendResponse($createVA,'Create Virtual Account.');
 
         }catch (\Xendit\Exceptions\ApiException $e) {
-            return $this->sendError('Error Payment', $e->getMessage(), 400);
+            return $this->sendError($e->getMessage(),'Error Payment', 400);
         }
     }
 
@@ -78,7 +78,7 @@ class XenditController extends BaseController
                 return $this->sendError('Pembayaran Masih Pending', null, 400);
             }
         }else {
-            return $this->sendError('Data tidak ada', null, 400);
+            return $this->sendError(null,'Data tidak ada', 400);
         }
     }
 

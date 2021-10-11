@@ -42,7 +42,7 @@ class UsersController extends BaseController
         ]);
 
         if($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            return $this->sendError($validator->errors(),'Validation Error.',400);
         }
 
         $status = Password::sendResetLink(
@@ -68,7 +68,7 @@ class UsersController extends BaseController
         ]);
 
         if($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            return $this->sendError($validator->errors(),'Validation Error.',400);
         }
 
         $status = Password::reset(
@@ -92,6 +92,6 @@ class UsersController extends BaseController
             return $this->sendResponse(null, 'Password reset successfully');
         }
 
-        return $this->sendError(null, $status,500);
+        return $this->sendError($status, "Error when change the password",400);
     }
 }

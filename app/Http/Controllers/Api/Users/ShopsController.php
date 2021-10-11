@@ -34,7 +34,7 @@ class ShopsController extends BaseController
         ]);
 
         if($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            return $this->sendError($validator->errors(),'Validation Error.',400);
         }
 
         if ($request->hasFile('fotoToko')){
