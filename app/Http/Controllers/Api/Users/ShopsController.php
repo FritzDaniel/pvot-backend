@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Users;
 
 use App\Http\Controllers\Api\BaseController;
+use App\Models\Memberships;
 use App\Models\Shops;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -20,6 +21,23 @@ class ShopsController extends BaseController
 
     public function shopCreate(Request $request)
     {
+
+        $checkMembership = Memberships::where('user_id','=',$request->user()->id)
+            ->where('status','=','Active')
+            ->first();
+
+        if(!$checkMembership)
+        {
+            return $this->sendError(null,'Please create membership first.',400);
+        }
+
+        $checkShopCreate = Shops::where('user_id','=',$request->user()->id)->count();
+
+        if($checkShopCreate == $checkMembership->marketplaceCount)
+        {
+            return $this->sendError(null,'You only can create '.$checkMembership->marketplaceCount.' shop.',400);
+        }
+
         $validator = Validator::make($request->all(), [
             'emailToko' => 'required|email',
             'handphoneToko' => 'required',

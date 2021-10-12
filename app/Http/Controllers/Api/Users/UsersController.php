@@ -28,7 +28,7 @@ class UsersController extends BaseController
     public function profile(Request $request)
     {
         $user = $request->user();
-        $data = User::with(['roles','userDetail'])
+        $data = User::with(['roles','userDetail','membership'])
             ->where('id','=',$user->id)
             ->first();
 
