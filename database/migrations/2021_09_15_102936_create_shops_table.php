@@ -24,6 +24,8 @@ class CreateShopsTable extends Migration
             $table->string('fotoHeaderToko');
             $table->integer('kategoriToko');
             $table->integer('supplier');
+            $table->string('url_tokopedia')->nullable();
+            $table->string('url_shopee')->nullable();
             $table->integer('design')->nullable();
             $table->text('descToko')->nullable();
             $table->timestamps();
