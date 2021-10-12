@@ -6,8 +6,9 @@ use App\Http\Controllers\Api\BaseController;
 use App\Models\Category;
 use App\Models\Design;
 use App\Models\Product;
+use App\Models\Testimoni;
 use App\Models\User;
-use Illuminate\Support\Facades\Artisan;
+use Illuminate\Http\Request;
 
 class LandingController extends BaseController
 {
@@ -35,11 +36,35 @@ class LandingController extends BaseController
         return $this->sendResponse($data,'List Design.');
     }
 
-    public function getProduct()
+    public function getProduct(Request $request)
     {
-        $data = Product::with([
-            'userDetail','productPhoto'
-        ])->orderBy('productName','ASC')->get();
+        $limit = $request->query('limit');
+        $sortBy = $request->query('sortBy');
+
+        if($sortBy == "popular")
+        {
+            $data = Product::with([
+                'userDetail','productPhoto','productCategory'
+            ])
+                ->withCount('productSold')
+                ->orderBy('product_sold_count','DESC')
+                ->limit($limit)
+                ->get();
+        }else {
+            $data = Product::with([
+                'userDetail','productPhoto','productCategory'
+            ])
+                ->withCount('productSold')
+//                ->orderBy('productName','ASC')
+                ->limit($limit)
+                ->get();
+        }
         return $this->sendResponse($data,'List Design.');
+    }
+
+    public function getTestimoni()
+    {
+        $data = Testimoni::orderBy('created_at','DESC')->get();
+        return $this->sendResponse($data,'List testimoni.');
     }
 }

@@ -17,16 +17,16 @@ class CategoryController extends BaseController
             'name' => 'required',
         ]);
 
+        if($validator->fails()) {
+            return $this->sendError($validator->errors(),'Error input data.',400);
+        }
+
         if ($request->hasFile('logo')){
             if ($request->file('logo')->isValid()){
                 $name = Carbon::now()->timestamp.'.'.$request->file('logo')->getClientOriginalExtension();
                 $store_path = 'public/fotoKategori';
                 $request->file('logo')->storeAs($store_path,$name);
             }
-        }
-
-        if($validator->fails()) {
-            return $this->sendError($validator->errors(),'Error input data.',400);
         }
 
         $store = [

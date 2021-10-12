@@ -39,7 +39,7 @@ class MembershipController extends BaseController
         ]);
 
         if($validator->fails()){
-            return $this->sendError( $validator->errors(),'Validation Error.',400);
+            return $this->sendError($validator->errors(),'Validation Error.',400);
         }
 
         $store = UserDetail::firstOrNew(array('user_id' => $user->id));

@@ -19,7 +19,7 @@ class CategorySeeder extends Seeder
         {
             DB::table('category')->insert([
                 'name' => Str::random(10),
-                'logo' => "dummy.jpg"
+                'logo' => "/storage/fotoKategori/dummy.jpg"
             ]);
         }
 

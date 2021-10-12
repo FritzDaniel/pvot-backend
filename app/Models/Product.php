@@ -29,4 +29,15 @@ class Product extends Model
     {
         return $this->hasMany(ProductPicture::class,'product_id','id');
     }
+
+    public function productSold()
+    {
+        $data = $this->hasMany(Transaction::class,'product_id','id');
+        return $data;
+    }
+
+    public function productCategory()
+    {
+        return $this->hasMany(ProductCategory::class,'product_id','id')->with('Category');
+    }
 }

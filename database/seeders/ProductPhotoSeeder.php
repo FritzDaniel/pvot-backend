@@ -21,7 +21,7 @@ class ProductPhotoSeeder extends Seeder
         {
             DB::table('product_picture')->insert([
                 'product_id' => $dp->id,
-                'productPicture' => "dummy.jpg",
+                'productPicture' => "/storage/fotoProduct/dummy.jpg",
             ]);
         }
     }

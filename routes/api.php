@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\Api\Admin\CategoryController;
+use App\Http\Controllers\Api\Admin\TestimoniController;
 use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\Landing\LandingController;
 use App\Http\Controllers\Api\Payment\InvoiceController;
+use App\Http\Controllers\Api\Suppliers\SupplierController;
 use App\Http\Controllers\Api\Users\MembershipController;
 use App\Http\Controllers\Api\Users\ShopsController;
 use App\Http\Controllers\Api\Users\UsersController;
@@ -75,12 +77,36 @@ Route::group([ 'prefix' => 'v1'], function () {
             );
         });
         # Admin
-        Route::group([ 'prefix' => 'admin'], function (){
+        Route::group(['prefix' => 'admin'], function (){
 
             # Create Kategori
             Route::post(
                 'storeCategory',
                 [CategoryController::class, 'storeCategory']
+            );
+            # Testimoni
+            Route::post(
+                'storeTestimoni',
+                [TestimoniController::class, 'storeTestimoni']
+            );
+        });
+        # Supplier
+        Route::group([ 'prefix' => 'supplier'], function (){
+
+            # My Product
+            Route::get(
+                'myProduct',
+                [SupplierController::class, 'myProduct']
+            );
+            # Detail Product
+            Route::get(
+                'myProduct/{id}',
+                [SupplierController::class,'detailProduct']
+            );
+            # Create Product
+            Route::post(
+                'storeProduct',
+                [SupplierController::class, 'storeProduct']
             );
         });
     });
@@ -130,6 +156,11 @@ Route::group([ 'prefix' => 'v1'], function () {
         Route::get(
             'getProduct',
             [LandingController::class, 'getProduct']
+        );
+        # List Testimoni
+        Route::get(
+            'getTestimoni',
+            [LandingController::class, 'getTestimoni']
         );
 
         # Xendit
