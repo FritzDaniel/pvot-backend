@@ -31,12 +31,12 @@ class ShopsController extends BaseController
             return $this->sendError(null,'Please create membership first.',400);
         }
 
-        $checkShopCreate = Shops::where('user_id','=',$request->user()->id)->count();
+        //$checkShopCreate = Shops::where('user_id','=',$request->user()->id)->count();
 
-        if($checkShopCreate == $checkMembership->marketplaceCount)
-        {
-            return $this->sendError(null,'You only can create '.$checkMembership->marketplaceCount.' shop.',400);
-        }
+        //if($checkShopCreate == $checkMembership->marketplaceCount)
+        //{
+        //    return $this->sendError(null,'You only can create '.$checkMembership->marketplaceCount.' shop.',400);
+        //}
 
         $validator = Validator::make($request->all(), [
             'emailToko' => 'required|email',

@@ -48,7 +48,7 @@ class InvoiceController extends BaseController
                     'mobile_number' => $user->phone,
                     //'address' => $request->address
                 ],
-                "success_redirect_url" => "https://pvotdigital.com/pembayaran-sukses",
+                "success_redirect_url" => "https://pvotdigital.com/pembayaran-sukses/".$external_id,
                 "invoice_duration" => 3600,
                 "customer_notification_preference" => [
                     "invoice_created" => ["email"],
