@@ -12,6 +12,6 @@ class PaymentController extends BaseController
     public function getPaymentAndRedirect($id)
     {
         $data = Payment::where('external_id','=',$id)->first();
-        return redirect('https://pvotdigital.com/pembayaran-sukses/'.$data->xendit_id);
+        return redirect('http://pvotdigital.com/pembayaran-sukses/'.$data->xendit_id);
     }
 }
