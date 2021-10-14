@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\Landing\LandingController;
 use App\Http\Controllers\Api\Payment\InvoiceController;
 use App\Http\Controllers\Api\Suppliers\SupplierController;
 use App\Http\Controllers\Api\Users\MembershipController;
+use App\Http\Controllers\Api\Users\PaymentController;
 use App\Http\Controllers\Api\Users\ShopsController;
 use App\Http\Controllers\Api\Users\UsersController;
 use Illuminate\Support\Facades\Route;
@@ -161,6 +162,11 @@ Route::group([ 'prefix' => 'v1'], function () {
         Route::get(
             'getTestimoni',
             [LandingController::class, 'getTestimoni']
+        );
+        # Get Payment Data
+        Route::get(
+            'payment/retrieve/{id}',
+            [PaymentController::class,'getDataPayment']
         );
 
         # Xendit

@@ -12,6 +12,7 @@ class Payment extends Model
     protected $table = 'payments';
     protected $primaryKey ='id';
     protected $fillable = [
+        'xendit_id',
         'external_id',
         'user_id',
         'payment_channel',

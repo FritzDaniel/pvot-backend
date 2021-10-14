@@ -64,7 +64,8 @@ class InvoiceController extends BaseController
             $createInvoice = \Xendit\Invoice::create($params);
 
             $dataPayment = [
-                'external_id' => $createInvoice['id'],
+                'xendit_id' => $createInvoice['id'],
+                'external_id' => $external_id,
                 'user_id' => $user->id,
                 'payment_channel' => "Xendit Invoice",
                 'email' => $user->email,
@@ -87,13 +88,13 @@ class InvoiceController extends BaseController
 
     public function callbackInvoice(Request $request)
     {
-        $external_id = $request['id'];
+        $xendit_id = $request['id'];
         $status = $request['status'];
 
-        $payment = Payment::where('external_id','=',$external_id)->exists();
+        $payment = Payment::where('xendit_id','=',$xendit_id)->exists();
         if($payment){
             if($status == "PAID") {
-                $update = Payment::where('external_id','=',$external_id)->first();
+                $update = Payment::where('xendit_id','=',$xendit_id)->first();
                 $update->status = "Paid";
                 $update->update();
 
