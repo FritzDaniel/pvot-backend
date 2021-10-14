@@ -9,9 +9,9 @@ use Illuminate\Http\Request;
 
 class PaymentController extends BaseController
 {
-    public function getDataPayment($id)
+    public function getPaymentAndRedirect($id)
     {
         $data = Payment::where('external_id','=',$id)->first();
-        return $this->sendResponse($data,'Payment data');
+        return redirect('https://pvotdigital.com/pembayaran-sukses/'.$data->xendit_id);
     }
 }

@@ -166,7 +166,7 @@ Route::group([ 'prefix' => 'v1'], function () {
         # Get Payment Data
         Route::get(
             'payment/retrieve/{id}',
-            [PaymentController::class,'getDataPayment']
+            [PaymentController::class,'getPaymentAndRedirect']
         );
 
         # Xendit
