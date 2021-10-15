@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Wallet;
+use App\Rules\IsValidPassword;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
@@ -51,9 +52,13 @@ class AuthController extends BaseController
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'email' => 'required|email|unique:users',
-            'password' => 'required',
+            'password' => [
+                'required',
+                'min:6',
+                new isValidPassword()
+            ],
             'c_password' => 'required|same:password',
-            'phone' => 'required|unique:users'
+            'phone' => 'required|unique:users|regex:/^([0-9\s\-\+\(\)]*)$/'
         ]);
 
         if($validator->fails()){
@@ -62,6 +67,7 @@ class AuthController extends BaseController
 
         $input = $request->all();
         $input['password'] = bcrypt($input['password']);
+        $input['phone'] = '+62'.$input['phone'];
         $user = User::create($input);
 
         $user->assignRole('Dropshipper');
