@@ -12,6 +12,7 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rules\Password;
 use Validator;
 use App\Http\Controllers\Api\BaseController as BaseController;
 
@@ -54,8 +55,11 @@ class AuthController extends BaseController
             'email' => 'required|email|unique:users',
             'password' => [
                 'required',
-                'min:6',
-                new isValidPassword()
+                Password::min(8)
+                    ->mixedCase()
+                    ->numbers()
+                    ->symbols()
+                    ->uncompromised(),
             ],
             'c_password' => 'required|same:password',
             'phone' => 'required|unique:users|regex:/^([0-9\s\-\+\(\)]*)$/'
