@@ -48,8 +48,8 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function sendPasswordResetNotification($token)
     {
-        $appUrl = 'http://api.pvotdigital.com/public/api/v1/';
-        $url = $appUrl.'resetPassword?token='.$token;
+        $appUrl = 'http://pvotdigital.com/';
+        $url = $appUrl.'ubah-password?token='.$token;
 
         $this->notify(new ResetPasswordNotification($url));
     }
