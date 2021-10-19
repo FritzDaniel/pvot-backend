@@ -45,6 +45,13 @@ class UsersController extends BaseController
             return $this->sendError($validator->errors(),'Validation Error.',400);
         }
 
+        $emailValid = User::where('email','=',$request['email'])->first();
+
+        if($emailValid == null)
+        {
+            return $this->sendError(null,'This email is not registered!',400);
+        }
+
         $status = Password::sendResetLink(
             $request->only('email')
         );
@@ -53,9 +60,7 @@ class UsersController extends BaseController
             return $this->sendResponse(null, "Change password link has been sent to your email");
         }
 
-        throw ValidationException::withMessages([
-            'email' => [trans($status)],
-        ]);
+        $this->sendError(trans($status),'Error forgot password',400);
     }
 
     public function changePassword(Request $request)
@@ -63,7 +68,14 @@ class UsersController extends BaseController
         $validator = Validator::make($request->all(), [
             'token' => 'required',
             'email' => 'required|email',
-            'password' => 'required',
+            'password' => [
+                'required',
+                \Illuminate\Validation\Rules\Password::min(8)
+                    ->mixedCase()
+                    ->numbers()
+                    ->symbols()
+                    ->uncompromised(),
+            ],
             'c_password' => 'required|same:password',
         ]);
 
