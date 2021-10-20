@@ -16,7 +16,7 @@ class SettingsSeeder extends Seeder
     {
         DB::table('settings')->insert([
             'name' => 'Product Markup',
-            'value' => 10,
+            'value' => 5,
             'tipe' => 'percentage'
         ]);
     }
