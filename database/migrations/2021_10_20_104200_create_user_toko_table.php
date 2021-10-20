@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUserDetailTable extends Migration
+class CreateUserTokoTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,13 @@ class CreateUserDetailTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_detail', function (Blueprint $table) {
+        Schema::create('user_toko', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id');
-            $table->string('namaPerusahaan')->nullable();
-            $table->string('negara');
-            $table->string('alamat');
-            $table->string('kota');
-            $table->string('provinsi');
-            $table->string('kodepos');
-            $table->string('informasiTambahan')->nullable();
+            $table->integer('tokoCount');
+            $table->integer('marketplaceCount');
+            $table->integer('marketplaceSelect');
+            $table->string('status')->default('Pending');
             $table->timestamps();
         });
     }
@@ -34,6 +31,6 @@ class CreateUserDetailTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_detail');
+        Schema::dropIfExists('user_toko');
     }
 }

@@ -16,7 +16,9 @@ class Product extends Model
         'productName',
         'productDesc',
         'productQty',
-        'productPrice'
+        'productPrice',
+        'productRevenue',
+        'showPrice'
     ];
     public $timestamps = true;
 

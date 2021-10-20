@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
-use App\Http\Controllers\Controller;
+use App\Models\Memberships;
 use App\Models\User;
 use App\Models\Wallet;
-use App\Rules\IsValidPassword;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Events\Verified;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -44,7 +42,7 @@ class AuthController extends BaseController
             return $this->sendResponse($success, 'User login successfully.',200);
         }
         else{
-            return $this->sendError(['message'=>'Unauthorized'],'Unauthorized.',401);
+            return $this->sendError(['error'=>'Wrong username or password.'],'Unauthorized.',401);
         }
     }
 
@@ -55,7 +53,7 @@ class AuthController extends BaseController
             'email' => 'required|email|unique:users',
             'password' => [
                 'required',
-                Password::min(8)
+                Password::min(6)
                     ->mixedCase()
                     ->numbers()
                     ->symbols()
@@ -71,7 +69,15 @@ class AuthController extends BaseController
 
         $input = $request->all();
         $input['password'] = bcrypt($input['password']);
-        $input['phone'] = '+62'.$input['phone'];
+
+        $phoneValidation = substr($input['phone'], 0,1);
+
+        if($phoneValidation == "0")
+        {
+            $input['phone'] = '+62'.substr($input['phone'], 1);
+        }else {
+            $input['phone'] = '+62'.$input['phone'];
+        }
         $user = User::create($input);
 
         $user->assignRole('Dropshipper');
@@ -80,12 +86,20 @@ class AuthController extends BaseController
 
         $success['token'] = $user->createToken('User Register Token')->plainTextToken;
         $success['name'] = $user->name;
+        $success['role'] = "Dropshipper";
 
         $dataWallet = [
             'user_id' => $user->id,
             'balance' => 0
         ];
         Wallet::create($dataWallet);
+
+        $dataMembership = [
+            'user_id' => $user->id,
+            'membership' => false,
+            'status' => 'Not Active',
+        ];
+        Memberships::create($dataMembership);
 
         activity()
             ->causedBy($user->id)

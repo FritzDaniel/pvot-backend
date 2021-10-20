@@ -21,6 +21,13 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('phone');
             $table->string('profilePicture')->nullable();
+            $table->string('namaPerusahaan')->nullable();
+            $table->string('country')->nullable();
+            $table->string('alamat')->nullable();
+            $table->string('city')->nullable();
+            $table->string('provinsi')->nullable();
+            $table->string('kodepos')->nullable();
+            $table->string('informasiTambahan')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

@@ -17,12 +17,16 @@ class ProductSeeder extends Seeder
     {
         for ($i=0; $i<20; $i++)
         {
+            $productPrice = rand(10000,100000);
+            $productRevenue = $productPrice * (5/100);
             DB::table('product')->insert([
                 'user_id' => rand(2,6),
                 'productName' => Str::random(10),
                 'productDesc' => Str::random(50),
                 'productQty' => rand(10,100),
-                'productPrice' => rand(10000,100000)
+                'productPrice' => $productPrice,
+                'productRevenue' => ceil($productRevenue),
+                'showPrice' => $productPrice + ceil($productRevenue)
             ]);
         }
     }

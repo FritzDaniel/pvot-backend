@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Api\Admin\CategoryController;
+use App\Http\Controllers\Api\Admin\DesignController;
+use App\Http\Controllers\Api\Admin\LogsController;
 use App\Http\Controllers\Api\Admin\TestimoniController;
 use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\Landing\LandingController;
@@ -41,30 +43,15 @@ Route::group([ 'prefix' => 'v1'], function () {
             'profile',
             [UsersController::class, 'profile']
         );
-        # Get Balance
-        Route::get(
-            'wallet',
-            [UsersController::class, 'getWallet']
-        );
-        # Get User Detail
-        Route::get(
-            'userDetail',
-            [MembershipController::class, 'getUserDetail']
-        );
-        # Create User Detail
+        # Update Profile
         Route::post(
-            'userDetail/store',
-            [MembershipController::class, 'storeUserDetail']
+            'profile/update',
+            [UsersController::class,'updateProfile']
         );
-        # Create Shop
-        Route::get(
-            'shop/list',
-            [ShopsController::class, 'myShop']
-        );
-        # Create Shop
+        # Update Password
         Route::post(
-            'shop/store',
-            [ShopsController::class, 'shopCreate']
+            'updatePassword',
+            [UsersController::class,'updatePassword']
         );
         # Xendit
         Route::group([ 'prefix' => 'xendit'], function (){
@@ -78,41 +65,96 @@ Route::group([ 'prefix' => 'v1'], function () {
             );
         });
         # Admin
-        Route::group(['prefix' => 'admin'], function (){
+        Route::group(['middleware' => ['role:Superadmin']], function () {
+            Route::group(['prefix' => 'admin'], function (){
 
-            # Create Kategori
-            Route::post(
-                'storeCategory',
-                [CategoryController::class, 'storeCategory']
-            );
-            # Testimoni
-            Route::post(
-                'storeTestimoni',
-                [TestimoniController::class, 'storeTestimoni']
-            );
+                # Create Kategori
+                Route::post(
+                    'storeCategory',
+                    [CategoryController::class, 'storeCategory']
+                );
+                # Testimoni
+                Route::post(
+                    'storeTestimoni',
+                    [TestimoniController::class, 'storeTestimoni']
+                );
+                # Get Log List
+                Route::get(
+                    'logs',
+                    [LogsController::class,'logs']
+                );
+                # Design
+                Route::get(
+                    'design',
+                    [DesignController::class,'listDesign']
+                );
+                Route::get(
+                    'design/subDesign',
+                    [DesignController::class,'listSubDesign']
+                );
+                Route::post(
+                    'design/store',
+                    [DesignController::class,'storeDesign']
+                );
+                Route::post(
+                    'design/subDesign/store',
+                    [DesignController::class,'storeSubDesign']
+                );
+            });
         });
         # Supplier
-        Route::group([ 'prefix' => 'supplier'], function (){
+        Route::group(['middleware' => ['role:Supplier']], function () {
+            Route::group([ 'prefix' => 'supplier'], function (){
 
-            # My Product
+                # My Product
+                Route::get(
+                    'myProduct',
+                    [SupplierController::class, 'myProduct']
+                );
+                # Detail Product
+                Route::get(
+                    'myProduct/{id}',
+                    [SupplierController::class,'detailProduct']
+                );
+                # Create Product
+                Route::post(
+                    'storeProduct',
+                    [SupplierController::class, 'storeProduct']
+                );
+            });
+        });
+        Route::group(['middleware' => ['role:Dropshipper']], function () {
+            # Get Balance
             Route::get(
-                'myProduct',
-                [SupplierController::class, 'myProduct']
+                'wallet',
+                [UsersController::class, 'getWallet']
             );
-            # Detail Product
-            Route::get(
-                'myProduct/{id}',
-                [SupplierController::class,'detailProduct']
-            );
-            # Create Product
+            # Store Detail Payment & Create Invoice
             Route::post(
-                'storeProduct',
-                [SupplierController::class, 'storeProduct']
+                'detailPembayaran/store',
+                [MembershipController::class, 'detailPayment']
+            );
+            # Create Shop
+            Route::get(
+                'shop/list',
+                [ShopsController::class, 'myShop']
+            );
+            # Create Shop
+            Route::post(
+                'shop/store',
+                [ShopsController::class, 'shopCreate']
             );
         });
     });
     // Route for guest
     Route::group(['middleware' => ['guest:api']], function () {
+        # Xendit
+        Route::group([ 'prefix' => 'xendit'], function (){
+
+            Route::post('invoice/callback',
+                [InvoiceController::class,'callbackInvoice']
+            );
+        });
         # Verify The Email
         Route::get(
             'verifyEmail/{id}/{hash}',
@@ -143,6 +185,11 @@ Route::group([ 'prefix' => 'v1'], function () {
             'getSupplier',
             [LandingController::class, 'getSupplier']
         );
+        # List Supplier Product
+        Route::get(
+            'getSupplier/product/{id}',
+            [LandingController::class, 'getSupplierProduct']
+        );
         # List Category
         Route::get(
             'getCategory',
@@ -152,6 +199,11 @@ Route::group([ 'prefix' => 'v1'], function () {
         Route::get(
             'getDesign',
             [LandingController::class, 'getDesign']
+        );
+        # List SubDesign
+        Route::get(
+            'getDesign/subDesign/{id}',
+            [LandingController::class, 'getSubDesign']
         );
         # List Product
         Route::get(
@@ -168,13 +220,5 @@ Route::group([ 'prefix' => 'v1'], function () {
             'payment/retrieve/{id}',
             [PaymentController::class,'getPaymentAndRedirect']
         );
-
-        # Xendit
-        Route::group([ 'prefix' => 'xendit'], function (){
-
-            Route::post('invoice/callback',
-                [InvoiceController::class,'callbackInvoice']
-            );
-        });
     });
 });

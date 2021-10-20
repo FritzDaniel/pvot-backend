@@ -20,7 +20,8 @@ class CreateProductTable extends Migration
             $table->text('productDesc');
             $table->bigInteger('productQty');
             $table->double('productPrice');
-            $table->double('productMarkup');
+            $table->double('productRevenue');
+            $table->double('showPrice');
             $table->timestamps();
         });
     }

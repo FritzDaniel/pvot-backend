@@ -38,6 +38,16 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+
+        $this->renderable(function (\Spatie\Permission\Exceptions\UnauthorizedException $e, $request) {
+            return response()->json([
+                'status' => false,
+                'status_code' => 403,
+                'data' => [
+                    'error' => 'Anda tidak memiliki otorisasi yang diperlukan.',
+                ],
+            ], 403);
+        });
     }
 
     protected function unauthenticated($request, AuthenticationException $exception)

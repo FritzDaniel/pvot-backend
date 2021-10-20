@@ -16,11 +16,8 @@ class CreateMembershipsTable extends Migration
         Schema::create('memberships', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id');
-            $table->integer('marketplaceCount');
-            $table->string('marketplaceSelect');
+            $table->boolean('membership')->default(false);
             $table->string('status')->default('Pending');
-            $table->string('paymentChannel');
-            $table->double('price');
             $table->timestamp('expiredDate')->nullable();
             $table->timestamps();
         });

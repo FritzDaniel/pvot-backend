@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Landing;
 use App\Http\Controllers\Api\BaseController;
 use App\Models\Category;
 use App\Models\Design;
+use App\Models\DesignChild;
 use App\Models\Product;
 use App\Models\Testimoni;
 use App\Models\User;
@@ -30,10 +31,23 @@ class LandingController extends BaseController
         return $this->sendResponse($data, 'Supplier List.');
     }
 
+    public function getSupplierProduct($id)
+    {
+        $data = Product::where('user_id','=',$id)->get();
+
+        return $this->sendResponse($data, 'Product Supplier List.');
+    }
+
     public function getDesign()
     {
         $data = Design::orderBy('designName','ASC')->get();
         return $this->sendResponse($data,'List Design.');
+    }
+
+    public function getSubDesign($id)
+    {
+        $data = DesignChild::where('design_id','=',$id)->get();
+        return $this->sendResponse($data,'Sub Design');
     }
 
     public function getProduct(Request $request)

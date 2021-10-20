@@ -9,7 +9,6 @@ use App\Models\User;
 use App\Notifications\SuccessPaymentMembership;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
 use Xendit\Xendit;
 
 class InvoiceController extends BaseController
@@ -99,9 +98,10 @@ class InvoiceController extends BaseController
                 $update->status = "Paid";
                 $update->update();
 
-                if($update->description == "Payment Membership")
+                if($update->description == "Pembayaran Membership")
                 {
                     $updateMembership = Memberships::where('user_id','=',$update->user_id)->first();
+                    $updateMembership->membership = true;
                     $updateMembership->expiredDate = Carbon::now()->addYear();
                     $updateMembership->status = "Active";
                     $updateMembership->update();

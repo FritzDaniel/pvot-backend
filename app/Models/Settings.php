@@ -5,21 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class UserDetail extends Model
+class Settings extends Model
 {
     use HasFactory;
 
-    protected $table = 'user_detail';
+    protected $table = 'settings';
     protected $primaryKey ='id';
     protected $fillable = [
-        'user_id',
-        'namaPerusahaan',
-        'negara',
-        'alamat',
-        'kota',
-        'provinsi',
-        'kodepos',
-        'informasiTambahan'
+        'name',
+        'value',
+        'tipe'
     ];
     public $timestamps = true;
 }

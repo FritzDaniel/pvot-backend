@@ -19,7 +19,8 @@ class TransactionSeeder extends Seeder
         for ($i=0; $i<20; $i++)
         {
             DB::table('payments')->insert([
-                'external_id' => Str::random(25),
+                'xendit_id' => Str::random(25),
+                'external_id' => "invoice-".rand(100000,1000000),
                 'user_id' => 7,
                 'payment_channel' => "Xendit Invoice",
                 'email' => 'danielsinaga53@gmail.com',

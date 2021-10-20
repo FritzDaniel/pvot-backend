@@ -5,11 +5,13 @@ namespace App\Http\Controllers\Api\Users;
 use App\Http\Controllers\Api\BaseController;
 use App\Models\User;
 use App\Models\Wallet;
+use Carbon\Carbon;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Password;
 use Illuminate\Support\Str;
-use Illuminate\Validation\ValidationException;
 use Validator;
 
 class UsersController extends BaseController
@@ -28,11 +30,123 @@ class UsersController extends BaseController
     public function profile(Request $request)
     {
         $user = $request->user();
-        $data = User::with(['roles','userDetail','membership'])
-            ->where('id','=',$user->id)
-            ->first();
+        $role = $user->getRoleNames();
+
+        if($role[0] == 'Superadmin') {
+            $data = User::with(['roles'])
+                ->where('id','=',$user->id)
+                ->first();
+        }
+        else if($role[0] == 'Superadmin') {
+            $data = User::with(['roles'])
+                ->where('id','=',$user->id)
+                ->first();
+        }
+        else {
+            $data = User::with(['roles','membership'])
+                ->where('id','=',$user->id)
+                ->first();
+        }
 
         return $this->sendResponse($data, 'Profile Data.');
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'phone' => 'unique:users|regex:/^([0-9\s\-\+\(\)]*)$/'
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError($validator->errors(), 'Validation Error.', 400);
+        }
+
+        if ($request->hasFile('profilePicture')) {
+            if ($request->file('profilePicture')->isValid()) {
+                $name = Carbon::now()->timestamp . '.' . $request->file('profilePicture')->getClientOriginalExtension();
+                $store_path = 'public/fotoUser';
+                $request->file('profilePicture')->storeAs($store_path, $name);
+            }
+        }
+
+        $user = $request->user();
+        $update = User::where('id', '=', $user->id)->first();
+        if ($request->hasFile('profilePicture')) {
+            $update->profilePicture = isset($name) ? '/storage/fotoUser/'.$name : null;
+        }
+        if ($request['namaPerusahaan'])
+        {
+            $update->namaPerusahaan = $request['namaPerusahaan'];
+        }
+        if ($request['country'])
+        {
+            $update->country = $request['country'];
+        }
+        if ($request['alamat'])
+        {
+            $update->alamat = $request['alamat'];
+        }
+        if ($request['city'])
+        {
+            $update->city = $request['city'];
+        }
+        if ($request['provinsi'])
+        {
+            $update->provinsi = $request['provinsi'];
+        }
+        if ($request['kodepos'])
+        {
+            $update->kodepos = $request['kodepos'];
+        }
+        if ($request['informasiTambahan'])
+        {
+            $update->informasiTambahan = $request['informasiTambahan'];
+        }
+        $update->update();
+
+        activity()
+            ->causedBy($user)
+            ->createdAt(now())
+            ->log($user->name.' is update the data.');
+
+        return $this->sendResponse($user, 'Successfully update user.');
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'old_password' => [
+                'required', function ($attribute, $value, $fail) {
+                    if (!Hash::check($value, Auth::user()->password)) {
+                        $fail('Old Password didn\'t match');
+                    }
+                },
+            ],
+            'new_password' => [
+                'required',
+                Password::min(6)
+                    ->mixedCase()
+                    ->numbers()
+                    ->symbols()
+                    ->uncompromised(),
+            ],
+            'confirm_password' => 'required|same:new_password',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError($validator->errors(), 'Validation Error.', 400);
+        }
+        $user = $request->user();
+        $update = User::where('id','=',$user->id)->first();
+        $update->password = bcrypt($request['new_password']);
+        $update->update();
+
+        activity()
+            ->causedBy($user)
+            ->createdAt(now())
+            ->log($user->name.' is update his password.');
+
+        return $this->sendResponse($update, 'Update password success.');
     }
 
     public function forgotPassword(Request $request)

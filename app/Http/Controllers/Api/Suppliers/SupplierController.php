@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\ProductPicture;
+use App\Models\Settings;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Validator;
@@ -47,12 +48,18 @@ class SupplierController extends BaseController
                 return $this->sendError($validator->errors(),'Validation Error.',400);
             }
 
+            // Product Revenue
+            $settings = Settings::where('name','=','Product Markup')->first();
+            $productRevenue = $request['price'] * ($settings->value/100);
+
             $store = new Product();
             $store->user_id = $request->user()->id;
             $store->productName = $request['productName'];
             $store->productDesc = $request['productDesc'];
             $store->productQty = $request['qty'];
             $store->productPrice = $request['price'];
+            $store->productRevenue = ceil($productRevenue);
+            $store->showPrice = $request['price'] + ceil($productRevenue);
             $store->save();
 
             if($request['productCategory'])
