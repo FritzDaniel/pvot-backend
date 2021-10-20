@@ -20,7 +20,7 @@ class AppServiceProvider extends ServiceProvider
         date_default_timezone_set('Asia/Jakarta');
 
         $this->app->register(\L5Swagger\L5SwaggerServiceProvider::class);
-        Schema::defaultStringLength(191);
+        Schema::defaultStringLength(125);
     }
 
     /**
