@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\Admin\CategoryController;
 use App\Http\Controllers\Api\Admin\DesignController;
 use App\Http\Controllers\Api\Admin\LogsController;
 use App\Http\Controllers\Api\Admin\TestimoniController;
+use App\Http\Controllers\Api\Admin\TokoController;
 use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\Landing\LandingController;
 use App\Http\Controllers\Api\Payment\InvoiceController;
@@ -12,8 +13,8 @@ use App\Http\Controllers\Api\Users\MembershipController;
 use App\Http\Controllers\Api\Users\PaymentController;
 use App\Http\Controllers\Api\Users\ShopsController;
 use App\Http\Controllers\Api\Users\UsersController;
+use App\Http\Controllers\Api\Admin\SupplierController as AdminSupplierController;
 use Illuminate\Support\Facades\Route;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -67,7 +68,41 @@ Route::group([ 'prefix' => 'v1'], function () {
         # Admin
         Route::group(['middleware' => ['role:Superadmin']], function () {
             Route::group(['prefix' => 'admin'], function (){
-
+                # List Withdraw
+                Route::get(
+                    'withdraw',
+                    [AdminSupplierController::class,'listWithdraw']
+                );
+                # Change Status Withdraw
+                Route::post(
+                    'withdraw/{id}',
+                    [AdminSupplierController::class,'changeStatusWithdraw']
+                );
+                # List Toko
+                Route::get(
+                    'toko',
+                    [TokoController::class,'listToko']
+                );
+                # Detail Toko
+                Route::get(
+                    'detailToko/{id}',
+                    [TokoController::class,'getDetailToko']
+                );
+                # Change Status Toko
+                Route::post(
+                    'changeStatusToko/{id}',
+                    [TokoController::class,'changeStatus']
+                );
+                # Create Supplier
+                Route::post(
+                    'storeSupplier',
+                    [AdminSupplierController::class,'storeSupplier']
+                );
+                # Update Supplier
+                Route::post(
+                    'updateSupplier',
+                    [AdminSupplierController::class,'updateSupplier']
+                );
                 # Create Kategori
                 Route::post(
                     'storeCategory',
@@ -105,7 +140,16 @@ Route::group([ 'prefix' => 'v1'], function () {
         # Supplier
         Route::group(['middleware' => ['role:Supplier']], function () {
             Route::group([ 'prefix' => 'supplier'], function (){
-
+                # Request Withdraw
+                Route::post(
+                    'withdraw/store',
+                    [SupplierController::class, 'requestWithdraw']
+                );
+                # Get Balance
+                Route::get(
+                    'wallet',
+                    [UsersController::class, 'getWallet']
+                );
                 # My Product
                 Route::get(
                     'myProduct',
@@ -124,15 +168,10 @@ Route::group([ 'prefix' => 'v1'], function () {
             });
         });
         Route::group(['middleware' => ['role:Dropshipper']], function () {
-            # Get Balance
-            Route::get(
-                'wallet',
-                [UsersController::class, 'getWallet']
-            );
-            # Store Detail Payment & Create Invoice
+            # Create Shop
             Route::post(
-                'detailPembayaran/store',
-                [MembershipController::class, 'detailPayment']
+                'cart/store',
+                [PaymentController::class, 'beliProduct']
             );
             # Create Shop
             Route::get(
@@ -148,6 +187,11 @@ Route::group([ 'prefix' => 'v1'], function () {
     });
     // Route for guest
     Route::group(['middleware' => ['guest:api']], function () {
+        # Store Detail Payment & Create Invoice
+        Route::post(
+            'detailPembayaran/store',
+            [MembershipController::class, 'detailPayment']
+        );
         # Xendit
         Route::group([ 'prefix' => 'xendit'], function (){
 

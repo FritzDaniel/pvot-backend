@@ -23,7 +23,6 @@ class MembershipController extends BaseController
 
     public function detailPayment(Request $request)
     {
-        $user = $request->user();
         $validator = Validator::make($request->all(), [
             'nama' => 'required',
             'email' => 'required',
@@ -40,8 +39,9 @@ class MembershipController extends BaseController
         if($validator->fails()){
             return $this->sendError($validator->errors(),'Validation Error.',400);
         }
+        $user = User::where('email','=',$request['email'])->first();
 
-        $store = User::find($user->id);
+        $store = $user;
         $store->namaPerusahaan = isset($request['namaPerusahaan']) ? $request['namaPerusahaan'] : null;
         $store->country = isset($request['country']) ? $request['country'] : null;
         $store->alamat = isset($request['alamat']) ? $request['alamat'] : null;

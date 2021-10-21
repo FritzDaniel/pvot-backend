@@ -8,6 +8,8 @@ use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\ProductPicture;
 use App\Models\Settings;
+use App\Models\Wallet;
+use App\Models\Withdraw;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Validator;
@@ -92,5 +94,44 @@ class SupplierController extends BaseController
             return $this->sendError($e,'Error.',400);
         }
         return $this->sendResponse($store,'Add Product Success.',201);
+    }
+
+    public function requestWithdraw(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'bank' => 'required',
+            'no_rek' => 'required|number',
+            'amount' => 'required|number'
+        ]);
+
+        if($validator->fails()){
+            return $this->sendError($validator->errors(),'Validation Error.',400);
+        }
+
+        $validasiWallet = Wallet::where('user_id','=',$request->user()->id)->first();
+        if($validasiWallet->balance < 500000)
+        {
+            return $this->sendError([
+                'message' => 'Balance anda tidak mencukupi untuk melakukan penarikan.'
+            ],'Error.',400);
+        }
+
+        if($request['withdraw'] < 500000)
+        {
+            return $this->sendError([
+                'message' => 'Amount tidak boleh di bawah 500 ribu'
+            ],'Error.',400);
+        }
+
+        $data = new Withdraw();
+        $data->bank = $request['bank'];
+        $data->no_rek = $request['no_rek'];
+        $data->amount = $request['amount'];
+        $data->save();
+
+        $validasiWallet->balance = $validasiWallet->balance - $request['amount'];
+        $validasiWallet->update();
+
+        return $this->sendResponse($data,'Request withdraw.');
     }
 }

@@ -22,7 +22,8 @@ class Shops extends Model
         'kategoriToko',
         'supplier',
         'design',
-        'descToko'
+        'descToko',
+        'status'
     ];
     public $timestamps = true;
 

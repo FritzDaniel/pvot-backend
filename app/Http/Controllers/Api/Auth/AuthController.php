@@ -88,12 +88,6 @@ class AuthController extends BaseController
         $success['name'] = $user->name;
         $success['role'] = "Dropshipper";
 
-        $dataWallet = [
-            'user_id' => $user->id,
-            'balance' => 0
-        ];
-        Wallet::create($dataWallet);
-
         $dataMembership = [
             'user_id' => $user->id,
             'membership' => false,
@@ -114,14 +108,14 @@ class AuthController extends BaseController
         try {
             if($request->user()->hasVerifiedEmail())
             {
-                return $this->sendError(null,'Already Verified', 400);
+                return $this->sendError(['message' => 'Already Verified'], 'Already Verified',400);
             }
 
             $request->user()->sendEmailVerificationNotification();
 
             activity()->log($request->user()->name.' is Send Verification Email');
 
-            return $this->sendResponse(null, 'Verification link sent');
+            return $this->sendResponse(['message' => 'Verification link sent'],'Verification link sent', 200);
         }catch (\Exception $e) {
             return $this->sendError($e,'Error Send Email',400);
         }
@@ -132,7 +126,7 @@ class AuthController extends BaseController
         $user = User::find($request->route('id'));
 
         if ($user->hasVerifiedEmail()) {
-            return redirect(env('FRONT_URL') . 'email/already-verified');
+            return redirect('http://pvotdigital.com/verifikasi-success');
         }
 
         if ($user->markEmailAsVerified()) {
@@ -144,7 +138,7 @@ class AuthController extends BaseController
             ->createdAt(now())
             ->log($user->name.' Email is Verified');
 
-        return redirect(env('FRONT_URL') . 'email/verified');
+        return redirect( 'http://pvotdigital.com/verifikasi-success');
     }
 
     public function logout(Request $request)

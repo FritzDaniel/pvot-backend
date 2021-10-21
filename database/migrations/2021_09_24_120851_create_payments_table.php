@@ -15,8 +15,8 @@ class CreatePaymentsTable extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->string('xendit_id');
-            $table->string('external_id');
+            $table->string('xendit_id')->nullable();
+            $table->string('external_id')->nullable();
             $table->integer('user_id');
             $table->string('payment_channel');
             $table->string('email');
