@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\Admin\DesignController;
 use App\Http\Controllers\Api\Admin\LogsController;
 use App\Http\Controllers\Api\Admin\TestimoniController;
 use App\Http\Controllers\Api\Admin\TokoController;
+use App\Http\Controllers\Api\Admin\VariantController;
 use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\Landing\LandingController;
 use App\Http\Controllers\Api\Payment\InvoiceController;
@@ -68,6 +69,26 @@ Route::group([ 'prefix' => 'v1'], function () {
         # Admin
         Route::group(['middleware' => ['role:Superadmin']], function () {
             Route::group(['prefix' => 'admin'], function (){
+                # List Variant
+                Route::get(
+                    'variants',
+                    [VariantController::class,'variant']
+                );
+                # Create Variant
+                Route::post(
+                    'variants/store',
+                    [VariantController::class,'variantStore']
+                );
+                # Update Variant
+                Route::post(
+                    'variants/update/{id}',
+                    [VariantController::class,'variantUpdate']
+                );
+                # Delete Variant
+                Route::get(
+                    'variants/delete/{id}',
+                    [VariantController::class,'variantDelete']
+                );
                 # List Withdraw
                 Route::get(
                     'withdraw',
@@ -107,6 +128,16 @@ Route::group([ 'prefix' => 'v1'], function () {
                 Route::post(
                     'storeCategory',
                     [CategoryController::class, 'storeCategory']
+                );
+                # Update Kategori
+                Route::post(
+                    'updateCategory/{id}',
+                    [CategoryController::class, 'updateCategory']
+                );
+                # Delete Kategori
+                Route::get(
+                    'deleteCategory/{id}',
+                    [CategoryController::class, 'deleteCategory']
                 );
                 # Testimoni
                 Route::post(
@@ -165,6 +196,26 @@ Route::group([ 'prefix' => 'v1'], function () {
                     'storeProduct',
                     [SupplierController::class, 'storeProduct']
                 );
+                # Update Product
+                Route::post(
+                    'updateProduct/{id}',
+                    [SupplierController::class, 'updateProduct']
+                );
+                # Delete Product
+                Route::get(
+                    'deleteProduct/{id}',
+                    [SupplierController::class, 'deleteProduct']
+                );
+                # List Transaction
+                Route::get(
+                    'listTransaction',
+                    [SupplierController::class, 'listTransaction']
+                );
+                # List Transaction
+                Route::get(
+                    'listWithdraw',
+                    [SupplierController::class, 'listWithdraw']
+                );
             });
         });
         Route::group(['middleware' => ['role:Dropshipper']], function () {
@@ -187,6 +238,16 @@ Route::group([ 'prefix' => 'v1'], function () {
     });
     // Route for guest
     Route::group(['middleware' => ['guest:api']], function () {
+        # Get Summary Product
+        Route::get(
+            'cartSummary/{id}',
+            [PaymentController::class, 'cartSummary']
+        );
+        # Get Payment Callback Moota
+        Route::get(
+            'checkMutasi/{id}',
+            [PaymentController::class, 'getCallback']
+        );
         # Store Detail Payment & Create Invoice
         Route::post(
             'detailPembayaran/store',
@@ -263,6 +324,11 @@ Route::group([ 'prefix' => 'v1'], function () {
         Route::get(
             'payment/retrieve/{id}',
             [PaymentController::class,'getPaymentAndRedirect']
+        );
+        # List Variant
+        Route::get(
+            'list/variants',
+            [VariantController::class,'variant']
         );
     });
 });

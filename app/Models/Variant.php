@@ -5,15 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class SubChildCategory extends Model
+class Variant extends Model
 {
     use HasFactory;
-
-    protected $table = 'sub_child_category';
+    protected $table = 'variant';
     protected $primaryKey ='id';
-    protected $fillable = [
-        'sub_category_id',
-        'name',
-    ];
+    protected $fillable = ['variantType'];
     public $timestamps = true;
 }

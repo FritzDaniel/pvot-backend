@@ -7,7 +7,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Payment;
 use App\Models\Product;
 use App\Models\Transaction;
+use App\Models\Wallet;
 use Carbon\Carbon;
+use Dflydev\DotAccessData\Data;
 use Illuminate\Http\Request;
 
 class PaymentController extends BaseController
@@ -51,8 +53,59 @@ class PaymentController extends BaseController
             $store->payment_id = $payment->id;
             $store->qty = $itm['quantity'];
             $store->transaction_date = Carbon::now();
+            $store->variants = $request['variants'];
             $store->save();
+
+            $product = Product::where('id','=',$itm['product_id'])->first();
+            $product->productQty = $product->productQty - $itm['quantity'];
+            $product->update();
         }
         return $this->sendResponse($payment,'Store cart success');
+    }
+
+    public function getCallback(Request $request,$id)
+    {
+        $invoice_id = $id;
+        $dataPayment = Payment::where('external_id','=',$invoice_id)->first();
+        if($dataPayment->status == "Pending")
+        {
+            $dataPayment->status = "Paid";
+            $dataPayment->update();
+
+            // Send E-Wallet
+            $price = Transaction::where('payment_id','=',$dataPayment->id)->get();
+            $total = 0;
+            $supplier_id = 0;
+
+            foreach ($price as $prc)
+            {
+                $product = Product::where('id','=',$prc->product_id)->first();
+                $total += $product->productPrice * $prc->qty;
+                $supplier_id = $prc->supplier_id;
+            }
+
+            $wallet = Wallet::where('user_id','=',$supplier_id)->first();
+            $wallet->balance = $total;
+            $wallet->update();
+
+            return $this->sendResponse(
+                [
+                   'status' => 'Paid',
+                   'invoice_id' => $invoice_id
+            ],'Success');
+        }else {
+            return $this->sendResponse(
+                [
+                    'status' => 'Paid',
+                    'invoice_id' => $invoice_id
+                ],'Success');
+        }
+    }
+
+    public function cartSummary($id)
+    {
+        $data = Payment::with('Transaction')
+            ->where('external_id','=',$id)->first();
+        return $this->sendResponse($data,'Success');
     }
 }

@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api\Auth;
 
 use App\Models\Memberships;
 use App\Models\User;
-use App\Models\Wallet;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\RedirectResponse;
@@ -24,7 +23,7 @@ class AuthController extends BaseController
         ]);
 
         if($validator->fails()){
-            return $this->sendError($validator->errors(),'Validation Error.',400);
+            return $this->sendError($validator->errors(),'Error',400);
         }
 
         if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
@@ -39,10 +38,10 @@ class AuthController extends BaseController
                 ->createdAt(now())
                 ->log($user->name.' is Login to your apps!');
 
-            return $this->sendResponse($success, 'User login successfully.',200);
+            return $this->sendResponse($success, 'Success',200);
         }
         else{
-            return $this->sendError(['error'=>'Wrong username or password.'],'Unauthorized.',401);
+            return $this->sendError(['error'=>'Wrong username or password.'],'Error',401);
         }
     }
 
@@ -78,13 +77,13 @@ class AuthController extends BaseController
         }else {
             $input['phone'] = '+62'.$input['phone'];
         }
+        $input['profilePicture'] = "/storage/img/dummyUser.jpg";
         $user = User::create($input);
 
         $user->assignRole('Dropshipper');
 
         event(new Registered($user));
 
-        $success['token'] = $user->createToken('User Register Token')->plainTextToken;
         $success['name'] = $user->name;
         $success['role'] = "Dropshipper";
 
@@ -98,9 +97,9 @@ class AuthController extends BaseController
         activity()
             ->causedBy($user->id)
             ->createdAt(now())
-            ->log('Someone is Registered to your apps!');
+            ->log($user->name.' Registered to your apps!');
 
-        return $this->sendResponse($success, 'User register successfully.');
+        return $this->sendResponse($success, 'Success');
     }
 
     public function sendVerificationEmail(Request $request)
@@ -108,16 +107,17 @@ class AuthController extends BaseController
         try {
             if($request->user()->hasVerifiedEmail())
             {
-                return $this->sendError(['message' => 'Already Verified'], 'Already Verified',400);
+                return $this->sendError(['message' => 'Already Verified'], 'Error',400);
             }
 
             $request->user()->sendEmailVerificationNotification();
 
             activity()->log($request->user()->name.' is Send Verification Email');
 
-            return $this->sendResponse(['message' => 'Verification link sent'],'Verification link sent', 200);
-        }catch (\Exception $e) {
-            return $this->sendError($e,'Error Send Email',400);
+            return $this->sendResponse(['message' => 'Verification link sent'],'Success', 200);
+        }
+        catch (\Exception $e) {
+            return $this->sendError($e,'Error',400);
         }
     }
 
@@ -126,7 +126,7 @@ class AuthController extends BaseController
         $user = User::find($request->route('id'));
 
         if ($user->hasVerifiedEmail()) {
-            return redirect('http://pvotdigital.com/verifikasi-success');
+            return redirect('https://pvotdigital.com/verifikasi-success');
         }
 
         if ($user->markEmailAsVerified()) {
@@ -138,7 +138,7 @@ class AuthController extends BaseController
             ->createdAt(now())
             ->log($user->name.' Email is Verified');
 
-        return redirect( 'http://pvotdigital.com/verifikasi-success');
+        return redirect( 'https://pvotdigital.com/verifikasi-success');
     }
 
     public function logout(Request $request)

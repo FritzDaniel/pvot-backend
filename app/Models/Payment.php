@@ -22,4 +22,9 @@ class Payment extends Model
         'description'
     ];
     public $timestamps = true;
+
+    public function Transaction()
+    {
+        return $this->hasMany(Transaction::class,'payment_id','id')->with('Product');
+    }
 }

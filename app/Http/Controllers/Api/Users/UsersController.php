@@ -37,8 +37,8 @@ class UsersController extends BaseController
                 ->where('id','=',$user->id)
                 ->first();
         }
-        else if($role[0] == 'Superadmin') {
-            $data = User::with(['roles'])
+        else if($role[0] == 'Supplier') {
+            $data = User::with(['roles','EWallet'])
                 ->where('id','=',$user->id)
                 ->first();
         }

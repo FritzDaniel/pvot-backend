@@ -15,15 +15,15 @@ class SupplierController extends BaseController
 {
     public function storeSupplier(Request $request)
     {
-
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'email' => 'required|email|unique:users',
-            'phone' => 'required'
+            'phone' => 'required',
+            'password' => 'required'
         ]);
 
         if($validator->fails()){
-            return $this->sendError($validator->errors(),'Validation Error.',400);
+            return $this->sendError($validator->errors(),'Error',400);
         }
 
         if ($request->hasFile('profilePicture')) {
@@ -39,8 +39,19 @@ class SupplierController extends BaseController
         $store->email = $request['email'];
         $store->email_verified_at = Carbon::now();
         $store->password = bcrypt($request['password']);
-        $store->phone = $request['phone'];
-        $store->profilePicture = isset($name) ? '/storage/fotoUser/'.$name : null;
+        if($request['phone'])
+        {
+            $phoneValidation = substr($request['phone'], 0,1);
+
+            if($phoneValidation == "0")
+            {
+                $store->phone = '+62'.substr($request['phone'], 1);
+            }else {
+                $store->phone = '+62'.$request['phone'];
+            }
+            $store->phone = $request['phone'];
+        }
+        $store->profilePicture = isset($name) ? '/storage/fotoUser/'.$name : '/storage/img/dummyUser.jpg';
         $store->country = $request['country'];
         $store->alamat = $request['alamat'];
         $store->provinsi = $request['provinsi'];
@@ -79,7 +90,6 @@ class SupplierController extends BaseController
         }
 
         $store = User::where('id', '=', $id)->first();
-
         if($request['name'])
         {
             $store->name = $request['name'];
@@ -90,11 +100,19 @@ class SupplierController extends BaseController
         }
         if($request['phone'])
         {
+            $phoneValidation = substr($request['phone'], 0,1);
+
+            if($phoneValidation == "0")
+            {
+                $store->phone = '+62'.substr($request['phone'], 1);
+            }else {
+                $store->phone = '+62'.$request['phone'];
+            }
             $store->phone = $request['phone'];
         }
         if ($request->hasFile('profilePicture'))
         {
-            $store->profilePicture = isset($name) ? '/storage/fotoUser/' . $name : null;
+            $store->profilePicture = isset($name) ? '/storage/fotoUser/'.$name : '/storage/img/dummyUser.jpg';
         }
         if($request['country'])
         {
@@ -114,13 +132,13 @@ class SupplierController extends BaseController
         }
         $store->update();
 
-        return $this->sendResponse($store,'Update Supplier Success.');
+        return $this->sendResponse($store,'Success');
     }
 
     public function listWithdraw()
     {
         $data = Withdraw::orderBy('created_at','DESC')->get();
-        return $this->sendResponse($data,'List Withdraw');
+        return $this->sendResponse($data,'Success');
     }
 
     public function changeStatusWithdraw(Request $request,$id)
@@ -137,6 +155,6 @@ class SupplierController extends BaseController
         $data->status = "Settle";
         $data->buktiTransfer = isset($name) ? '/storage/buktiTransfer/'.$name : null;
         $data->update();
-        return $this->sendResponse($data, 'Change status withdraw');
+        return $this->sendResponse($data, 'Success');
     }
 }

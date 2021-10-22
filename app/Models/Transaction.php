@@ -10,13 +10,24 @@ class Transaction extends Model
     use HasFactory;
 
     protected $table = 'transaction';
-    protected $primaryKey ='id';
+    protected $primaryKey = 'id';
     protected $fillable = [
         'user_id',
         'product_id',
         'payment_id',
         'qty',
-        'transaction_date'
+        'transaction_date',
+        'variants'
     ];
     public $timestamps = true;
+
+    public function Product()
+    {
+        return $this->belongsTo(Product::class, 'product_id');
+    }
+
+    public function Payment()
+    {
+        return $this->belongsTo(Payment::class,'payment_id');
+    }
 }

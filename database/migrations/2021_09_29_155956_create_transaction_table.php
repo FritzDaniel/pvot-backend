@@ -21,6 +21,7 @@ class CreateTransactionTable extends Migration
             $table->integer('payment_id');
             $table->integer('qty');
             $table->timestamp('transaction_date');
+            $table->string('variants')->nullable();
             $table->timestamps();
         });
     }

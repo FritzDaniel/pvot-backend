@@ -61,9 +61,9 @@ class User extends Authenticatable implements MustVerifyEmail
         $this->notify(new ResetPasswordNotification($url));
     }
 
-    public function userDetail()
+    public function EWallet()
     {
-        return $this->hasOne(UserDetail::class,'user_id','id');
+        return $this->hasOne(Wallet::class,'user_id','id');
     }
 
     public function membership()

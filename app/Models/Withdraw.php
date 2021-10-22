@@ -9,7 +9,7 @@ class Withdraw extends Model
 {
     use HasFactory;
 
-    protected $table = 'user_toko';
+    protected $table = 'withdraw';
     protected $primaryKey ='id';
     protected $fillable = [
         'user_id',

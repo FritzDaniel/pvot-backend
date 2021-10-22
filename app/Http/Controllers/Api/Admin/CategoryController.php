@@ -18,7 +18,7 @@ class CategoryController extends BaseController
         ]);
 
         if($validator->fails()) {
-            return $this->sendError($validator->errors(),'Error input data.',400);
+            return $this->sendError($validator->errors(),'Error',400);
         }
 
         if ($request->hasFile('logo')){
@@ -31,22 +31,48 @@ class CategoryController extends BaseController
 
         $store = [
             'name' => $request['name'],
-            'logo' => isset($name) ? "/storage/fotoKategori/".$name : null,
+            'logo' => isset($name) ? "/storage/fotoKategori/".$name : '/storage/img/dummy.jpg',
         ];
         $data = Category::create($store);
 
-        $subCategory = $request['subCategory'];
-        if($subCategory)
-        {
-            foreach ($subCategory as $subC)
-            {
-                $storeSubCategory = new SubCategory();
-                $storeSubCategory->category_id = $data->id;
-                $storeSubCategory->name = $subC;
-                $storeSubCategory->save();
+        return $this->sendResponse($data,'Success',200);
+    }
+
+    public function updateCategory(Request $request,$id)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+        ]);
+
+        if($validator->fails()) {
+            return $this->sendError($validator->errors(),'Error',400);
+        }
+
+        if ($request->hasFile('logo')){
+            if ($request->file('logo')->isValid()){
+                $name = Carbon::now()->timestamp.'.'.$request->file('logo')->getClientOriginalExtension();
+                $store_path = 'public/fotoKategori';
+                $request->file('logo')->storeAs($store_path,$name);
             }
         }
 
-        return $this->sendResponse($data,'Category Created Successfully.',201);
+        $data = Category::where('id','=',$id)->first();
+        $data->name = $request['name'];
+        $data->logo = isset($name) ? "/storage/fotoKategori/".$name : '/storage/img/dummy.jpg';
+        $data->update();
+
+        return $this->sendResponse($data,'Success',200);
+    }
+
+    public function deleteCategory($id)
+    {
+        $data = Category::where('id','=',$id)->first();
+        if($data == null)
+        {
+            return $this->sendError(['error'=>'No Data'],'Error',400);
+        }
+        $data->delete();
+
+        return $this->sendResponse($data,'Success');
     }
 }

@@ -16,9 +16,4 @@ class Category extends Model
         'logo'
     ];
     public $timestamps = true;
-
-    public function Child()
-    {
-        return $this->hasMany(SubCategory::class, 'category_id', 'id');
-    }
 }

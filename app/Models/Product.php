@@ -40,6 +40,11 @@ class Product extends Model
 
     public function productCategory()
     {
-        return $this->hasMany(ProductCategory::class,'product_id','id')->with('Category');
+        return $this->hasMany(ProductCategory::class,'product_id','id');
+    }
+
+    public function productVariant()
+    {
+        return $this->hasMany(ProductVariant::class,'product_id','id')->with('Tipe');
     }
 }

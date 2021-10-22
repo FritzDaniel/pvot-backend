@@ -42,13 +42,13 @@ class MembershipController extends BaseController
         $user = User::where('email','=',$request['email'])->first();
 
         $store = $user;
-        $store->namaPerusahaan = isset($request['namaPerusahaan']) ? $request['namaPerusahaan'] : null;
-        $store->country = isset($request['country']) ? $request['country'] : null;
-        $store->alamat = isset($request['alamat']) ? $request['alamat'] : null;
-        $store->city = isset($request['city']) ? $request['city'] : null;
-        $store->provinsi = isset($request['provinsi']) ? $request['provinsi'] : null;
-        $store->kodepos = isset($request['kodepos']) ? $request['kodepos'] : null;
-        $store->informasiTambahan = isset($request['informasiTambahan']) ? $request['informasiTambahan'] : null;
+        $store->namaPerusahaan = isset($request['namaPerusahaan']) ? $request['namaPerusahaan'] : $user->namaPerusahaan;
+        $store->country = isset($request['country']) ? $request['country'] : $user->country;
+        $store->alamat = isset($request['alamat']) ? $request['alamat'] : $user->alamat;
+        $store->city = isset($request['city']) ? $request['city'] : $user->city;
+        $store->provinsi = isset($request['provinsi']) ? $request['provinsi'] : $user->provinsi;
+        $store->kodepos = isset($request['kodepos']) ? $request['kodepos'] : $user->kodepos;
+        $store->informasiTambahan = isset($request['informasiTambahan']) ? $request['informasiTambahan'] : $user->informasiTambahan;
         $store->update();
 
         $dataTokoUser = [
