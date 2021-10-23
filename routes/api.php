@@ -55,17 +55,6 @@ Route::group([ 'prefix' => 'v1'], function () {
             'updatePassword',
             [UsersController::class,'updatePassword']
         );
-        # Xendit
-        Route::group([ 'prefix' => 'xendit'], function (){
-
-            Route::post('invoice/retrieve/{id}',
-                [InvoiceController::class,'getInvoice']
-            );
-
-            Route::post('invoice/create',
-                [InvoiceController::class,'createInvoice']
-            );
-        });
         # Admin
         Route::group(['middleware' => ['role:Superadmin']], function () {
             Route::group(['prefix' => 'admin'], function (){
@@ -258,6 +247,14 @@ Route::group([ 'prefix' => 'v1'], function () {
 
             Route::post('invoice/callback',
                 [InvoiceController::class,'callbackInvoice']
+            );
+
+            Route::post('invoice/retrieve/{id}',
+                [InvoiceController::class,'getInvoice']
+            );
+
+            Route::post('invoice/create',
+                [InvoiceController::class,'createInvoice']
             );
         });
         # Verify The Email

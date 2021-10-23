@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
+use Illuminate\Support\Facades\Password as ForgotPassword;
 use Illuminate\Support\Str;
 use Validator;
 
@@ -166,11 +167,11 @@ class UsersController extends BaseController
             return $this->sendError(null,'This email is not registered!',400);
         }
 
-        $status = Password::sendResetLink(
+        $status = ForgotPassword::sendResetLink(
             $request->only('email')
         );
 
-        if($status == Password::RESET_LINK_SENT) {
+        if($status == ForgotPassword::RESET_LINK_SENT) {
             return $this->sendResponse(null, "Change password link has been sent to your email");
         }
 
@@ -197,7 +198,7 @@ class UsersController extends BaseController
             return $this->sendError($validator->errors(),'Validation Error.',400);
         }
 
-        $status = Password::reset(
+        $status = ForgotPassword::reset(
             $request->only('email','password','c_password','token'),
             function ($user) use ($request) {
                 $user->forceFill([
@@ -214,7 +215,7 @@ class UsersController extends BaseController
             }
         );
 
-        if($status == Password::PASSWORD_RESET) {
+        if($status == ForgotPassword::PASSWORD_RESET) {
             return $this->sendResponse(null, 'Password reset successfully');
         }
 
