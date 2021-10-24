@@ -43,7 +43,7 @@ class DesignController extends BaseController
 
         $store = new Design();
         $store->designName = $request['designName'];
-        $store->designImage = isset($name) ? "/storage/fotoDesign/".$name : null;
+        $store->designImage = isset($name) ? "/storage/fotoDesign/".$name : '/storage/img/dummy.jpg';
         $store->save();
 
         return $this->sendResponse($store,'Create design success.',200);
@@ -70,7 +70,7 @@ class DesignController extends BaseController
         $store = new DesignChild();
         $store->design_id = $request['design_id'];
         $store->designName = $request['designName'];
-        $store->designImage = isset($name) ? "/storage/fotoSubDesign/".$name : null;
+        $store->designImage = isset($name) ? "/storage/fotoSubDesign/".$name : '/storage/img/dummy.jpg';
         $store->save();
 
         return $this->sendResponse($store,'Create subdesign success.',200);
