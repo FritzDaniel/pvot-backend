@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Users;
 
 use App\Http\Controllers\Api\BaseController;
+use App\Models\Product;
 use App\Models\User;
 use App\Models\Wallet;
 use Carbon\Carbon;
@@ -172,10 +173,10 @@ class UsersController extends BaseController
         );
 
         if($status == ForgotPassword::RESET_LINK_SENT) {
-            return $this->sendResponse(null, "Change password link has been sent to your email");
+            return $this->sendResponse(['message' => "Change password link has been sent to your email"], "Success");
         }
 
-        $this->sendError(trans($status),'Error forgot password',400);
+        $this->sendError(['error'=>'Error forgot password'],'Error',400);
     }
 
     public function changePassword(Request $request)
@@ -195,7 +196,7 @@ class UsersController extends BaseController
         ]);
 
         if($validator->fails()) {
-            return $this->sendError($validator->errors(),'Validation Error.',400);
+            return $this->sendError($validator->errors(),'Error.',400);
         }
 
         $status = ForgotPassword::reset(
@@ -216,9 +217,18 @@ class UsersController extends BaseController
         );
 
         if($status == ForgotPassword::PASSWORD_RESET) {
-            return $this->sendResponse(null, 'Password reset successfully');
+            return $this->sendResponse(['message' => 'Password reset successfully'], 'Success');
         }
 
-        return $this->sendError($status, "Error when change the password",400);
+        return $this->sendError(["error" => "Error when change the password"],400);
+    }
+
+    public function getProduct($id)
+    {
+        $data = Product::with(['userDetail', 'productPhoto', 'productVariant'])
+            ->where('id','=',$id)
+            ->first();
+
+        return $this->sendResponse($data,'Success');
     }
 }
