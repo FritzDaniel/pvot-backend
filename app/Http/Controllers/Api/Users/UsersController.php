@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Users;
 
 use App\Http\Controllers\Api\BaseController;
 use App\Models\Product;
+use App\Models\Transaction;
 use App\Models\User;
 use App\Models\Wallet;
 use Carbon\Carbon;
@@ -22,11 +23,23 @@ class UsersController extends BaseController
     {
         try {
             $user = $request->user();
-            $data = Wallet::where('user_id','=',$user->id)->first();
-            return $this->sendResponse($data,'Wallet Data.');
-        }catch (\Exception $e) {
-            return $this->sendError('There something wrong!',$e);
+            $data = Wallet::where('user_id', '=', $user->id)->first();
+            return $this->sendResponse($data, 'Wallet Data.');
+        } catch (\Exception $e) {
+            return $this->sendError('There something wrong!', $e);
         }
+    }
+
+    public function transactionHistory(Request $request)
+    {
+        $user = $request->user();
+        if($user->roles[0]->name == "Supplier")
+        {
+            $data = Transaction::with('Product')->where('supplier_id','=',$user->id)->paginate(10);
+        }else {
+            $data = Transaction::with('Product')->where('user_id','=',$user->id)->paginate(10);
+        }
+        return $this->sendResponse($data,'Success');
     }
 
     public function profile(Request $request)

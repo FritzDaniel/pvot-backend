@@ -25,7 +25,7 @@ class LandingController extends BaseController
     {
         $data = User::role('Supplier')
             ->orderBy('name','ASC')
-            ->get();
+            ->paginate(12);
 
         return $this->sendResponse($data, 'Supplier List.');
     }
@@ -52,7 +52,7 @@ class LandingController extends BaseController
     public function getProduct(Request $request)
     {
         $limit = $request->query('limit');
-        $sortBy = $request->query('sortBy');
+        $sortBy = $request->query('sortBy'); //popular|newest|mostBuy|highPrice|lowPrice|search
 
         if($sortBy == "popular")
         {
@@ -62,7 +62,7 @@ class LandingController extends BaseController
                 ->withCount('productSold')
                 ->orderBy('product_sold_count','DESC')
                 ->limit($limit)
-                ->get();
+                ->paginate(12);
         }else {
             $data = Product::with([
                 'userDetail','productPhoto','productCategory'
@@ -70,9 +70,19 @@ class LandingController extends BaseController
                 ->withCount('productSold')
 //                ->orderBy('productName','ASC')
                 ->limit($limit)
-                ->get();
+                ->paginate(12);
         }
-        return $this->sendResponse($data,'List Design.');
+        return $this->sendResponse($data,'Success');
+    }
+
+    public function getDetailProduct($id)
+    {
+        $data = Product::with([
+            'userDetail','productPhoto','productCategory'
+        ])
+            ->where('id','=',$id)->first();
+
+        return $this->sendResponse($data,'Success');
     }
 
     public function getTestimoni()

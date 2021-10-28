@@ -55,6 +55,10 @@ Route::group([ 'prefix' => 'v1'], function () {
             'updatePassword',
             [UsersController::class,'updatePassword']
         );
+        Route::get(
+            'transactionHistory',
+            [UsersController::class,'transactionHistory']
+        );
         # Admin
         Route::group(['middleware' => ['role:Superadmin']], function () {
             Route::group(['prefix' => 'admin'], function (){
@@ -260,62 +264,67 @@ Route::group([ 'prefix' => 'v1'], function () {
         # Verify The Email
         Route::get(
             'verifyEmail/{id}/{hash}',
-            [AuthController::class, 'verify']
+            [AuthController::class,'verify']
         )->name('verification.verify');
         # Login
         Route::post(
             'register',
-            [AuthController::class, 'register']
+            [AuthController::class,'register']
         );
         # Register
         Route::post(
             'login',
-            [AuthController::class, 'login']
+            [AuthController::class,'login']
         );
         # Register
         Route::post(
             'forgotPassword',
-            [UsersController::class, 'forgotPassword']
+            [UsersController::class,'forgotPassword']
         );
         # Reset Password
         Route::post(
             'resetPassword',
-            [UsersController::class, 'changePassword']
+            [UsersController::class,'changePassword']
         );
         # List Supplier
         Route::get(
             'getSupplier',
-            [LandingController::class, 'getSupplier']
+            [LandingController::class,'getSupplier']
         );
         # List Supplier Product
         Route::get(
             'getSupplier/product/{id}',
-            [LandingController::class, 'getSupplierProduct']
+            [LandingController::class,'getSupplierProduct']
         );
         # List Category
         Route::get(
             'getCategory',
-            [LandingController::class, 'getCategory']
+            [LandingController::class,'getCategory']
         );
         # List Design
         Route::get(
             'getDesign',
-            [LandingController::class, 'getDesign']
+            [LandingController::class,'getDesign']
         );
         # List SubDesign
         Route::get(
             'getDesign/subDesign/{id}',
-            [LandingController::class, 'getSubDesign']
+            [LandingController::class,'getSubDesign']
         );
         # List Product
         Route::get(
             'getProduct',
             [LandingController::class, 'getProduct']
         );
+        # Detail Product
+        Route::get(
+            'getProduct/{id}',
+            [LandingController::class,'getDetailProduct']
+        );
         # List Testimoni
         Route::get(
             'getTestimoni',
-            [LandingController::class, 'getTestimoni']
+            [LandingController::class,'getTestimoni']
         );
         # Get Payment Data
         Route::get(
