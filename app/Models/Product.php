@@ -40,7 +40,7 @@ class Product extends Model
 
     public function productCategory()
     {
-        return $this->hasMany(ProductCategory::class,'product_id','id');
+        return $this->hasMany(ProductCategory::class,'product_id','id')->with('Category');
     }
 
     public function productVariant()
