@@ -14,7 +14,7 @@ class ShopsController extends BaseController
     public function myShop(Request $request)
     {
         $user = $request->user();
-        $data = Shops::with('userDetail')
+        $data = Shops::with(['UserDetail','Supplier','Design','kategoryToko'])
             ->where('user_id','=',$user->id)->get();
         return $this->sendResponse($data,'List Shop');
     }
