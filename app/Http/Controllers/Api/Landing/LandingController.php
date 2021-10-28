@@ -25,7 +25,7 @@ class LandingController extends BaseController
     {
         $data = User::role('Supplier')
             ->orderBy('name','ASC')
-            ->paginate(12);
+            ->get();
 
         return $this->sendResponse($data, 'Supplier List.');
     }
@@ -62,7 +62,7 @@ class LandingController extends BaseController
                 ->withCount('productSold')
                 ->orderBy('product_sold_count','DESC')
                 ->limit($limit)
-                ->paginate(12);
+                ->get();
         }else {
             $data = Product::with([
                 'userDetail','productPhoto','productCategory'
@@ -70,7 +70,7 @@ class LandingController extends BaseController
                 ->withCount('productSold')
 //                ->orderBy('productName','ASC')
                 ->limit($limit)
-                ->paginate(12);
+                ->get();
         }
         return $this->sendResponse($data,'Success');
     }
