@@ -8,6 +8,7 @@ use App\Models\Mutation;
 use App\Models\Payment;
 use App\Models\Product;
 use App\Models\Transaction;
+use App\Models\TransactionSequence;
 use App\Models\Wallet;
 use Carbon\Carbon;
 use Dflydev\DotAccessData\Data;
@@ -31,12 +32,30 @@ class PaymentController extends BaseController
         }
 
         $user = $request->user();
-        $external_id = "invoice-".time();
+
+        $runningSeq = TransactionSequence::where('user_id','=',$user->id)->first();
+
+        if($runningSeq == null)
+        {
+            $storeSequence = new TransactionSequence();
+            $storeSequence->user_id = $user->id;
+            $storeSequence->type = "PV";
+            $storeSequence->running_seq = 1;
+            $storeSequence->save();
+
+            $uuid = $storeSequence->type.$storeSequence->user_id.$storeSequence->running_seq.Carbon::parse($storeSequence->created_at)->format('dmY');
+        }else {
+            $uuid = $runningSeq->type.$runningSeq->user_id.$runningSeq->running_seq.Carbon::parse($runningSeq->created_at)->format('dmY');
+        }
+
+        $external_id = $uuid;
+
         $amount = $totalPrice;
         $user_id = $user->id;
 
         $dataPayment = [
             'external_id' => $external_id,
+            'uniq_code' =>  substr($amount, -3),
             'user_id' => $user_id,
             'payment_channel' => 'Moota',
             'email' => $user->email,
@@ -48,12 +67,12 @@ class PaymentController extends BaseController
         {
             $supplier_id = Product::where('id','=',$itm['product_id'])->first();
             $store = new Transaction();
+            $store->transaction_id = $payment->external_id;
+            $store->transaction_date = Carbon::now();
             $store->user_id = $user->id;
             $store->supplier_id = $supplier_id->user_id;
             $store->product_id = $itm['product_id'];
-            $store->payment_id = $payment->id;
             $store->qty = $itm['quantity'];
-            $store->transaction_date = Carbon::now();
             $store->variants = $request['variants'];
             $store->save();
 
@@ -61,6 +80,11 @@ class PaymentController extends BaseController
             $product->productQty = $product->productQty - $itm['quantity'];
             $product->update();
         }
+
+        $updateSequence = TransactionSequence::where('user_id','=',$user->id)->first();
+        $updateSequence->running_seq = $updateSequence->running_seq + 1;
+        $updateSequence->update();
+
         return $this->sendResponse($payment,'Store cart success');
     }
 
@@ -76,8 +100,11 @@ class PaymentController extends BaseController
             {
                 $kode_unik = substr($jquin['amount'], -3);
 
-//                $jOrder = Payment::find($kode_unik);
-//                $idOrder = $jOrder->external_id;
+                $jOrder = Payment::where('uniq_code','=',$kode_unik)
+                                ->where('status','=','Pending')
+                                ->whereDate('created_at', Carbon::today())
+                                ->first();
+                $idOrder = $jOrder->external_id;
 
                 $data = array(
                     'bank_id' => $jquin['bank_id'],
@@ -89,10 +116,32 @@ class PaymentController extends BaseController
                     'type' => $jquin['type'],
                     'balance' => $jquin['balance'],
                     'kode_unik' => $kode_unik,
-                    'id_order' => 'qwiojai412',
-                    'user_id' => '2'
+                    'id_order' => $idOrder,
+                    'user_id' => $idOrder->user_id
                 );
                 Mutation::create($data);
+
+                if($jOrder->status == "Pending")
+                {
+                    $jOrder->status = "Paid";
+                    $jOrder->update();
+
+                    // Send E-Wallet
+                    $price = Transaction::where('transaction_id','=',$jOrder->external_id)->get();
+                    $total = 0;
+                    $supplier_id = 0;
+
+                    foreach ($price as $prc)
+                    {
+                        $product = Product::where('id','=',$prc->product_id)->first();
+                        $total += $product->productPrice * $prc->qty;
+                        $supplier_id = $prc->supplier_id;
+                    }
+
+                    $wallet = Wallet::where('user_id','=',$supplier_id)->first();
+                    $wallet->balance = $total;
+                    $wallet->update();
+                }
             }
 
             return $this->sendResponse(null,'Success');
@@ -102,43 +151,20 @@ class PaymentController extends BaseController
         ],'Error');
     }
 
-    public function getCallback(Request $request,$id)
+    public function checkPayment(Request $request,$id)
     {
         $invoice_id = $id;
         $dataPayment = Payment::where('external_id','=',$invoice_id)->first();
-        if($dataPayment->status == "Pending")
+
+        if($dataPayment == null)
         {
-            $dataPayment->status = "Paid";
-            $dataPayment->update();
-
-            // Send E-Wallet
-            $price = Transaction::where('payment_id','=',$dataPayment->id)->get();
-            $total = 0;
-            $supplier_id = 0;
-
-            foreach ($price as $prc)
-            {
-                $product = Product::where('id','=',$prc->product_id)->first();
-                $total += $product->productPrice * $prc->qty;
-                $supplier_id = $prc->supplier_id;
-            }
-
-            $wallet = Wallet::where('user_id','=',$supplier_id)->first();
-            $wallet->balance = $total;
-            $wallet->update();
-
-            return $this->sendResponse(
-                [
-                   'status' => 'Paid',
-                   'invoice_id' => $invoice_id
-            ],'Success');
-        }else {
-            return $this->sendResponse(
-                [
-                    'status' => 'Paid',
-                    'invoice_id' => $invoice_id
-                ],'Success');
+            return $this->sendError(['message' => 'Data tidak ada'],'Error',400);
         }
+
+        return $this->sendResponse(
+            $dataPayment,
+            'Success'
+        );
     }
 
     public function cartSummary($id)

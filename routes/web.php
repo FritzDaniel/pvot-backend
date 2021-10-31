@@ -18,6 +18,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/foo', function () {
-    Artisan::call('storage:link');
-});
+Route::get('/verifikasi-sukses', function () {
+    return view('verification-success');
+})->name('verify-success');

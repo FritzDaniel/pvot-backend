@@ -241,6 +241,11 @@ Route::group([ 'prefix' => 'v1'], function () {
             '/webhook/callback',
             [PaymentController::class, 'getWebhookCallback']
         );
+        # Check Payment Moota
+        Route::get(
+            '/check/payment/{id}',
+            [PaymentController::class, 'checkPayment']
+        );
         # Store Detail Payment & Create Invoice
         Route::post(
             'detailPembayaran/store',

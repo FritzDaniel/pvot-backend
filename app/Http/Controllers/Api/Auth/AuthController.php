@@ -138,7 +138,7 @@ class AuthController extends BaseController
             ->createdAt(now())
             ->log($user->name.' Email is Verified');
 
-        return redirect( 'https://pvotdigital.com/verifikasi-success');
+        return redirect( 'https://api.pvotdigital.com/verifikasi-sukses');
     }
 
     public function logout(Request $request)
