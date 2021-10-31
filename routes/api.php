@@ -237,7 +237,7 @@ Route::group([ 'prefix' => 'v1'], function () {
             [PaymentController::class, 'cartSummary']
         );
         # Get Payment Callback Moota
-        Route::get(
+        Route::post(
             '/webhook/callback',
             [PaymentController::class, 'getWebhookCallback']
         );
