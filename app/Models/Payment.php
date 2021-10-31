@@ -14,6 +14,7 @@ class Payment extends Model
     protected $fillable = [
         'xendit_id',
         'external_id',
+        'uniq_code',
         'user_id',
         'payment_channel',
         'email',

@@ -17,6 +17,7 @@ class CreatePaymentsTable extends Migration
             $table->id();
             $table->string('xendit_id')->nullable();
             $table->string('external_id')->nullable();
+            $table->string('uniq_code')->nullable();
             $table->integer('user_id');
             $table->string('payment_channel');
             $table->string('email');
