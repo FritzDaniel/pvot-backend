@@ -16,10 +16,10 @@ class CreateUserTokoTable extends Migration
         Schema::create('user_toko', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id');
+            $table->string('transaction_id');
             $table->integer('tokoCount');
             $table->integer('marketplaceCount');
             $table->integer('marketplaceSelect');
-            $table->string('status')->default('Pending');
             $table->timestamps();
         });
     }

@@ -53,14 +53,6 @@ class MembershipController extends BaseController
         $store->informasiTambahan = isset($request['informasiTambahan']) ? $request['informasiTambahan'] : $user->informasiTambahan;
         $store->update();
 
-        $dataTokoUser = [
-            'user_id' => $user->id,
-            'tokoCount' => 1,
-            'marketplaceCount' => $request['marketplaceCount'],
-            'marketplaceSelect' => $request['marketplaceSelect'],
-        ];
-        UserToko::create($dataTokoUser);
-
         Xendit::setApiKey($this->token);
 
         $runningSeq = TransactionSequence::where('user_id','=',$user->id)->first();
@@ -138,6 +130,15 @@ class MembershipController extends BaseController
             'description' => "Pembayaran Membership"
         ];
         Payment::create($dataPayment);
+
+        $dataTokoUser = [
+            'user_id' => $user->id,
+            'transaction_id' => $external_id,
+            'tokoCount' => 1,
+            'marketplaceCount' => $request['marketplaceCount'],
+            'marketplaceSelect' => $request['marketplaceSelect'],
+        ];
+        UserToko::create($dataTokoUser);
 
         $updateSequence = TransactionSequence::where('user_id','=',$user->id)->first();
         $updateSequence->running_seq = $updateSequence->running_seq + 1;

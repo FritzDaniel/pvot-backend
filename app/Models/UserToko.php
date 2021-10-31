@@ -13,10 +13,10 @@ class UserToko extends Model
     protected $primaryKey ='id';
     protected $fillable = [
         'user_id',
+        'transaction_id',
         'tokoCount',
         'marketplaceCount',
         'marketplaceSelect',
-        'status'
     ];
     public $timestamps = true;
 }
