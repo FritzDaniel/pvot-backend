@@ -20,8 +20,6 @@ class CreateShopsTable extends Migration
             $table->string('handphoneToko');
             $table->string('namaToko');
             $table->string('alamatToko');
-            $table->string('fotoToko')->nullable();
-            $table->string('fotoHeaderToko')->nullable();
             $table->integer('kategoriToko');
             $table->integer('supplier');
             $table->string('url_tokopedia')->nullable();

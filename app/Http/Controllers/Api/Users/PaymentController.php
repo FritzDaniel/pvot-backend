@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Users;
 
 use App\Http\Controllers\Api\BaseController;
 use App\Http\Controllers\Controller;
+use App\Models\Mutation;
 use App\Models\Payment;
 use App\Models\Product;
 use App\Models\Transaction;
@@ -61,6 +62,44 @@ class PaymentController extends BaseController
             $product->update();
         }
         return $this->sendResponse($payment,'Store cart success');
+    }
+
+    public function getWebhookCallback()
+    {
+        $notification = file_get_contents("php://input");
+
+        $neko = json_decode($notification, TRUE);
+
+        if($notification)
+        {
+            foreach ($neko as $jquin)
+            {
+                $kode_unik = substr($jquin['amount'], -3);
+
+//                $jOrder = Payment::find($kode_unik);
+//                $idOrder = $jOrder->external_id;
+
+                $data = array(
+                    'bank_id' => $jquin['bank_id'],
+                    'account_number' => $jquin['account_number'],
+                    'bank_type' => $jquin['bank_type'],
+                    'date' => date('Y-m-d H:i:s'),
+                    'amount' => $jquin['amount'],
+                    'description' => $jquin['description'],
+                    'type' => $jquin['type'],
+                    'balance' => $jquin['balance'],
+                    'kode_unik' => $kode_unik,
+                    'id_order' => 'qwiojai412',
+                    'user_id' => '2'
+                );
+                Mutation::create($data);
+            }
+
+            return $this->sendResponse(null,'Success');
+        }
+        return $this->sendError([
+            'message' => 'Check mutasi gagal'
+        ],'Error');
     }
 
     public function getCallback(Request $request,$id)

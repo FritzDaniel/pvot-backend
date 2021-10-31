@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Api\Users;
 
 use App\Http\Controllers\Api\BaseController as BaseController;
 use App\Models\Payment;
+use App\Models\TransactionSequence;
 use App\Models\User;
 use App\Models\UserToko;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Validator;
 use Xendit\Xendit;
@@ -60,7 +62,24 @@ class MembershipController extends BaseController
         UserToko::create($dataTokoUser);
 
         Xendit::setApiKey($this->token);
-        $external_id = "invoice-".time();
+
+        $runningSeq = TransactionSequence::where('user_id','=',$user->id)->first();
+
+        if($runningSeq == null)
+        {
+            $storeSequence = new TransactionSequence();
+            $storeSequence->user_id = $user->id;
+            $storeSequence->type = "PV";
+            $storeSequence->running_seq = 1;
+            $storeSequence->save();
+
+            $uuid = $storeSequence->type.$storeSequence->user_id.$storeSequence->running_seq.Carbon::parse($storeSequence->created_at)->format('dmY');
+        }else {
+            $uuid = $runningSeq->type.$runningSeq->user_id.$runningSeq->running_seq.Carbon::parse($runningSeq->created_at)->format('dmY');
+        }
+
+        $external_id = $uuid;
+
         $biayaAdmin = 4500;
         $feeAdmin[] = [
             "type" => 'ADMIN',
@@ -119,6 +138,10 @@ class MembershipController extends BaseController
             'description' => "Pembayaran Membership"
         ];
         Payment::create($dataPayment);
+
+        $updateSequence = TransactionSequence::where('user_id','=',$user->id)->first();
+        $updateSequence->running_seq = $updateSequence->running_seq + 1;
+        $updateSequence->update();
 
         activity()
             ->causedBy($user)

@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Api\Users;
 
 use App\Http\Controllers\Api\BaseController;
 use App\Models\Memberships;
+use App\Models\ShopPicture;
 use App\Models\Shops;
+use App\Models\UserToko;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Validator;
@@ -31,20 +33,21 @@ class ShopsController extends BaseController
             return $this->sendError(null,'Please create membership first.',400);
         }
 
-        //$checkShopCreate = Shops::where('user_id','=',$request->user()->id)->count();
+        $checkShopcCanCreate = UserToko::where('user_id','=',$request->user()->id)->count();
+        $checkTokoList = Shops::where('user_id','=',$request->user()->id)->count();
 
-        //if($checkShopCreate == $checkMembership->marketplaceCount)
-        //{
-        //    return $this->sendError(null,'You only can create '.$checkMembership->marketplaceCount.' shop.',400);
-        //}
+        if($checkShopcCanCreate == $checkTokoList)
+        {
+            return $this->sendError(null,'You only can create '.$checkShopcCanCreate.' shop.',400);
+        }
 
         $validator = Validator::make($request->all(), [
             'emailToko' => 'required|email',
             'handphoneToko' => 'required',
             'namaToko' => 'required',
             'alamatToko' => 'required',
-            'fotoToko' => 'mimes:jpg,png,jpeg|max:2048',
-            'fotoHeaderToko' => 'mimes:jpg,png,jpeg|max:2048',
+            'fotoToko' => 'mimes:jpg,png,jpeg|max:5000',
+            'fotoHeaderToko' => 'mimes:jpg,png,jpeg|max:5000',
             'kategoriToko' => 'required',
             'supplier' => 'required',
             'design' => 'required',
@@ -77,14 +80,19 @@ class ShopsController extends BaseController
             'handphoneToko' => $request['handphoneToko'],
             'namaToko' => $request['namaToko'],
             'alamatToko' => $request['alamatToko'],
-            'fotoToko' => isset($name_fotoToko) ? "/storage/fotoToko/".$name_fotoToko : '/storage/fotoHeaderToko/dummy.jpg',
-            'fotoHeaderToko' => isset($name_fotoHeaderToko) ? "/storage/fotoHeaderToko/".$name_fotoHeaderToko : '/storage/fotoHeaderToko/dummy.jpg',
             'kategoriToko' => $request['kategoriToko'],
             'design' => $request['design'],
             'supplier' => $request['supplier'],
             'descToko' => $request['descToko']
         ];
         $data = Shops::create($store);
+
+        $storePicture = [
+            'shop_id' => $data->id,
+            'fotoToko' => isset($name_fotoToko) ? "/storage/fotoToko/".$name_fotoToko : '/storage/fotoHeaderToko/dummy.jpg',
+            'fotoHeaderToko' => isset($name_fotoHeaderToko) ? "/storage/fotoHeaderToko/".$name_fotoHeaderToko : '/storage/fotoHeaderToko/dummy.jpg',
+        ];
+        ShopPicture::create($storePicture);
 
         return $this->sendResponse($data, 'Success Create Shop.');
     }

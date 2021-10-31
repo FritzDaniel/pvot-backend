@@ -17,8 +17,6 @@ class Shops extends Model
         'handphoneToko',
         'namaToko',
         'alamatToko',
-        'fotoToko',
-        'fotoHeaderToko',
         'kategoriToko',
         'supplier',
         'design',

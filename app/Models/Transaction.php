@@ -12,9 +12,10 @@ class Transaction extends Model
     protected $table = 'transaction';
     protected $primaryKey = 'id';
     protected $fillable = [
+        'transaction_id',
+        'transaction_date',
         'user_id',
         'product_id',
-        'payment_id',
         'qty',
         'transaction_date',
         'variants'

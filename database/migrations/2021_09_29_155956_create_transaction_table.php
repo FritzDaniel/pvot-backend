@@ -15,12 +15,12 @@ class CreateTransactionTable extends Migration
     {
         Schema::create('transaction', function (Blueprint $table) {
             $table->id();
+            $table->string('transaction_id');
+            $table->timestamp('transaction_date');
             $table->integer('user_id');
             $table->integer('supplier_id');
             $table->integer('product_id');
-            $table->integer('payment_id');
             $table->integer('qty');
-            $table->timestamp('transaction_date');
             $table->string('variants')->nullable();
             $table->timestamps();
         });
