@@ -31,7 +31,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'city',
         'provinsi',
         'kodepos',
-        'informasiTambahan'
+        'informasiTambahan',
+        'roles'
     ];
 
     /**

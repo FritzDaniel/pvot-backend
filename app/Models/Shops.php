@@ -17,31 +17,33 @@ class Shops extends Model
         'handphoneToko',
         'namaToko',
         'alamatToko',
-        'kategoriToko',
-        'supplier',
-        'design',
-        'descToko',
+        'fotoToko',
+        'fotoHeaderToko',
+        'category_id',
+        'supplier_id',
+        'design_id',
+        'description',
         'status'
     ];
     public $timestamps = true;
 
-    public function userDetail()
+    public function User()
     {
         return $this->belongsTo(User::class,'user_id');
     }
 
     public function Supplier()
     {
-        return $this->belongsTo(User::class,'supplier');
+        return $this->belongsTo(User::class,'supplier_id');
     }
 
     public function Design()
     {
-        return $this->belongsTo(Design::class,'design');
+        return $this->belongsTo(Design::class,'design_id');
     }
 
-    public function kategoryToko()
+    public function Category()
     {
-        return $this->belongsTo(Category::class,'kategoriToko');
+        return $this->belongsTo(Category::class,'category_id');
     }
 }

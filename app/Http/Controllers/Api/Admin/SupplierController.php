@@ -39,6 +39,7 @@ class SupplierController extends BaseController
         $store->email = $request['email'];
         $store->email_verified_at = Carbon::now();
         $store->password = bcrypt($request['password']);
+        $store->userRole = "Supplier";
         if($request['phone'])
         {
             $phoneValidation = substr($request['phone'], 0,1);

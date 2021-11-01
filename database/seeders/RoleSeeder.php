@@ -32,7 +32,8 @@ class RoleSeeder extends Seeder
             'phone' => '0000000000',
             'profilePicture' => '/storage/img/dummyUser.jpg',
             'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now()
+            'updated_at' => Carbon::now(),
+            'userRole' => 'Superadmin'
         ]);
         $superadmin->assignRole('Superadmin');
     }

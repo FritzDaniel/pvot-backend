@@ -20,12 +20,14 @@ class CreateShopsTable extends Migration
             $table->string('handphoneToko');
             $table->string('namaToko');
             $table->string('alamatToko');
-            $table->integer('kategoriToko');
-            $table->integer('supplier');
+            $table->string('fotoToko')->nullable();
+            $table->string('fotoHeaderToko')->nullable();
             $table->string('url_tokopedia')->nullable();
             $table->string('url_shopee')->nullable();
-            $table->integer('design')->nullable();
-            $table->text('descToko')->nullable();
+            $table->integer('category_id');
+            $table->integer('supplier_id');
+            $table->integer('design_id')->nullable();
+            $table->text('description')->nullable();
             $table->string('status')->default('Pending');
             $table->timestamps();
         });

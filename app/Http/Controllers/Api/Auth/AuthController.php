@@ -28,10 +28,9 @@ class AuthController extends BaseController
 
         if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
             $user = $request->user();
-            $user->getRoleNames();
             $success['token'] = $user->createToken('User Login Token')->plainTextToken;
             $success['name'] = $user->name;
-            $success['role'] = $user->roles[0]->name;
+            $success['role'] = $user->userRole;
 
             activity()
                 ->causedBy($user)
@@ -68,6 +67,7 @@ class AuthController extends BaseController
 
         $input = $request->all();
         $input['password'] = bcrypt($input['password']);
+        $input['userRole'] = 'Dropshipper';
 
         $phoneValidation = substr($input['phone'], 0,1);
 

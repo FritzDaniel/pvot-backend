@@ -12,11 +12,13 @@ class Product extends Model
     protected $table = 'product';
     protected $primaryKey ='id';
     protected $fillable = [
-        'user_id',
+        'supplier_id',
         'productName',
         'productDesc',
         'productQty',
         'productPrice',
+        'productPicture',
+        'productCategory',
         'productRevenue',
         'showPrice'
     ];
@@ -24,12 +26,7 @@ class Product extends Model
 
     public function userDetail()
     {
-        return $this->belongsTo(User::class,'user_id');
-    }
-
-    public function productPhoto()
-    {
-        return $this->hasMany(ProductPicture::class,'product_id','id');
+        return $this->belongsTo(User::class,'supplier_id');
     }
 
     public function productSold()
@@ -40,7 +37,7 @@ class Product extends Model
 
     public function productCategory()
     {
-        return $this->hasMany(ProductCategory::class,'product_id','id')->with('Category');
+        return $this->belongsTo(Category::class,'productCategory');
     }
 
     public function productVariant()
