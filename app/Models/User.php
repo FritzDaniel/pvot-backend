@@ -32,7 +32,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'provinsi',
         'kodepos',
         'informasiTambahan',
-        'roles'
+        'userRole'
     ];
 
     /**
