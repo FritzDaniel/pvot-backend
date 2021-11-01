@@ -80,19 +80,15 @@ class ShopsController extends BaseController
             'handphoneToko' => $request['handphoneToko'],
             'namaToko' => $request['namaToko'],
             'alamatToko' => $request['alamatToko'],
-            'kategoriToko' => $request['kategoriToko'],
-            'design' => $request['design'],
-            'supplier' => $request['supplier'],
+            'category_id' => $request['kategoriToko'],
+            'fotoToko' => isset($name_fotoToko) ? "/storage/fotoToko/".$name_fotoToko : '/storage/fotoHeaderToko/dummy.jpg',
+            'fotoHeaderToko' => isset($name_fotoHeaderToko) ? "/storage/fotoHeaderToko/".$name_fotoHeaderToko : '/storage/fotoHeaderToko/dummy.jpg',
+            'design_id' => $request['design'],
+            'supplier_id' => $request['supplier'],
             'descToko' => $request['descToko']
         ];
         $data = Shops::create($store);
 
-        $storePicture = [
-            'shop_id' => $data->id,
-            'fotoToko' => isset($name_fotoToko) ? "/storage/fotoToko/".$name_fotoToko : '/storage/fotoHeaderToko/dummy.jpg',
-            'fotoHeaderToko' => isset($name_fotoHeaderToko) ? "/storage/fotoHeaderToko/".$name_fotoHeaderToko : '/storage/fotoHeaderToko/dummy.jpg',
-        ];
-        ShopPicture::create($storePicture);
 
         return $this->sendResponse($data, 'Success Create Shop.');
     }
