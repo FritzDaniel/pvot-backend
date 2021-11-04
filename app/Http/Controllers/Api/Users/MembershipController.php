@@ -19,7 +19,7 @@ class MembershipController extends BaseController
     public function getUserDetail(Request $request)
     {
         $user = $request->user();
-        $data = UserDetail::where('user_id','=',$user->id)->first();
+        $data = $user;
         return $this->sendResponse($data,'User Detail.');
     }
 
@@ -65,9 +65,15 @@ class MembershipController extends BaseController
             $storeSequence->running_seq = 1;
             $storeSequence->save();
 
-            $uuid = $storeSequence->type.$storeSequence->user_id.$storeSequence->running_seq.Carbon::parse($storeSequence->created_at)->format('dmY');
+            $uuid = $storeSequence->type.
+                $storeSequence->user_id.
+                $storeSequence->running_seq.
+                Carbon::parse($storeSequence->created_at)->format('dmY');
         }else {
-            $uuid = $runningSeq->type.$runningSeq->user_id.$runningSeq->running_seq.Carbon::parse($runningSeq->created_at)->format('dmY');
+            $uuid = $runningSeq->type.
+                $runningSeq->user_id.
+                $runningSeq->running_seq.
+                Carbon::parse($runningSeq->created_at)->format('dmY');
         }
 
         $external_id = $uuid;
@@ -105,7 +111,7 @@ class MembershipController extends BaseController
                 'mobile_number' => $user->phone,
                 //'address' => $request->address
             ],
-            "success_redirect_url" => "http://api.pvotdigital.com/public/api/v1/payment/retrieve/".$external_id,
+            "success_redirect_url" => "https://dashboard.pvotdigital.com/public/api/v1/payment/retrieve/".$external_id,
             "invoice_duration" => 3600,
             "customer_notification_preference" => [
                 "invoice_created" => ["email"],
