@@ -166,7 +166,13 @@
                                             <td><strong>{{ $dt->no_rek }}</strong></td>
                                             <td>Rp. {{ number_format($dt->amount) }}</td>
                                             <td>
-                                                {{ $dt->buktiTransfer ? 'Download' : '-' }}
+                                                @if($dt->buktiTransfer)
+                                                    <a download="{{ $dt->uuid }}.jpg" href="{{ asset($dt->buktiTransfer) }}" title="ImageName">
+                                                        Download
+                                                    </a>
+                                                @else
+                                                    -
+                                                @endif
                                             </td>
                                             <td>
                                                 {{ \Carbon\Carbon::parse($dt->created_at)->format('d-M-Y H:i') }}
