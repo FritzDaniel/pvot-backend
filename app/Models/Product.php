@@ -12,15 +12,17 @@ class Product extends Model
     protected $table = 'product';
     protected $primaryKey ='id';
     protected $fillable = [
+        'uuid',
         'supplier_id',
         'productName',
         'productDesc',
-        'productQty',
+        'productStock',
         'productPrice',
         'productPicture',
         'productCategory',
         'productRevenue',
-        'showPrice'
+        'showPrice',
+        'status'
     ];
     public $timestamps = true;
 

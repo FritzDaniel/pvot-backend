@@ -89,7 +89,6 @@ class ShopsController extends BaseController
         ];
         $data = Shops::create($store);
 
-
         return $this->sendResponse($data, 'Success Create Shop.');
     }
 }

@@ -28,4 +28,9 @@ class Payment extends Model
     {
         return $this->hasMany(Transaction::class,'payment_id','id')->with('Product');
     }
+
+    public function User()
+    {
+        return $this->belongsTo(User::class,'user_id');
+    }
 }

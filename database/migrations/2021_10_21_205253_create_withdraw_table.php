@@ -15,6 +15,7 @@ class CreateWithdrawTable extends Migration
     {
         Schema::create('withdraw', function (Blueprint $table) {
             $table->id();
+            $table->string('uuid');
             $table->integer('user_id');
             $table->string('bank');
             $table->string('no_rek');

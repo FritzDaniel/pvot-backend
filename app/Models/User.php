@@ -67,8 +67,24 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasOne(Wallet::class,'user_id','id');
     }
 
-    public function membership()
+    public function Membership()
     {
         return $this->hasOne(Memberships::class,'user_id','id');
+    }
+
+    public function isAdmin(){
+        $check = User::where([
+            ['userRole','=','Superadmin'],
+            ['id','=',$this->id]
+        ])->first();
+        return $check != null;
+    }
+
+    public function isSupplier(){
+        $check = User::where([
+            ['userRole','=','Supplier'],
+            ['id','=',$this->id]
+        ])->first();
+        return $check != null;
     }
 }

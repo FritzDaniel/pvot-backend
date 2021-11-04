@@ -20,4 +20,9 @@ class Withdraw extends Model
         'buktiTransfer'
     ];
     public $timestamps = true;
+
+    public function Supplier()
+    {
+        return $this->belongsTo(User::class,'user_id');
+    }
 }

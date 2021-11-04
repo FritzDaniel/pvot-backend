@@ -39,13 +39,19 @@ class PaymentController extends BaseController
         {
             $storeSequence = new TransactionSequence();
             $storeSequence->user_id = $user->id;
-            $storeSequence->type = "PV";
+            $storeSequence->type = "DP";
             $storeSequence->running_seq = 1;
             $storeSequence->save();
 
-            $uuid = $storeSequence->type.$storeSequence->user_id.$storeSequence->running_seq.Carbon::parse($storeSequence->created_at)->format('dmY');
+            $uuid = $storeSequence->type.
+                $storeSequence->user_id.
+                $storeSequence->running_seq.
+                Carbon::parse($storeSequence->created_at)->format('dmY');
         }else {
-            $uuid = $runningSeq->type.$runningSeq->user_id.$runningSeq->running_seq.Carbon::parse($runningSeq->created_at)->format('dmY');
+            $uuid = $runningSeq->type.
+                $runningSeq->user_id.
+                $runningSeq->running_seq.
+                Carbon::parse($runningSeq->created_at)->format('dmY');
         }
 
         $external_id = $uuid;

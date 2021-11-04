@@ -22,6 +22,11 @@ class Transaction extends Model
     ];
     public $timestamps = true;
 
+    public function User()
+    {
+        return $this->belongsTo(User::class,'user_id');
+    }
+
     public function Product()
     {
         return $this->belongsTo(Product::class, 'product_id');
@@ -29,6 +34,6 @@ class Transaction extends Model
 
     public function Payment()
     {
-        return $this->belongsTo(Payment::class,'payment_id');
+        return $this->belongsTo(Payment::class,'transaction_id');
     }
 }

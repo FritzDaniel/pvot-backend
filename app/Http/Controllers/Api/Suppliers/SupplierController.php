@@ -230,7 +230,7 @@ class SupplierController extends BaseController
         $data = new Withdraw();
         $data->user_id = $request->user()->id;
         $data->bank = $request['bank'];
-        $data->no_rek = $request['no_rek'];
+        $data->account_number = $request['account_number'];
         $data->amount = $request['amount'];
         $data->status = "Pending";
         $data->save();
