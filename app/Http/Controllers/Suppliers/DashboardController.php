@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Suppliers;
 
 use App\Models\NoRek;
+use App\Models\Payment;
 use App\Models\Product;
 use App\Models\User;
 use App\Models\Withdraw;
@@ -30,7 +31,10 @@ class DashboardController extends Controller
 
     public function orders()
     {
-        return view('supplier.order.index');
+        $data = Payment::where('supplier_id','=',Auth::user()->id)
+            ->where('status','=','Paid')
+            ->get();
+        return view('supplier.order.index',compact('data'));
     }
 
     public function transactionHistory()

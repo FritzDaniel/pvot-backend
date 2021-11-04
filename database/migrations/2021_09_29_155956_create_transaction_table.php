@@ -19,7 +19,7 @@ class CreateTransactionTable extends Migration
             $table->timestamp('transaction_date');
             $table->integer('user_id');
             $table->integer('supplier_id');
-            $table->integer('product_id');
+            $table->string('product_id');
             $table->integer('qty');
             $table->string('variants')->nullable();
             $table->timestamps();

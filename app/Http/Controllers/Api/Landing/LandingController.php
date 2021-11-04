@@ -32,7 +32,10 @@ class LandingController extends BaseController
 
     public function getSupplierProduct($id)
     {
-        $data = Product::where('user_id','=',$id)->get();
+        $data = Product::with('productVariant')
+            ->where('supplier_id','=',$id)
+            ->where('status','=','Active')
+            ->get();
 
         return $this->sendResponse($data, 'Product Supplier List.');
     }
@@ -57,15 +60,16 @@ class LandingController extends BaseController
         if($sortBy == "popular")
         {
             $data = Product::with([
-                'userDetail','productPhoto','productCategory'
+                'productCategory'
             ])
                 ->withCount('productSold')
+                ->where('status','=','Active')
                 ->orderBy('product_sold_count','DESC')
                 ->limit($limit)
                 ->get();
         }else {
             $data = Product::with([
-                'userDetail','productPhoto','productCategory'
+                'productCategory'
             ])
                 ->withCount('productSold')
 //                ->orderBy('productName','ASC')
@@ -78,7 +82,7 @@ class LandingController extends BaseController
     public function getDetailProduct($id)
     {
         $data = Product::with([
-            'userDetail','productPhoto','productCategory'
+            'productCategory','productVariant'
         ])
             ->where('id','=',$id)->first();
 

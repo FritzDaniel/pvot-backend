@@ -16,7 +16,7 @@ class ShopsController extends BaseController
     public function myShop(Request $request)
     {
         $user = $request->user();
-        $data = Shops::with(['UserDetail','Supplier','Design','kategoryToko'])
+        $data = Shops::with(['Supplier','Design','Category'])
             ->where('user_id','=',$user->id)->get();
         return $this->sendResponse($data,'List Shop');
     }
@@ -38,7 +38,7 @@ class ShopsController extends BaseController
 
         if($checkShopcCanCreate == $checkTokoList)
         {
-            return $this->sendError(null,'You only can create '.$checkShopcCanCreate.' shop.',400);
+            return $this->sendError(['error' => 'You only can create '.$checkShopcCanCreate.' shop.'],'Error',400);
         }
 
         $validator = Validator::make($request->all(), [
@@ -46,8 +46,8 @@ class ShopsController extends BaseController
             'handphoneToko' => 'required',
             'namaToko' => 'required',
             'alamatToko' => 'required',
-            'fotoToko' => 'mimes:jpg,png,jpeg|max:5000',
-            'fotoHeaderToko' => 'mimes:jpg,png,jpeg|max:5000',
+            'fotoToko' => 'required|mimes:jpg,png,jpeg|max:5000',
+            'fotoHeaderToko' => 'required|mimes:jpg,png,jpeg|max:5000',
             'kategoriToko' => 'required',
             'supplier' => 'required',
             'design' => 'required',
@@ -85,7 +85,7 @@ class ShopsController extends BaseController
             'fotoHeaderToko' => isset($name_fotoHeaderToko) ? "/storage/fotoHeaderToko/".$name_fotoHeaderToko : '/storage/fotoHeaderToko/dummy.jpg',
             'design_id' => $request['design'],
             'supplier_id' => $request['supplier'],
-            'descToko' => $request['descToko']
+            'description' => $request['descToko']
         ];
         $data = Shops::create($store);
 

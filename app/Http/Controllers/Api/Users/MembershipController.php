@@ -68,12 +68,12 @@ class MembershipController extends BaseController
             $uuid = $storeSequence->type.
                 $storeSequence->user_id.
                 $storeSequence->running_seq.
-                Carbon::parse($storeSequence->created_at)->format('dmY');
+                Carbon::parse($storeSequence->updated_at)->format('dmY');
         }else {
             $uuid = $runningSeq->type.
                 $runningSeq->user_id.
                 $runningSeq->running_seq.
-                Carbon::parse($runningSeq->created_at)->format('dmY');
+                Carbon::parse($runningSeq->updated_at)->format('dmY');
         }
 
         $external_id = $uuid;

@@ -16,6 +16,8 @@ class Payment extends Model
         'external_id',
         'uniq_code',
         'user_id',
+        'supplier_id',
+        'shop_id',
         'payment_channel',
         'email',
         'price',
@@ -32,5 +34,10 @@ class Payment extends Model
     public function User()
     {
         return $this->belongsTo(User::class,'user_id');
+    }
+
+    public function Shop()
+    {
+        return $this->belongsTo(Shops::class,'shop_id');
     }
 }

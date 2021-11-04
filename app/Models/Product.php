@@ -26,11 +26,6 @@ class Product extends Model
     ];
     public $timestamps = true;
 
-    public function userDetail()
-    {
-        return $this->belongsTo(User::class,'supplier_id');
-    }
-
     public function productSold()
     {
         $data = $this->hasMany(Transaction::class,'product_id','id');
@@ -46,4 +41,5 @@ class Product extends Model
     {
         return $this->hasMany(ProductVariant::class,'product_id','uuid')->with('Tipe');
     }
+
 }

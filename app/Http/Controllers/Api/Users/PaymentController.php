@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api\Users;
 
 use App\Http\Controllers\Api\BaseController;
-use App\Http\Controllers\Controller;
 use App\Models\Mutation;
 use App\Models\Payment;
 use App\Models\Product;
@@ -11,7 +10,7 @@ use App\Models\Transaction;
 use App\Models\TransactionSequence;
 use App\Models\Wallet;
 use Carbon\Carbon;
-use Dflydev\DotAccessData\Data;
+use Validator;
 use Illuminate\Http\Request;
 
 class PaymentController extends BaseController
@@ -51,7 +50,7 @@ class PaymentController extends BaseController
                     'balance' => $jquin['balance'],
                     'kode_unik' => $kode_unik,
                     'id_order' => $idOrder,
-                    'user_id' => $idOrder->user_id
+                    'user_id' => $jOrder->user_id
                 );
                 Mutation::create($data);
 
@@ -60,21 +59,20 @@ class PaymentController extends BaseController
                     $jOrder->status = "Paid";
                     $jOrder->update();
 
-                    // Send E-Wallet
-                    $price = Transaction::where('transaction_id','=',$jOrder->external_id)->get();
-                    $total = 0;
-                    $supplier_id = 0;
-
-                    foreach ($price as $prc)
-                    {
-                        $product = Product::where('id','=',$prc->product_id)->first();
-                        $total += $product->productPrice * $prc->qty;
-                        $supplier_id = $prc->supplier_id;
-                    }
-
-                    $wallet = Wallet::where('user_id','=',$supplier_id)->first();
-                    $wallet->balance = $total;
-                    $wallet->update();
+//                    $price = Transaction::where('transaction_id','=',$jOrder->external_id)->get();
+//                    $total = 0;
+//                    $supplier_id = 0;
+//
+//                    foreach ($price as $prc)
+//                    {
+//                        $product = Product::where('id','=',$prc->product_id)->first();
+//                        $total += $product->productPrice * $prc->qty;
+//                        $supplier_id = $prc->supplier_id;
+//                    }
+//
+//                    $wallet = Wallet::where('user_id','=',$supplier_id)->first();
+//                    $wallet->balance = $total;
+//                    $wallet->update();
                 }
             }
 
@@ -106,5 +104,88 @@ class PaymentController extends BaseController
         $data = Payment::with('Transaction')
             ->where('external_id','=',$id)->first();
         return $this->sendResponse($data,'Success');
+    }
+
+    public function beliProduct(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'shop_id' => 'required',
+            'supplier_id' => 'required',
+            'items' => 'required',
+        ]);
+
+        if($validator->fails()){
+            return $this->sendError($validator->errors(),'Error',400);
+        }
+
+        $totalPrice = 0;
+        foreach ($request['items'] as $total)
+        {
+            $price = Product::where('uuid','=',$total['product_id'])->first();
+            $totalPrice += $price->showPrice * $total['quantity'];
+        }
+
+        $user = $request->user();
+
+        $runningSeq = TransactionSequence::where('user_id','=',$user->id)->first();
+
+        if($runningSeq == null)
+        {
+            $storeSequence = new TransactionSequence();
+            $storeSequence->user_id = $user->id;
+            $storeSequence->type = "PV";
+            $storeSequence->running_seq = 1;
+            $storeSequence->save();
+
+            $uuid = $storeSequence->type.
+                $storeSequence->user_id.
+                $storeSequence->running_seq.
+                Carbon::parse($storeSequence->updated_at)->format('dmY');
+        }else {
+            $uuid = $runningSeq->type.
+                $runningSeq->user_id.
+                $runningSeq->running_seq.
+                Carbon::parse($runningSeq->updated_at)->format('dmY');
+        }
+
+        $external_id = $uuid;
+        $amount = $totalPrice;
+        $user_id = $user->id;
+
+        $dataPayment = [
+            'external_id' => $external_id,
+            'uniq_code' =>  substr($amount, -3),
+            'user_id' => $user_id,
+            'supplier_id' => $request['supplier_id'],
+            'shop_id' => $request['shop_id'],
+            'payment_channel' => 'Moota',
+            'email' => $user->email,
+            'price' => $amount,
+            'description' => 'Pembayaran Product'
+        ];
+        $payment = Payment::create($dataPayment);
+
+        foreach ($request['items'] as $itm)
+        {
+            $store = new Transaction();
+            $store->transaction_id = $payment->external_id;
+            $store->transaction_date = Carbon::now();
+            $store->user_id = $user->id;
+            $store->supplier_id = $request['supplier_id'];
+            $store->product_id = $itm['product_id'];
+            $store->qty = $itm['quantity'];
+            $store->variants = $itm['variants'];
+            $store->save();
+
+            $product = Product::where('uuid','=',$itm['product_id'])->first();
+            $product->productStock = $product->productStock - $itm['quantity'];
+            $product->update();
+        }
+
+        $updateSequence = TransactionSequence::where('user_id','=',$user->id)->first();
+        $updateSequence->running_seq = $updateSequence->running_seq + 1;
+        $updateSequence->update();
+
+        return $this->sendResponse($payment,'Store cart success');
     }
 }

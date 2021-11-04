@@ -34,7 +34,47 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        Start creating your amazing application!
+
+                        <div class="dataTables_wrapper dt-bootstrap4">
+                            <table id="datatable" class="table table-bordered table-hover dataTable dtr-inline">
+                                <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Transaction ID</th>
+                                    <th>Dropshipper</th>
+                                    <th>Shop Name</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @if($data->isEmpty())
+                                    <tr>
+                                        <td>No Data</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                @else
+                                    @foreach($data as $key => $dt)
+                                        <tr>
+                                            <td>{{ $key+1 }}.</td>
+                                            <td>{{ $dt->external_id }}</td>
+                                            <td>{{ $dt->User->name }}</td>
+                                            <td>{{ $dt->Shop->namaToko }}</td>
+                                            <td>Rp. {{ number_format($dt->price) }}</td>
+                                            <td>{{ $dt->status }}</td>
+                                            <td>
+                                                <a href="#" class="btn btn-primary"><i class="fa fa-arrow-circle-right"></i> Processed</a>
+                                                <a href="#" class="btn btn-info"><i class="fa fa-eye"></i> Detail</a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                     <!-- /.card-body -->
                     <div class="card-footer">
@@ -50,5 +90,19 @@
 @endsection
 
 @section('js')
+
+    <script>
+        $(function () {
+            $('#datatable').DataTable({
+                "paging": true,
+                "lengthChange": false,
+                "searching": true,
+                "ordering": true,
+                "info": true,
+                "autoWidth": true,
+                "responsive": true,
+            });
+        });
+    </script>
 
 @endsection
