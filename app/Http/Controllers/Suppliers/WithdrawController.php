@@ -38,7 +38,7 @@ class WithdrawController extends Controller
 
     public function create()
     {
-        $noRek = NoRek::all();
+        $noRek = NoRek::where('supplier_id','=',Auth::user()->id)->get();
         return view('supplier.withdraw.create',compact('noRek'));
     }
 
