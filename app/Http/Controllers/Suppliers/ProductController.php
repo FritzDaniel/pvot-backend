@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Suppliers;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\ProductVariant;
 use App\Models\Settings;
 use App\Models\TransactionSequence;
 use App\Models\Variant;
@@ -139,6 +140,14 @@ class ProductController extends Controller
 
     public function active($id)
     {
+        $variant = ProductVariant::where('product_id','=',$id)->get();
+        $countVariant = count($variant);
+
+        if($countVariant == 0)
+        {
+            return redirect()->back()->with('error','Please add product variant first');
+        }
+
         $data = Product::where('uuid','=',$id)->first();
         $data->status = "Active";
         $data->update();

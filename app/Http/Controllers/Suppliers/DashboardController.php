@@ -24,6 +24,7 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
         $data = Product::where('supplier_id','=',$user->id)->get();
+
         return view('supplier.product.index',compact('data'));
     }
 

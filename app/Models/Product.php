@@ -44,6 +44,6 @@ class Product extends Model
 
     public function productVariant()
     {
-        return $this->hasMany(ProductVariant::class,'product_id','id')->with('Tipe');
+        return $this->hasMany(ProductVariant::class,'product_id','uuid')->with('Tipe');
     }
 }
