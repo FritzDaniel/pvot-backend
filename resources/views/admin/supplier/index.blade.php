@@ -71,13 +71,13 @@
                                             <td>{{ $dt->EWallet->balance !== 0 ? 'Rp. '.number_format($dt->EWallet->balance) : 0 }}</td>
                                             <td>{{ \Carbon\Carbon::parse($dt->created_at)->format('d-m-Y H:i:s') }}</td>
                                             <td>
-                                                <a href="{{ route('admin.dropshipper.details',$dt->id) }}" class="btn btn-primary">
+                                                <a href="#" class="btn btn-primary">
                                                     <i class="fa fa-user"></i> Details
                                                 </a>
-                                                <a href="{{ route('admin.dropshipper.transactions',$dt->id) }}" class="btn btn-success">
+                                                <a href="#" class="btn btn-success">
                                                     <i class="fa fa-book"></i> Transactions
                                                 </a>
-                                                <a href="{{ route('admin.dropshipper.password',$dt->id) }}" class="btn btn-danger">
+                                                <a href="#" class="btn btn-danger">
                                                     <i class="fa fa-cogs"></i> Edit Password
                                                 </a>
                                             </td>

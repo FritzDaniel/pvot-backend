@@ -176,6 +176,10 @@ class SupplierController extends Controller
 
     public function storeTransferReceipt(Request $request, $id)
     {
+        $this->validate($request,[
+            'buktiTransfer' => 'required'
+        ]);
+
         if ($request->hasFile('buktiTransfer')) {
             if ($request->file('buktiTransfer')->isValid()) {
                 $name = Carbon::now()->timestamp . '.' . $request->file('buktiTransfer')->getClientOriginalExtension();
@@ -184,7 +188,7 @@ class SupplierController extends Controller
             }
         }
 
-        $data = Withdraw::where('id','=',$id)->first();
+        $data = Withdraw::where('uuid','=',$id)->first();
         $data->status = "Settle";
         $data->buktiTransfer = isset($name) ? '/storage/buktiTransfer/'.$name : null;
         $data->save();
