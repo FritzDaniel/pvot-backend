@@ -40,7 +40,7 @@
                     </div>
                     <div class="card-body">
                         <div class="image">
-                            <img src="https://api.pvotdigital.com/public{{ $data->profilePicture }}" alt="" class="profilePicture">
+                            <img src="https://dashboard.pvotdigital.com/public{{ $data->profilePicture }}" alt="" class="profilePicture">
                         </div>
                         <br>
                         <h5>Name: {{ $data->name }}</h5>
