@@ -43,8 +43,8 @@
                                     <th>Shop Name</th>
                                     <th>Shop Email</th>
                                     <th>Status</th>
-                                    <th></th>
-                                    <th></th>
+                                    <th>URL tokopedia</th>
+                                    <th>URL shopee</th>
                                     <th>Created Date</th>
                                     <th>Action</th>
                                 </tr>
@@ -67,8 +67,8 @@
                                             <td>{{ $dt->namaToko }}</td>
                                             <td>{{ $dt->emailToko }}</td>
                                             <td>{{ $dt->status }}</td>
-                                            <td></td>
-                                            <td></td>
+                                            <td>{{ $dt->url_tokopedia ? $dt->url_tokopedia : '-' }}</td>
+                                            <td>{{ $dt->url_shopee ? $dt->url_shopee : '-' }}</td>
                                             <td>{{ \Carbon\Carbon::parse($dt->created_at)->format('d-m-Y H:i:s') }}</td>
                                             <td>
                                                 <a href="#" class="btn btn-primary">

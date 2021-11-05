@@ -23,17 +23,11 @@ use \App\Http\Controllers\Suppliers\DashboardController as SupplierDashboard;
 |
 */
 
-//Route::get('/', function () {
-//    return view('welcome');
-//});
-
 Route::get('/verifikasi-sukses', function () {
     return view('verification-success');
 })->name('verify-success');
 
 Auth::routes();
-
-//Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::group(['namespace' => 'Admin','middleware' => 'auth'], function()
 {
