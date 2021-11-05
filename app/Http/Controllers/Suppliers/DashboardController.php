@@ -16,6 +16,11 @@ use Illuminate\Validation\Rules\Password;
 
 class DashboardController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function dashboard()
     {
         return view('supplier.dashboard');
