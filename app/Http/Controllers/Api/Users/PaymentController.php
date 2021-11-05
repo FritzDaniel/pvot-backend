@@ -133,7 +133,7 @@ class PaymentController extends BaseController
         {
             $storeSequence = new TransactionSequence();
             $storeSequence->user_id = $user->id;
-            $storeSequence->type = "PV";
+            $storeSequence->type = "DP";
             $storeSequence->running_seq = 1;
             $storeSequence->save();
 

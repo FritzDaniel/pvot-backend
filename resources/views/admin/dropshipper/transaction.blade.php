@@ -54,7 +54,15 @@
                                 <tbody>
                                 @if($data->isEmpty())
                                     <tr>
-                                        <td>No Data</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
                                     </tr>
                                 @else
                                     @foreach($data as $key => $dt)
