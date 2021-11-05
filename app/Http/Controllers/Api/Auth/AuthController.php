@@ -86,6 +86,7 @@ class AuthController extends BaseController
 
         $success['name'] = $user->name;
         $success['role'] = "Dropshipper";
+        $success['token'] = $user->createToken('User Register Token')->plainTextToken;
 
         $dataMembership = [
             'user_id' => $user->id,
