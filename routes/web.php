@@ -141,8 +141,7 @@ Route::get('/', function () {
 });
 
 Route::get('/home', function () {
-    if(Auth::check())
-    {
+    if(Auth::check()) {
         if(Auth::user()->isAdmin()) {
             return redirect('admin/dashboard');
         } else if(Auth::user()->isSupplier()) {
