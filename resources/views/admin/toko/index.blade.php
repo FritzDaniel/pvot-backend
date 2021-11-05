@@ -39,9 +39,12 @@
                                 <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>User</th>
+                                    <th>Shop Owner</th>
                                     <th>Shop Name</th>
+                                    <th>Shop Email</th>
                                     <th>Status</th>
+                                    <th></th>
+                                    <th></th>
                                     <th>Created Date</th>
                                     <th>Action</th>
                                 </tr>
@@ -60,7 +63,10 @@
                                     @foreach($data as $key => $dt)
                                         <tr>
                                             <td>{{ $dt->id }}.</td>
-                                            <td></td>
+                                            <td>{{ $dt->User->name }}</td>
+                                            <td>{{ $dt->namaToko }}</td>
+                                            <td>{{ $dt->emailToko }}</td>
+                                            <td>{{ $dt->status }}</td>
                                             <td></td>
                                             <td></td>
                                             <td>{{ \Carbon\Carbon::parse($dt->created_at)->format('d-m-Y H:i:s') }}</td>
@@ -68,8 +74,8 @@
                                                 <a href="#" class="btn btn-primary">
                                                     <i class="fa fa-eye"></i> Details
                                                 </a>
-                                                <a href="#" class="btn btn-primary">
-                                                    <i class="fa fa-bookmark"></i> Change Status
+                                                <a href="#" class="btn btn-success">
+                                                    <i class="fa fa-bookmark"></i> Add Marketplace
                                                 </a>
                                             </td>
                                         </tr>

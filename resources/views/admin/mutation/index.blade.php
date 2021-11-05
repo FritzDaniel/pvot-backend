@@ -69,17 +69,17 @@
                                 @else
                                     @foreach($data as $key => $dt)
                                         <tr>
-                                            <td>{{ $key+1 }}</td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
+                                            <td>{{ $key+1 }}.</td>
+                                            <td>{{ strtoupper($dt->bank_type) }}</td>
+                                            <td>{{ $dt->account_number }}</td>
+                                            <td>Rp. {{ number_format($dt->amount) }}</td>
+                                            <td>{{ $dt->description }}</td>
+                                            <td>{{ $dt->type }}</td>
+                                            <td>Rp. {{ number_format($dt->balance) }}</td>
+                                            <td>{{ $dt->kode_unik }}</td>
+                                            <td>{{ $dt->id_order }}</td>
+                                            <td>{{ $dt->User->name }}</td>
+                                            <td>{{ $dt->created_at }}</td>
                                         </tr>
                                     @endforeach
                                 @endif

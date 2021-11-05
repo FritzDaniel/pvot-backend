@@ -25,4 +25,9 @@ class Mutation extends Model
         'user_id'
     ];
     public $timestamps = true;
+
+    public function User()
+    {
+        return $this->belongsTo(User::class,'user_id');
+    }
 }
