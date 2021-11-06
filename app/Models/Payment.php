@@ -19,10 +19,13 @@ class Payment extends Model
         'supplier_id',
         'shop_id',
         'payment_channel',
+        'payment_bank',
         'email',
         'price',
         'status',
-        'description'
+        'description',
+        'receiptImage',
+        'receiptNumber'
     ];
     public $timestamps = true;
 
