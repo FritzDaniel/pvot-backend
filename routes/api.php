@@ -1,20 +1,13 @@
 <?php
 
-use App\Http\Controllers\Api\Admin\CategoryController;
-use App\Http\Controllers\Api\Admin\DesignController;
-use App\Http\Controllers\Api\Admin\LogsController;
-use App\Http\Controllers\Api\Admin\TestimoniController;
-use App\Http\Controllers\Api\Admin\TokoController;
 use App\Http\Controllers\Api\Admin\VariantController;
 use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\Landing\LandingController;
 use App\Http\Controllers\Api\Payment\InvoiceController;
-use App\Http\Controllers\Api\Suppliers\SupplierController;
 use App\Http\Controllers\Api\Users\MembershipController;
 use App\Http\Controllers\Api\Users\PaymentController;
 use App\Http\Controllers\Api\Users\ShopsController;
 use App\Http\Controllers\Api\Users\UsersController;
-use App\Http\Controllers\Api\Admin\SupplierController as AdminSupplierController;
 use Illuminate\Support\Facades\Route;
 /*
 |--------------------------------------------------------------------------
@@ -143,6 +136,11 @@ Route::group([ 'prefix' => 'v1'], function () {
         Route::get(
             'getSupplier',
             [LandingController::class,'getSupplier']
+        );
+        # Get Supplier By ID
+        Route::get(
+            'getSupplier/{id}',
+            [LandingController::class,'getSupplierDetail']
         );
         # List Supplier Product
         Route::get(

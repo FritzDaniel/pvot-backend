@@ -30,6 +30,15 @@ class LandingController extends BaseController
         return $this->sendResponse($data, 'Supplier List.');
     }
 
+    public function getSupplierDetail($id)
+    {
+        $data = User::role('Supplier')
+            ->where('id','=',$id)
+            ->first();
+
+        return $this->sendResponse($data, 'Supplier Detail.');
+    }
+
     public function getSupplierProduct($id)
     {
         $data = Product::with('productVariant')
