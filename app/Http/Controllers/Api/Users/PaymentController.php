@@ -112,6 +112,7 @@ class PaymentController extends BaseController
             'shop_id' => 'required',
             'supplier_id' => 'required',
             'items' => 'required',
+            'payment_bank' => 'required',
         ]);
 
         if($validator->fails()){
@@ -149,7 +150,7 @@ class PaymentController extends BaseController
         }
 
         $external_id = $uuid;
-        $amount = $totalPrice;
+        $amount = $totalPrice + 2500; // 2500 biaya tambahan
         $user_id = $user->id;
 
         $dataPayment = [
@@ -159,6 +160,7 @@ class PaymentController extends BaseController
             'supplier_id' => $request['supplier_id'],
             'shop_id' => $request['shop_id'],
             'payment_channel' => 'Moota',
+            'payment_bank' => $request['payment_bank'],
             'email' => $user->email,
             'price' => $amount,
             'description' => 'Pembayaran Product'

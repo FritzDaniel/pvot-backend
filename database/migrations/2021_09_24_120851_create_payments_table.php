@@ -20,10 +20,13 @@ class CreatePaymentsTable extends Migration
             $table->string('uniq_code')->nullable();
             $table->integer('user_id');
             $table->string('payment_channel');
+            $table->string('payment_bank')->nullable();
             $table->string('email');
             $table->double('price');
             $table->string('status')->default('Pending');
             $table->string('description')->nullable();
+            $table->string('receiptImage')->nullable();
+            $table->string('receiptNumber')->nullable();
             $table->timestamps();
         });
     }
