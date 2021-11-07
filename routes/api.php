@@ -23,6 +23,15 @@ use Illuminate\Support\Facades\Route;
 Route::group([ 'prefix' => 'v1'], function () {
 
     Route::group(['middleware' => 'auth:sanctum'], function() {
+        # Get Order List
+        Route::get(
+            'getOrderList',
+            [PaymentController::class,'getOrderList']
+        );
+        Route::get(
+            'getTransactionList/{id}',
+            [PaymentController::class,'getTransactionList']
+        );
         # Email Verification
         Route::post(
             'email/verificationNotification',

@@ -10,6 +10,7 @@ use App\Models\Transaction;
 use App\Models\TransactionSequence;
 use App\Models\Wallet;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Validator;
 use Illuminate\Http\Request;
 
@@ -19,6 +20,20 @@ class PaymentController extends BaseController
     {
         $data = Payment::where('external_id','=',$id)->first();
         return redirect('https://pvotdigital.com/pembayaran-sukses/'.$data->xendit_id);
+    }
+
+    public function getOrderList(Request $request)
+    {
+        $user = $request->user();
+        $data = Payment::where('user_id','=',$user->id)->get();
+        return $this->sendResponse($data,'Success');
+    }
+
+    public function getTransactionList($id)
+    {
+        $data = Transaction::with(['Product','User'])
+            ->where('transaction_id','=',$id)->get();
+        return $this->sendResponse($data,'Success');
     }
 
     public function getWebhookCallback()
