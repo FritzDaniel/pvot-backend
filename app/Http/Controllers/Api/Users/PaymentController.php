@@ -32,7 +32,8 @@ class PaymentController extends BaseController
     public function getTransactionList($id)
     {
         $data = Transaction::with(['Product','User'])
-            ->where('transaction_id','=',$id)->get();
+            ->where('transaction_id','=',$id)
+            ->get();
         return $this->sendResponse($data,'Success');
     }
 
