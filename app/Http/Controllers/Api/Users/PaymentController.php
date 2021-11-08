@@ -27,12 +27,23 @@ class PaymentController extends BaseController
         $from = $request->query('tanggal_awal');
         $to = $request->query('tanggal_akhir');
         $user = $request->user();
-        $data = Payment::with(['Transaction'])
-            ->whereBetween('created_at', [$from.' 00:00:00', $to.' 11.59.59'])
-            ->where('description','=','Pembayaran Product')
-            ->where('user_id','=',$user->id)
-            ->orderBy('created_at','DESC')
-            ->paginate(5);
+
+        if($from !== null && $to !== null)
+        {
+            $data = Payment::with(['Transaction'])
+                ->whereBetween('created_at', [$from.' 00:00:00', $to.' 11.59.59'])
+                ->where('description','=','Pembayaran Product')
+                ->where('user_id','=',$user->id)
+                ->orderBy('created_at','DESC')
+                ->paginate(5);
+        }else {
+            $data = Payment::with(['Transaction'])
+                ->where('description','=','Pembayaran Product')
+                ->where('user_id','=',$user->id)
+                ->orderBy('created_at','DESC')
+                ->paginate(5);
+        }
+
         return $this->sendResponse($data,'Success');
     }
 
