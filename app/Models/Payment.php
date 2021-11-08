@@ -31,7 +31,7 @@ class Payment extends Model
 
     public function Transaction()
     {
-        return $this->hasMany(Transaction::class,'payment_id','id')->with('Product');
+        return $this->hasMany(Transaction::class,'transaction_id','external_id')->with('Product');
     }
 
     public function User()
