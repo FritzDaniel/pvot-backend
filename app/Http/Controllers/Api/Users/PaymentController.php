@@ -24,8 +24,11 @@ class PaymentController extends BaseController
 
     public function getOrderList(Request $request)
     {
+        $from = Carbon::parse($request->query('tanggal_awal'))->format('Y-m-d');
+        $to = Carbon::parse($request->query('tanggal_akhir'))->format('Y-m-d');
         $user = $request->user();
         $data = Payment::with(['Transaction'])
+            ->whereBetween('created_at', [$from.' 00:00:00', $to.' 11.59.59'])
             ->where('description','=','Pembayaran Product')
             ->where('user_id','=',$user->id)
             ->orderBy('created_at','DESC')
