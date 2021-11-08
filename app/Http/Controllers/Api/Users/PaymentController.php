@@ -26,16 +26,86 @@ class PaymentController extends BaseController
     {
         $from = $request->query('tanggal_awal');
         $to = $request->query('tanggal_akhir');
+        $status = $request->query('status');
         $user = $request->user();
 
-        if($from !== null && $to !== null)
+        if($status == "Semua")
         {
-            $data = Payment::with(['Transaction'])
-                ->whereBetween('created_at', [$from.' 00:00:00', $to.' 23.59.59'])
-                ->where('description','=','Pembayaran Product')
-                ->where('user_id','=',$user->id)
-                ->orderBy('created_at','DESC')
-                ->paginate(5);
+            if($from !== null && $to !== null)
+            {
+                $data = Payment::with(['Transaction'])
+                    ->whereBetween('created_at', [$from.' 00:00:00', $to.' 23.59.59'])
+                    ->where('description','=','Pembayaran Product')
+                    ->where('user_id','=',$user->id)
+                    ->orderBy('created_at','DESC')
+                    ->paginate(5);
+            }else {
+                $data = Payment::with(['Transaction'])
+                    ->where('description','=','Pembayaran Product')
+                    ->where('user_id','=',$user->id)
+                    ->orderBy('created_at','DESC')
+                    ->paginate(5);
+            }
+        }
+        elseif($status == "Dikemas")
+        {
+            if($from !== null && $to !== null)
+            {
+                $data = Payment::with(['Transaction'])
+                    ->whereBetween('created_at', [$from.' 00:00:00', $to.' 23.59.59'])
+                    ->where('description','=','Pembayaran Product')
+                    ->where('user_id','=',$user->id)
+                    ->where('status','=','Processed')
+                    ->orderBy('created_at','DESC')
+                    ->paginate(5);
+            }else {
+                $data = Payment::with(['Transaction'])
+                    ->where('description','=','Pembayaran Product')
+                    ->where('user_id','=',$user->id)
+                    ->where('status','=','Processed')
+                    ->orderBy('created_at','DESC')
+                    ->paginate(5);
+            }
+        }
+        elseif($status == "Dikirim")
+        {
+            if($from !== null && $to !== null)
+            {
+                $data = Payment::with(['Transaction'])
+                    ->whereBetween('created_at', [$from.' 00:00:00', $to.' 23.59.59'])
+                    ->where('description','=','Pembayaran Product')
+                    ->where('user_id','=',$user->id)
+                    ->where('status','=','Sent')
+                    ->orderBy('created_at','DESC')
+                    ->paginate(5);
+            }else {
+                $data = Payment::with(['Transaction'])
+                    ->where('description','=','Pembayaran Product')
+                    ->where('user_id','=',$user->id)
+                    ->where('status','=','Sent')
+                    ->orderBy('created_at','DESC')
+                    ->paginate(5);
+            }
+        }
+        elseif($status == "Berhasil")
+        {
+            if($from !== null && $to !== null)
+            {
+                $data = Payment::with(['Transaction'])
+                    ->whereBetween('created_at', [$from.' 00:00:00', $to.' 23.59.59'])
+                    ->where('description','=','Pembayaran Product')
+                    ->where('user_id','=',$user->id)
+                    ->where('status','=','Complete')
+                    ->orderBy('created_at','DESC')
+                    ->paginate(5);
+            }else {
+                $data = Payment::with(['Transaction'])
+                    ->where('description','=','Pembayaran Product')
+                    ->where('user_id','=',$user->id)
+                    ->where('status','=','Complete')
+                    ->orderBy('created_at','DESC')
+                    ->paginate(5);
+            }
         }else {
             $data = Payment::with(['Transaction'])
                 ->where('description','=','Pembayaran Product')
