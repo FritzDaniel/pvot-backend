@@ -31,7 +31,7 @@ class PaymentController extends BaseController
         if($from !== null && $to !== null)
         {
             $data = Payment::with(['Transaction'])
-                ->whereBetween('created_at', [$from.' 00:00:00', $to.' 11.59.59'])
+                ->whereBetween('created_at', [$from.' 00:00:00', $to.' 23.59.59'])
                 ->where('description','=','Pembayaran Product')
                 ->where('user_id','=',$user->id)
                 ->orderBy('created_at','DESC')
