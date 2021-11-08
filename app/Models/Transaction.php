@@ -29,7 +29,7 @@ class Transaction extends Model
 
     public function Product()
     {
-        return $this->belongsTo(Product::class, 'product_id','uuid');
+        return $this->hasMany(Product::class, 'uuid','product_id');
     }
 
     public function Payment()
