@@ -25,7 +25,7 @@ class PaymentController extends BaseController
     public function getOrderList(Request $request)
     {
         $user = $request->user();
-        $data = Payment::where('user_id','=',$user->id)->get();
+        $data = Payment::where('user_id','=',$user->id)->paginate(5);
         return $this->sendResponse($data,'Success');
     }
 
