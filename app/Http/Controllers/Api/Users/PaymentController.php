@@ -28,6 +28,7 @@ class PaymentController extends BaseController
         $data = Payment::with(['Transaction'])
             ->where('description','=','Pembayaran Product')
             ->where('user_id','=',$user->id)
+            ->orderBy('created_at','DESC')
             ->paginate(5);
         return $this->sendResponse($data,'Success');
     }
