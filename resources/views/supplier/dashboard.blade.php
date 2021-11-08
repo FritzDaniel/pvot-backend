@@ -39,7 +39,7 @@
             <div class="col-lg-3 col-6">
                 <div class="small-box bg-info">
                     <div class="inner">
-                        <h3>0</h3>
+                        <h3>{{$order}}</h3>
 
                         <p>New Orders</p>
                     </div>
@@ -55,26 +55,6 @@
         <div class="row">
             <div class="col-12">
                 <!-- Default box -->
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">Title</h3>
-
-                        <div class="card-tools">
-                            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                <i class="fas fa-minus"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        Start creating your amazing application!
-                    </div>
-                    <!-- /.card-body -->
-                    <div class="card-footer">
-                        Footer
-                    </div>
-                    <!-- /.card-footer-->
-                </div>
-                <!-- /.card -->
             </div>
         </div>
     </div>

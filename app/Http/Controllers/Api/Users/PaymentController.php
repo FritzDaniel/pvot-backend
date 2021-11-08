@@ -93,21 +93,6 @@ class PaymentController extends BaseController
                 {
                     $jOrder->status = "Paid";
                     $jOrder->update();
-
-//                    $price = Transaction::where('transaction_id','=',$jOrder->external_id)->get();
-//                    $total = 0;
-//                    $supplier_id = 0;
-//
-//                    foreach ($price as $prc)
-//                    {
-//                        $product = Product::where('id','=',$prc->product_id)->first();
-//                        $total += $product->productPrice * $prc->qty;
-//                        $supplier_id = $prc->supplier_id;
-//                    }
-//
-//                    $wallet = Wallet::where('user_id','=',$supplier_id)->first();
-//                    $wallet->balance = $total;
-//                    $wallet->update();
                 }
             }
 
@@ -132,6 +117,38 @@ class PaymentController extends BaseController
             $dataPayment,
             'Success'
         );
+    }
+
+    public function orderComplete($id)
+    {
+        $Order = Payment::where('external_id','=',$id)
+            ->where('status','=','Sent')
+            ->first();
+
+        if($Order == null)
+        {
+            return $this->sendError(['error' => 'Data tidak ada'],'Error',400);
+        }
+
+        $Order->status = "Complete";
+        $Order->update();
+
+        $price = Transaction::where('transaction_id','=',$Order->external_id)->get();
+        $total = 0;
+        $supplier_id = 0;
+
+        foreach ($price as $prc)
+        {
+            $product = Product::where('uuid','=',$prc->product_id)->first();
+            $total += $product->productPrice * $prc->qty;
+            $supplier_id = $prc->supplier_id;
+        }
+
+        $wallet = Wallet::where('user_id','=',$supplier_id)->first();
+        $wallet->balance = $total;
+        $wallet->update();
+
+        return $this->sendResponse($Order,'Success');
     }
 
     public function cartSummary($id)

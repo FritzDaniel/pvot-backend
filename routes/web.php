@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DesignController;
 use App\Http\Controllers\Admin\TestimoniController;
 use App\Http\Controllers\Admin\VariantController;
+use App\Http\Controllers\Suppliers\OrderController;
 use App\Http\Controllers\Suppliers\VariantController as SupplierVariant;
 use App\Http\Controllers\Admin\SupplierController as AdminSupplier;
 use App\Http\Controllers\Suppliers\ProductController;
@@ -119,6 +120,12 @@ Route::group(['namespace' => 'Suppliers','middleware' => 'auth'], function()
 
     # Order
     Route::get('/supplier/orders',[SupplierDashboard::class,'orders'])->name('supplier.orders');
+    Route::get('/supplier/orders/status/{id}',[OrderController::class,'changeStatus'])->name('supplier.orders.status');
+    Route::get('/supplier/orders/detail/{id}',[OrderController::class,'detailTransaction'])->name('supplier.orders.detail');
+    Route::post('/supplier/orders/update/{id}',[OrderController::class,'updateStatus'])->name('supplier.orders.update');
+
+    # Dropshipper
+    Route::get('/supplier/dropshipper',[SupplierDashboard::class,'Dropshipper'])->name('supplier.dropshipper');
 
     # Transaction History
     Route::get('/supplier/history',[SupplierDashboard::class,'transactionHistory'])->name('supplier.history');

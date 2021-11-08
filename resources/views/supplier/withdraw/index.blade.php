@@ -76,7 +76,7 @@
                                 @else
                                     @foreach($noRek as $key => $no)
                                         <tr>
-                                            <td>{{ $key+1 }}</td>
+                                            <td>{{ $key+1 }}.</td>
                                             <td>{{ $no->bank }}</td>
                                             <td>{{ $no->account_number }}</td>
                                             <td>

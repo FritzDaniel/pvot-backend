@@ -10,11 +10,11 @@
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-    <li class="breadcrumb-item active">Orders</li>
+    <li class="breadcrumb-item active">Dropshipper</li>
 @endsection
 
 @section('headerTitle')
-    Orders
+    Dropshipper
 @endsection
 
 @section('content')
@@ -35,11 +35,11 @@
                         <h4><i class="icon fa fa-times"></i> Error!</h4>
                         {{ session('error') }}
                     </div>
-                @endif
-                <!-- Default box -->
+            @endif
+            <!-- Default box -->
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Order List</h3>
+                        <h3 class="card-title">Dropshipper List</h3>
 
                         <div class="card-tools">
                             <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -48,18 +48,18 @@
                         </div>
                     </div>
                     <div class="card-body">
-
+                        <p><i class="fa fa-user"></i> Dropshipper Count : {{ count($data) }}</p>
                         <div class="dataTables_wrapper dt-bootstrap4">
                             <table id="datatable" class="table table-bordered table-hover dataTable dtr-inline">
                                 <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Transaction ID</th>
-                                    <th>Dropshipper</th>
+                                    <th>Name</th>
                                     <th>Shop Name</th>
-                                    <th>Status</th>
-                                    <th>Transaction Date</th>
-                                    <th>Action</th>
+                                    <th>Alamat</th>
+                                    <th>Phone</th>
+                                    <th>Transaction</th>
+                                    <th>Complete Order</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -70,36 +70,17 @@
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                        <td></td>
-                                        <td></td>
                                     </tr>
                                 @else
                                     @foreach($data as $key => $dt)
                                         <tr>
                                             <td>{{ $key+1 }}.</td>
-                                            <td>{{ $dt->external_id }}</td>
                                             <td>{{ $dt->User->name }}</td>
-                                            <td>{{ $dt->Shop->namaToko }}</td>
-                                            <td>
-                                                @if($dt->status == "Paid")
-                                                    <span class="badge bg-success">Paid</span>
-
-                                                @elseif($dt->status == "Processed")
-                                                    <span class="badge bg-warning">Processed</span>
-                                                @elseif($dt->status == "Sent")
-                                                    <span class="badge bg-primary">Sent</span>
-                                                @else
-                                                    <span class="badge bg-primary">Success</span>
-                                                @endif
-
-                                            </td>
-                                            <td>{{ \Carbon\Carbon::parse($dt->created_at)->format('d-M-Y H:i') }}</td>
-                                            <td>
-                                                @if($dt->status !== "Complete")
-                                                    <a href="{{ route('supplier.orders.status',$dt->external_id )}}" class="btn btn-primary"><i class="fa fa-arrow-circle-right"></i> Change Status</a>
-                                                @endif
-                                                <a href="{{ route('supplier.orders.detail',$dt->external_id) }}" class="btn btn-info"><i class="fa fa-eye"></i> Detail</a>
-                                            </td>
+                                            <td>{{ $dt->namaToko }}</td>
+                                            <td>{{ $dt->User->alamat ? $dt->User->alamat : '-' }}</td>
+                                            <td>{{ $dt->User->phone }}</td>
+                                            <td>{{ $dt->OrderCount() }}x Transaction</td>
+                                            <td>{{ $dt->completeOrder() }}x Transaction</td>
                                         </tr>
                                     @endforeach
                                 @endif

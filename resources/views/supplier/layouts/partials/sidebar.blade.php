@@ -32,7 +32,7 @@
                 </li>
                 <li class="nav-header">Dropshipper</li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="{{ route('supplier.dropshipper') }}" class="nav-link">
                         <i class="nav-icon fas fa-user"></i>
                         <p>
                             Dropshipper List
@@ -54,7 +54,7 @@
                         <i class="nav-icon fas fa-shopping-cart"></i>
                         <p>
                             Orders
-                            <span class="badge badge-info right">0</span>
+                            <span class="badge badge-info right">{{ $order }}</span>
                         </p>
                     </a>
                 </li>

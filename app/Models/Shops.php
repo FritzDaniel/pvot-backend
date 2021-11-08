@@ -32,6 +32,24 @@ class Shops extends Model
         return $this->belongsTo(User::class,'user_id');
     }
 
+    public function OrderCount()
+    {
+        $data = Payment::where('shop_id','=',$this->id)
+            ->where('status','!=','Pending')
+            ->get();
+
+        return count($data);
+    }
+
+    public function completeOrder()
+    {
+        $data = Payment::where('shop_id','=',$this->id)
+            ->where('status','=','Complete')
+            ->get();
+
+        return count($data);
+    }
+
     public function Supplier()
     {
         return $this->belongsTo(User::class,'supplier_id');

@@ -28,6 +28,12 @@ Route::group([ 'prefix' => 'v1'], function () {
             'getOrderList',
             [PaymentController::class,'getOrderList']
         );
+        # Complete Order
+        Route::post(
+            'order/complete/{id}',
+            [PaymentController::class,'orderComplete']
+        );
+
         Route::get(
             'getTransactionList/{id}',
             [PaymentController::class,'getTransactionList']

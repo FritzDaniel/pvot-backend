@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Suppliers;
 use App\Models\NoRek;
 use App\Models\Payment;
 use App\Models\Product;
+use App\Models\Shops;
 use App\Models\User;
 use App\Models\Withdraw;
 use Carbon\Carbon;
@@ -37,7 +38,8 @@ class DashboardController extends Controller
     public function orders()
     {
         $data = Payment::where('supplier_id','=',Auth::user()->id)
-            ->where('status','=','Paid')
+            ->where('status','!=','Pending')
+            ->orderBy('created_at','DESC')
             ->get();
         return view('supplier.order.index',compact('data'));
     }
@@ -45,6 +47,12 @@ class DashboardController extends Controller
     public function transactionHistory()
     {
         return view('supplier.history.index');
+    }
+
+    public function Dropshipper()
+    {
+        $data = Shops::where('supplier_id','=',Auth::user()->id)->get();
+        return view('supplier.dropshipper.index',compact('data'));
     }
 
     public function withdraw()
