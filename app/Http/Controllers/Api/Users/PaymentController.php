@@ -176,7 +176,8 @@ class PaymentController extends BaseController
     public function checkPayment(Request $request,$id)
     {
         $invoice_id = $id;
-        $dataPayment = Payment::where('external_id','=',$invoice_id)->first();
+        $dataPayment = Payment::with(['Transaction'])
+        where('external_id','=',$invoice_id)->first();
 
         if($dataPayment == null)
         {
