@@ -27,7 +27,8 @@ class CreateUsersTable extends Migration
             $table->string('city')->nullable();
             $table->string('provinsi')->nullable();
             $table->string('kodepos')->nullable();
-            $table->string('informasiTambahan')->nullable();
+            $table->text('informasiTambahan')->nullable();
+            $table->string('category')->nullable();
             $table->string('userRole')->nullable();
             $table->rememberToken();
             $table->timestamps();

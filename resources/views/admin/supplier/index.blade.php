@@ -22,6 +22,13 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
+                @if (session('message'))
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i> Success!</h4>
+                        {{ session('message') }}
+                    </div>
+                @endif
                 <!-- Default box -->
                 <div class="card">
                     <div class="card-header">
@@ -71,14 +78,17 @@
                                             <td>{{ $dt->EWallet->balance !== 0 ? 'Rp. '.number_format($dt->EWallet->balance) : 0 }}</td>
                                             <td>{{ \Carbon\Carbon::parse($dt->created_at)->format('d-m-Y H:i:s') }}</td>
                                             <td>
-                                                <a href="#" class="btn btn-primary">
+                                                <a href="{{ route('admin.supplier.detail',$dt->id) }}" class="btn btn-primary">
                                                     <i class="fa fa-user"></i> Details
                                                 </a>
-                                                <a href="#" class="btn btn-success">
+                                                <a href="{{ route('admin.supplier.transactions',$dt->id) }}" class="btn btn-success">
                                                     <i class="fa fa-book"></i> Transactions
                                                 </a>
-                                                <a href="#" class="btn btn-danger">
+                                                <a href="{{ route('admin.supplier.edit',$dt->id) }}" class="btn btn-warning">
                                                     <i class="fa fa-cogs"></i> Edit Password
+                                                </a>
+                                                <a href="{{ route('admin.supplier.delete',$dt->id) }}" class="btn btn-danger delete">
+                                                    <i class="fa fa-trash"></i> Delete
                                                 </a>
                                             </td>
                                         </tr>
@@ -112,6 +122,18 @@
                 "info": true,
                 "autoWidth": true,
                 "responsive": true,
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function(){
+            $("a.delete").click(function(e){
+                if(!confirm('Are you sure want to delete this supplier?')){
+                    e.preventDefault();
+                    return false;
+                }
+                return true;
             });
         });
     </script>

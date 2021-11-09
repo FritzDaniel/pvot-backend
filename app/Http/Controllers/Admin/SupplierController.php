@@ -3,6 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
+use App\Models\Payment;
+use App\Models\Product;
+use App\Models\Shops;
 use App\Models\User;
 use App\Models\Wallet;
 use App\Models\Withdraw;
@@ -13,7 +17,8 @@ class SupplierController extends Controller
 {
     public function create()
     {
-        return view('admin.supplier.create');
+        $category = Category::all();
+        return view('admin.supplier.create',compact('category'));
     }
 
     public function store(Request $request)
@@ -24,6 +29,8 @@ class SupplierController extends Controller
             'password' => 'required',
             'address' => 'required',
             'phone' => 'required',
+            'aboutSupplier' => 'required',
+            'category' => 'required'
         ]);
 
         if ($request->hasFile('profilePicture')) {
@@ -40,6 +47,8 @@ class SupplierController extends Controller
         $store->email_verified_at = Carbon::now();
         $store->password = bcrypt($request['password']);
         $store->userRole = "Supplier";
+        $store->category = $request['category'];
+        $store->informasiTambahan = $request['aboutSupplier'];
         if($request['phone'])
         {
             $phoneValidation = substr($request['phone'], 0,1);
@@ -70,77 +79,36 @@ class SupplierController extends Controller
         return redirect()->route('admin.supplier')->with('message','Supplier is successfully created');
     }
 
-//    public function updateSupplier(Request $request,$id)
-//    {
-//        $validator = Validator::make($request->all(), [
-//            'name' => 'required',
-//            'email' => 'required|email|unique:users',
-//            'phone' => 'required'
-//        ]);
-//
-//        if ($validator->fails()) {
-//            return $this->sendError($validator->errors(), 'Validation Error.', 400);
-//        }
-//
-//        if ($request->hasFile('profilePicture')) {
-//            if ($request->file('profilePicture')->isValid()) {
-//                $name = Carbon::now()->timestamp . '.' . $request->file('profilePicture')->getClientOriginalExtension();
-//                $store_path = 'public/fotoUser';
-//                $request->file('profilePicture')->storeAs($store_path, $name);
-//            }
-//        }
-//
-//        $store = User::where('id', '=', $id)->first();
-//        if($request['name'])
-//        {
-//            $store->name = $request['name'];
-//        }
-//        if($request['password'])
-//        {
-//            $store->password = bcrypt($request['password']);
-//        }
-//        if($request['phone'])
-//        {
-//            $phoneValidation = substr($request['phone'], 0,1);
-//
-//            if($phoneValidation == "0")
-//            {
-//                $store->phone = '+62'.substr($request['phone'], 1);
-//            }else {
-//                $store->phone = '+62'.$request['phone'];
-//            }
-//            $store->phone = $request['phone'];
-//        }
-//        if ($request->hasFile('profilePicture'))
-//        {
-//            $store->profilePicture = isset($name) ? '/storage/fotoUser/'.$name : '/storage/img/dummyUser.jpg';
-//        }
-//        if($request['country'])
-//        {
-//            $store->country = $request['country'];
-//        }
-//        if($request['address'])
-//        {
-//            $store->alamat = $request['address'];
-//        }
-//        if($request['province'])
-//        {
-//            $store->provinsi = $request['province'];
-//        }
-//        if ($request['postalCode'])
-//        {
-//            $store->kodepos = $request['postalCode'];
-//        }
-//        $store->update();
-//
-//        return $this->sendResponse($store,'Success');
-//    }
+    public function supplierDetail($id)
+    {
+        $data = User::where('id','=',$id)->first();
+        return view('admin.supplier.detail',compact('data'));
+    }
 
-//    public function listWithdraw()
-//    {
-//        $data = Withdraw::orderBy('created_at','DESC')->get();
-//        return $this->sendResponse($data,'Success');
-//    }
+    public function supplierTransaction($id)
+    {
+        $data = Payment::where('supplier_id','=',$id)->get();
+        return view('admin.supplier.transaction',compact('data'));
+    }
+
+    public function supplierPassword($id)
+    {
+        $data = User::where('id','=',$id)->first();
+        return view('admin.supplier.password',compact('data'));
+    }
+
+    public function passwordUpdate(Request $request,$id)
+    {
+        $this->validate($request,[
+            'password' => 'required',
+        ]);
+
+        $store = User::find($id);
+        $store->password = bcrypt($request['password']);
+        $store->update();
+
+        return redirect()->route('admin.supplier')->with('message','Success update supplier password');
+    }
 
     public function changeStatusWithdraw(Request $request,$id)
     {
@@ -194,5 +162,53 @@ class SupplierController extends Controller
         $data->save();
 
         return redirect()->route('admin.supplier')->with('message','Upload receipt is success');
+    }
+
+    public function delete($id)
+    {
+        $data = User::where('id','=',$id)->first();
+        if($data->profilePicture !== "/storage/img/dummy.jpg")
+        {
+            $images_path = public_path().$data->profilePicture;
+            unlink($images_path);
+        }
+
+        $dataPayment = Payment::where('supplier_id','=',$id)->get();
+
+        if(count($dataPayment) > 0)
+        {
+            foreach ($dataPayment as $pay) {
+                $pay->supplier_id = 0;
+                $pay->update();
+            }
+        }
+
+        $dataWallet = Wallet::where('user_id','=',$id)->first();
+        $dataWallet->delete();
+
+        $dataProduct = Product::where('supplier_id','=',$id)->get();
+        if(count($dataProduct) > 0)
+        {
+            foreach ($dataProduct as $pr) {
+                if($pr->productPicture !== "/storage/img/dummy.jpg")
+                {
+                    $images_path = public_path().$pr->productPicture;
+                    unlink($images_path);
+                }
+                $pr->delete();
+            }
+        }
+
+        $dataShop = Shops::where('supplier_id','=',$id)->get();
+        if(count($dataShop) > 0)
+        {
+            foreach ($dataShop as $ds) {
+                $ds->supplier_id = 0;
+                $ds->update();
+            }
+        }
+
+        $data->delete();
+        return redirect()->route('admin.supplier')->with('message','Delete supplier success');
     }
 }

@@ -14,20 +14,20 @@
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-    <li class="breadcrumb-item active"><a href="#">Dropshipper</a></li>
+    <li class="breadcrumb-item active"><a href="#">Supplier</a></li>
     <li class="breadcrumb-item active">Transactions</li>
 @endsection
 
 @section('content')
 
     <div class="container-fluid">
-        <a href="{{ route('admin.dropshipper') }}" class="btn btn-primary mb-3"><i class="fa fa-angle-left"></i> Back</a>
+        <a href="{{ route('admin.supplier') }}" class="btn btn-primary mb-3"><i class="fa fa-angle-left"></i> Back</a>
         <div class="row">
             <div class="col-12">
                 <!-- Default box -->
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Transaction List Dropshipper</h3>
+                        <h3 class="card-title">Transaction List Supplier</h3>
 
                         <div class="card-tools">
                             <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -42,7 +42,6 @@
                                 <tr>
                                     <th>No</th>
                                     <th>External ID</th>
-                                    <th>Xendit ID</th>
                                     <th>User</th>
                                     <th>Email</th>
                                     <th>Status</th>
@@ -62,14 +61,12 @@
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                        <td></td>
                                     </tr>
                                 @else
                                     @foreach($data as $key => $dt)
                                         <tr>
                                             <td>{{ $key+1 }}.</td>
                                             <td>{{ $dt->external_id }}</td>
-                                            <td>{{ $dt->xendit_id ? $dt->xendit_id : '-' }}</td>
                                             <td>{{ $dt->User->name }}</td>
                                             <td>{{ $dt->email }}</td>
                                             <td>

@@ -46,10 +46,12 @@ Route::group(['namespace' => 'Admin','middleware' => 'auth'], function()
     Route::get('/admin/toko', [DashboardController::class, 'toko'])->name('admin.toko');
     # Supplier
     Route::get('/admin/supplier', [DashboardController::class, 'supplier'])->name('admin.supplier');
+    Route::get('/admin/supplier/detail/{id}', [AdminSupplier::class, 'supplierDetail'])->name('admin.supplier.detail');
     Route::get('/admin/supplier/create', [AdminSupplier::class, 'create'])->name('admin.supplier.create');
-    Route::get('/admin/supplier/edit/{id}', [AdminSupplier::class, 'edit'])->name('admin.supplier.edit');
+    Route::get('/admin/supplier/transactions/{id}', [AdminSupplier::class, 'supplierTransaction'])->name('admin.supplier.transactions');
+    Route::get('/admin/supplier/password/{id}', [AdminSupplier::class, 'supplierPassword'])->name('admin.supplier.edit');
     Route::post('/admin/supplier/store', [AdminSupplier::class, 'store'])->name('admin.supplier.store');
-    Route::post('/admin/supplier/update/{id}', [AdminSupplier::class, 'update'])->name('admin.supplier.update');
+    Route::post('/admin/supplier/password/update/{id}', [AdminSupplier::class, 'passwordUpdate'])->name('admin.supplier.update');
     Route::get('/admin/supplier/delete/{id}', [AdminSupplier::class, 'delete'])->name('admin.supplier.delete');
     # Withdraws
     Route::get('/admin/withdraw', [DashboardController::class, 'withdraw'])->name('admin.withdraw');

@@ -87,6 +87,19 @@
                                 <label>Postal Code</label>
                                 <input type="text" name="postalCode" class="form-control" placeholder="Postal Code" value="{{ old('postalCode') }}">
                             </div>
+                            <div class="form-group">
+                                <label>Supplier Category</label>
+                                <select name="category" id="" class="form-control">
+                                    <option value="">Select Category</option>
+                                    @foreach($category as $cat)
+                                        <option value="{{ $cat->name }}">{{ $cat->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Supplier Description</label>
+                                <textarea class="form-control" name="aboutSupplier" placeholder="About Supplier">{{ old('aboutSupplier') }}</textarea>
+                            </div>
                         </form>
                     </div>
 
