@@ -177,7 +177,7 @@ class PaymentController extends BaseController
     {
         $invoice_id = $id;
         $dataPayment = Payment::with(['Transaction'])
-        where('external_id','=',$invoice_id)->first();
+            ->where('external_id','=',$invoice_id)->first();
 
         if($dataPayment == null)
         {
