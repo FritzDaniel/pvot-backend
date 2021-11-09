@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Suppliers;
 
+use App\Models\Category;
 use App\Models\NoRek;
 use App\Models\Payment;
 use App\Models\Product;
@@ -64,8 +65,9 @@ class DashboardController extends Controller
 
     public function profile()
     {
+        $category = Category::all();
         $data = User::find(Auth::user()->id);
-        return view('supplier.profile.index',compact('data'));
+        return view('supplier.profile.index',compact('data','category'));
     }
 
     public function updateProfile(Request $request)
@@ -152,6 +154,14 @@ class DashboardController extends Controller
         if ($request['postalCode'])
         {
             $store->kodepos = $request['postalCode'];
+        }
+        if ($request['aboutSupplier'])
+        {
+            $store->informasiTambahan = $request['aboutSupplier'];
+        }
+        if ($request['supplierCategory'])
+        {
+            $store->category = $request['supplierCategory'];
         }
         $store->update();
 

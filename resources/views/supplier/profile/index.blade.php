@@ -94,6 +94,22 @@
                                 <input type="text" name="postalCode" class="form-control" placeholder="Postal Code" value="{{ $data->kodepos }}">
                             </div>
                             <div class="form-group">
+                                <label>Supplier Category</label>
+                                <select name="supplierCategory" id="" class="form-control">
+                                    <option value="">Select Category</option>
+                                    @foreach($category as $cats)
+                                        <option value="{{ $cats->name }}"
+                                            {{ $data->category == $cats->name ? 'selected' : '' }}>
+                                            {{ $cats->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Supplier Description</label>
+                                <textarea class="form-control" name="aboutSupplier" placeholder="About Supplier">{{ $data->informasiTambahan }}</textarea>
+                            </div>
+                            <div class="form-group">
                                 <label>Old Password</label>
                                 <input type="password" name="old_password" class="form-control" placeholder="Old Password" value="{{ old('old_password') }}">
                             </div>
