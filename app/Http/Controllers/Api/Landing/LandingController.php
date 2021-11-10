@@ -8,8 +8,10 @@ use App\Models\Design;
 use App\Models\DesignChild;
 use App\Models\Product;
 use App\Models\Testimoni;
+use App\Models\Ticket;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Validator;
 
 class LandingController extends BaseController
 {
@@ -120,5 +122,26 @@ class LandingController extends BaseController
     {
         $data = Testimoni::orderBy('created_at','DESC')->get();
         return $this->sendResponse($data,'List testimoni.');
+    }
+
+    public function sendTicket(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'email' => 'required',
+            'pesan' => 'required'
+        ]);
+
+        if($validator->fails()){
+            return $this->sendError($validator->errors(),'Validation Error.',400);
+        }
+
+        $store = new Ticket();
+        $store->name = $request['name'];
+        $store->email = $request['email'];
+        $store->pesan = $request['pesan'];
+        $store->save();
+
+        return $this->sendResponse($store,'Success');
     }
 }

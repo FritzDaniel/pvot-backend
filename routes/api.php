@@ -217,5 +217,10 @@ Route::group([ 'prefix' => 'v1'], function () {
             'list/variants',
             [VariantController::class,'variant']
         );
+        # Post Ticket
+        Route::post(
+            'ticket/send',
+            [LandingController::class,'sendTicket']
+        );
     });
 });
