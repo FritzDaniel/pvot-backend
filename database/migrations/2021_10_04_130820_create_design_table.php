@@ -15,6 +15,7 @@ class CreateDesignTable extends Migration
     {
         Schema::create('design', function (Blueprint $table) {
             $table->id();
+            $table->integer('category_id')->nullable();
             $table->string('designName');
             $table->string('designImage')->nullable();
             $table->timestamps();

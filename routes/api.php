@@ -157,6 +157,11 @@ Route::group([ 'prefix' => 'v1'], function () {
             'getSupplier',
             [LandingController::class,'getSupplier']
         );
+        # List Supplier
+        Route::get(
+            'getSupplier/category/{category}',
+            [LandingController::class,'getSupplierByCategory']
+        );
         # Get Supplier By ID
         Route::get(
             'getSupplier/{id}',
