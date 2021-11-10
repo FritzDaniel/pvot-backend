@@ -81,7 +81,7 @@ class MembershipController extends BaseController
         {
             $items = [
                 [
-                    "name" => "Penambahan Toko",
+                    "name" => "Penambahan 1 Toko",
                     "quantity" => 1,
                     "price" => 500000
                 ],
@@ -142,7 +142,7 @@ class MembershipController extends BaseController
             'payment_channel' => "Xendit Invoice",
             'email' => $user->email,
             'price' => $amount,
-            'description' => "Pembayaran Membership"
+            'description' => $user->Membership->status == "Active" ? "Penambahan Toko" : "Pembayaran Membership"
         ];
         Payment::create($dataPayment);
 
@@ -162,7 +162,7 @@ class MembershipController extends BaseController
         activity()
             ->causedBy($user)
             ->createdAt(now())
-            ->log($user->name.' Register for Membership.');
+            ->log($user->name . $user->Membership->status == "Active" ? ' Add shop can create' : ' Register for Membership.');
 
         return $this->sendResponse($createInvoice,'Create Url Invoice.');
     }

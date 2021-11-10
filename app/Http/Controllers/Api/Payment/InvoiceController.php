@@ -22,70 +22,6 @@ class InvoiceController extends BaseController
         return $this->sendResponse($dataInvoice,'Invoice Data.');
     }
 
-    public function createInvoice(Request $request) {
-
-        try {
-            Xendit::setApiKey($this->token);
-            $external_id = "invoice-".time();
-            $user = $request->user();
-            $biayaAdmin = 4500;
-            $feeAdmin[] = [
-                "type" => 'ADMIN',
-                "value" => $biayaAdmin
-            ];
-
-            $items = $request['items'];
-
-            $params = [
-                'external_id' => $external_id,
-                'payer_email' => $user->email,
-                'description' => $request->description,
-                'amount' => $request->amount + $biayaAdmin,
-                'customer' => [
-                    'given_names' => $user->name,
-                    'email' => $user->email,
-                    'mobile_number' => $user->phone,
-                    //'address' => $request->address
-                ],
-                //"success_redirect_url" => "http://pvotdigital.com/pembayaran-sukses/".$external_id,
-                "success_redirect_url" => "https://dashboard.pvotdigital.com/public/api/v1/payment/retrieve/".$external_id,
-                "invoice_duration" => 3600,
-                "customer_notification_preference" => [
-                    "invoice_created" => ["email"],
-                    //"invoice_reminder" => ["email"],
-                    "invoice_paid" => ["email"],
-                    //"invoice_expired" => ["email"]
-                ],
-                "currency" => "IDR",
-                "fixed_va" => true,
-                "items" => $items,
-                "fees" => $feeAdmin
-            ];
-            $createInvoice = \Xendit\Invoice::create($params);
-
-            $dataPayment = [
-                'xendit_id' => $createInvoice['id'],
-                'external_id' => $external_id,
-                'user_id' => $user->id,
-                'payment_channel' => "Xendit Invoice",
-                'email' => $user->email,
-                'price' => $request->amount,
-                'description' => $request->description
-            ];
-            Payment::create($dataPayment);
-
-            activity()
-                ->causedBy($user)
-                ->createdAt(now())
-                ->log('User Create Invoice');
-
-            return $this->sendResponse($createInvoice,'Create Url Invoice.');
-
-        }catch (\Xendit\Exceptions\ApiException $e) {
-            return $this->sendError($e->getMessage(),'Error Create Invoice', 400);
-        }
-    }
-
     public function callbackInvoice(Request $request)
     {
         $xendit_id = $request['id'];
@@ -108,6 +44,11 @@ class InvoiceController extends BaseController
 
                     $user = User::find($update->user_id);
                     $user->notify(new SuccessPaymentMembership());
+                }
+
+                if($update->description == "Pembayaran Membership")
+                {
+
                 }
 
                 return $this->sendResponse($update,'Sukses Membayar.');
