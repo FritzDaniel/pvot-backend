@@ -13,7 +13,8 @@ class DesignController extends Controller
 {
     public function createDesign()
     {
-        return view('admin.design.create');
+        $supplier = User::role('Supplier')->get();
+        return view('admin.design.create',compact('supplier'));
     }
 
     public function editDesign($id)
@@ -41,7 +42,8 @@ class DesignController extends Controller
     public function storeDesign(Request $request)
     {
         $this->validate($request,[
-            'designName' => 'required'
+            'designName' => 'required',
+            'supplier' => 'required',
         ]);
 
         if ($request->hasFile('designImage')){
