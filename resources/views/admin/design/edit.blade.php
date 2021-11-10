@@ -48,6 +48,15 @@
                                 <input type="text" name="designName" class="form-control" placeholder="Category Name" value="{{ $data->designName }}">
                             </div>
                             <div class="form-group">
+                                <label>Design for Supplier</label>
+                                <select name="supplier" class="form-control select2">
+                                    <option value="">- Choose Supplier -</option>
+                                    @foreach($supplier as $sup)
+                                        <option value="{{ $sup->id }}">{{ $sup->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group">
                                 <label for="exampleInputFile">Logo</label> <br>
                                 <img src="{{ asset($data->designImage) }}" alt="" class="mb-3" style="width: 75px; height: 75px;">
                                 <div class="input-group">
@@ -77,6 +86,7 @@
 
 @section('js')
 
+    <script src="{{ asset('assets/adminlte/plugins/select2/js/select2.full.min.js') }}"></script>
     <script src="{{ asset('assets/adminlte/plugins/bs-custom-file-input/bs-custom-file-input.min.js') }}"></script>
 
     <script>
@@ -88,6 +98,15 @@
     <script>
         $(function () {
             bsCustomFileInput.init();
+        });
+    </script>
+
+    <script>
+        $(function () {
+            //Initialize Select2 Elements
+            $('.select2').select2({
+                theme: 'bootstrap4'
+            })
         });
     </script>
 

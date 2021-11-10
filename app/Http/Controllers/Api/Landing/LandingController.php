@@ -39,10 +39,10 @@ class LandingController extends BaseController
         return $this->sendResponse($data, 'Supplier Detail.');
     }
 
-    public function getSupplierByCategory($id)
+    public function getSupplierByCategory($category)
     {
         $data = User::role('Supplier')
-            ->where('category','=',$id)
+            ->where('category','=',$category)
             ->get();
 
         return $this->sendResponse($data, 'Supplier Category.');
@@ -61,6 +61,15 @@ class LandingController extends BaseController
     public function getDesign()
     {
         $data = Design::orderBy('designName','ASC')->get();
+        return $this->sendResponse($data,'List Design.');
+    }
+
+    public function getDesignBySupplier($supplier)
+    {
+        $data = Design::where('supplier_id','=',$supplier)
+            ->where('shop_id','=',null)
+            ->orderBy('created_at','ASC')
+            ->get();
         return $this->sendResponse($data,'List Design.');
     }
 

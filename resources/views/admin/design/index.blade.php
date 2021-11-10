@@ -49,6 +49,8 @@
                                 <thead>
                                 <tr>
                                     <th>No</th>
+                                    <th>Design Supplier</th>
+                                    <th>Taken By</th>
                                     <th>Design Name</th>
                                     <th>Image</th>
                                     <th>Created Date</th>
@@ -63,11 +65,15 @@
                                         <td></td>
                                         <td></td>
                                         <td></td>
+                                        <td></td>
+                                        <td></td>
                                     </tr>
                                 @else
                                     @foreach($data as $key => $dt)
                                         <tr>
                                             <td>{{ $key+1 }}.</td>
+                                            <td>{{ $dt->supplier_id ? $dt->Supplier->name : '-' }}</td>
+                                            <td>{{ $dt->shop_id ? $dt->Shop->namaToko : '-' }}</td>
                                             <td>{{ $dt->designName }}</td>
                                             <td>
                                                 <img src="{{ asset($dt->designImage) }}" alt="" style="width: 50px; height: 50px;">

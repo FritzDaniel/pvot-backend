@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Design;
 use App\Models\DesignChild;
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -17,8 +18,9 @@ class DesignController extends Controller
 
     public function editDesign($id)
     {
+        $supplier = User::role('Supplier')->get();
         $data = Design::find($id);
-        return view('admin.design.edit',compact('data'));
+        return view('admin.design.edit',compact('data','supplier'));
     }
 
     public function subDesign($id)
@@ -52,6 +54,7 @@ class DesignController extends Controller
 
         $store = new Design();
         $store->designName = $request['designName'];
+        $store->supplier_id = $request['supplier'];
         $store->designImage = isset($name) ? "/storage/fotoDesign/".$name : '/storage/img/dummy.jpg';
         $store->save();
 
@@ -61,7 +64,8 @@ class DesignController extends Controller
     public function updateDesign(Request $request,$id)
     {
         $this->validate($request,[
-            'designName' => 'required'
+            'designName' => 'required',
+            'supplier' => 'required'
         ]);
 
         if ($request->hasFile('designImage')){
@@ -76,6 +80,10 @@ class DesignController extends Controller
         if($request['designName'])
         {
             $data->designName = $request['designName'];
+        }
+        if($request['supplier'])
+        {
+            $data->supplier_id = $request['supplier'];
         }
         if ($request->hasFile('designImage')) {
 

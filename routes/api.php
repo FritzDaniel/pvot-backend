@@ -157,7 +157,7 @@ Route::group([ 'prefix' => 'v1'], function () {
             'getSupplier',
             [LandingController::class,'getSupplier']
         );
-        # List Supplier
+        # List Supplier by Category
         Route::get(
             'getSupplier/category/{category}',
             [LandingController::class,'getSupplierByCategory']
@@ -181,6 +181,11 @@ Route::group([ 'prefix' => 'v1'], function () {
         Route::get(
             'getDesign',
             [LandingController::class,'getDesign']
+        );
+        # List Design
+        Route::get(
+            'getDesign/supplier/{supplier}',
+            [LandingController::class,'getDesignBySupplier']
         );
         # List SubDesign
         Route::get(
