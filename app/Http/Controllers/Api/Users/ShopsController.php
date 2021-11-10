@@ -24,8 +24,9 @@ class ShopsController extends BaseController
 
     public function shopCreate(Request $request)
     {
+        $user = $request->user();
 
-        $checkMembership = Memberships::where('user_id','=',$request->user()->id)
+        $checkMembership = Memberships::where('user_id','=',$user->id)
             ->where('status','=','Active')
             ->first();
 
@@ -34,8 +35,12 @@ class ShopsController extends BaseController
             return $this->sendError(null,'Please create membership first.',400);
         }
 
-        $checkShopcCanCreate = UserToko::where('user_id','=',$request->user()->id)->count();
-        $checkTokoList = Shops::where('user_id','=',$request->user()->id)->count();
+        $checkShopcCanCreate = UserToko::whereHas('Payment', function ($q) {
+            $q->where('status','Paid');
+        })
+            ->where('user_id','=',$request->user()->id)
+            ->count();
+        $checkTokoList = Shops::where('user_id','=',$user->id)->count();
 
         if($checkShopcCanCreate == $checkTokoList)
         {

@@ -19,4 +19,9 @@ class UserToko extends Model
         'marketplaceSelect',
     ];
     public $timestamps = true;
+
+    public function Payment()
+    {
+        return $this->belongsTo(Payment::class,'transaction_id','external_id');
+    }
 }
