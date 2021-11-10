@@ -236,6 +236,7 @@ class PaymentController extends BaseController
             'supplier_id' => 'required',
             'items' => 'required',
             'payment_bank' => 'required',
+            'bukti_resi' => 'required'
         ]);
 
         if ($request->hasFile('bukti_resi')){
