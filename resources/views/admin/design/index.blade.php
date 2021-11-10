@@ -76,7 +76,7 @@
                                             <td>{{ $dt->shop_id ? $dt->Shop->namaToko : '-' }}</td>
                                             <td>{{ $dt->designName }}</td>
                                             <td>
-                                                <img src="{{ asset($dt->designImage) }}" alt="" style="width: 50px; height: 50px;">
+                                                <a href="{{ asset($dt->designImage) }}">View Image</a>
                                             </td>
                                             <td>{{ \Carbon\Carbon::parse($dt->created_at)->format('d-m-Y H:i:s') }}</td>
                                             <td>
