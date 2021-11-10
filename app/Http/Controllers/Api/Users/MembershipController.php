@@ -14,14 +14,7 @@ use Xendit\Xendit;
 
 class MembershipController extends BaseController
 {
-    private $token = "xnd_development_we3wcctrm3DWwxOgXN6b3xNuGjn2Ycgnp2wVjcUmZq9J2pmXA5bRBErNjOL9c";
-
-    public function getUserDetail(Request $request)
-    {
-        $user = $request->user();
-        $data = $user;
-        return $this->sendResponse($data,'User Detail.');
-    }
+    private $token = "xnd_public_development_T5ByGnrE8ZlxAnaUw21ihCyRrLnOfvSbsAnJBrSIOTCTViGcZWv4iTSvXmlo5J";
 
     public function detailPayment(Request $request)
     {
@@ -84,18 +77,34 @@ class MembershipController extends BaseController
             "value" => $biayaAdmin
         ];
 
-        $items = [
-            [
-                "name" => "Membership PVOT Digital 1 Years",
-                "quantity" => 1,
-                "price" => 500000
-            ],
-            [
-                "name" => "Pembuatan 1 Toko di ".$request['marketplaceCount']." Marketplace",
-                "quantity" => 1,
-                "price" => $request['marketplaceCount'] == 1 ? 0 : 250000
-            ]
-        ];
+        if($user->Membership->status == "Active")
+        {
+            $items = [
+                [
+                    "name" => "Penambahan Toko",
+                    "quantity" => 1,
+                    "price" => 500000
+                ],
+                [
+                    "name" => "Pembuatan 1 Toko di ".$request['marketplaceCount']." Marketplace",
+                    "quantity" => 1,
+                    "price" => $request['marketplaceCount'] == 1 ? 0 : 250000
+                ]
+            ];
+        }else {
+            $items = [
+                [
+                    "name" => "Membership PVOT Digital 1 Years",
+                    "quantity" => 1,
+                    "price" => 500000
+                ],
+                [
+                    "name" => "Pembuatan 1 Toko di ".$request['marketplaceCount']." Marketplace",
+                    "quantity" => 1,
+                    "price" => $request['marketplaceCount'] == 1 ? 0 : 250000
+                ]
+            ];
+        }
 
         $marketplaceCountPrice = $request['marketplaceCount'] == 1 ? 0 : 250000;
         $amount = 500000 + $marketplaceCountPrice + $biayaAdmin;
@@ -103,7 +112,7 @@ class MembershipController extends BaseController
         $params = [
             'external_id' => $external_id,
             'payer_email' => $user->email,
-            'description' => "Pembayaran Membership",
+            'description' => $user->Membership->status == "Active" ? "Penambahan Toko" : "Pembayaran Membership",
             'amount' => $amount,
             'customer' => [
                 'given_names' => $user->name,
