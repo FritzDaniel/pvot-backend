@@ -14,7 +14,7 @@ use Xendit\Xendit;
 
 class MembershipController extends BaseController
 {
-    private $token = "xnd_public_development_T5ByGnrE8ZlxAnaUw21ihCyRrLnOfvSbsAnJBrSIOTCTViGcZWv4iTSvXmlo5J";
+    private $token = "xnd_development_we3wcctrm3DWwxOgXN6b3xNuGjn2Ycgnp2wVjcUmZq9J2pmXA5bRBErNjOL9c";
 
     public function detailPayment(Request $request)
     {
