@@ -238,6 +238,14 @@ class PaymentController extends BaseController
             'payment_bank' => 'required',
         ]);
 
+        if ($request->hasFile('bukti_resi')){
+            if ($request->file('bukti_resi')->isValid()){
+                $name = Carbon::now()->timestamp.'.'.$request->file('bukti_resi')->getClientOriginalExtension();
+                $store_path = 'public/buktiResi';
+                $request->file('bukti_resi')->storeAs($store_path,$name);
+            }
+        }
+
         if($validator->fails()){
             return $this->sendError($validator->errors(),'Error',400);
         }
@@ -286,7 +294,9 @@ class PaymentController extends BaseController
             'payment_bank' => $request['payment_bank'],
             'email' => $user->email,
             'price' => $amount,
-            'description' => 'Pembayaran Product'
+            'description' => 'Pembayaran Product',
+            'receiptImage' => isset($name) ? 'storage/buktiResi/'.$name : null,
+            'receiptNumber' => $request['no_resi']
         ];
         $payment = Payment::create($dataPayment);
 
