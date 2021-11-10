@@ -42,16 +42,9 @@ class ShopsController extends BaseController
         }
 
         $validator = Validator::make($request->all(), [
-            'emailToko' => 'required|email',
-            'handphoneToko' => 'required',
-            'namaToko' => 'required',
-            'alamatToko' => 'required',
-            'fotoToko' => 'required|mimes:jpg,png,jpeg|max:5000',
-            'fotoHeaderToko' => 'required|mimes:jpg,png,jpeg|max:5000',
             'kategoriToko' => 'required',
             'supplier' => 'required',
-            'design' => 'required',
-            'descToko' => 'required'
+            'design' => 'required'
         ]);
 
         if($validator->fails()) {
@@ -76,10 +69,10 @@ class ShopsController extends BaseController
 
         $store = [
             'user_id' => $request->user()->id,
-            'emailToko' => $request['emailToko'],
-            'handphoneToko' => $request['handphoneToko'],
-            'namaToko' => $request['namaToko'],
-            'alamatToko' => $request['alamatToko'],
+            'emailToko' => $request['emailToko'] ? $request['emailToko'] : $request->user()->email,
+            'handphoneToko' => $request['handphoneToko'] ? $request['emailToko'] : $request->user()->phone,
+            'namaToko' => $request['namaToko'] ? $request['namaToko'] : 'No Name',
+            'alamatToko' => $request['alamatToko'] ? $request['alamatToko'] : $request->user()->alamat,
             'category_id' => $request['kategoriToko'],
             'fotoToko' => isset($name_fotoToko) ? "/storage/fotoToko/".$name_fotoToko : '/storage/fotoHeaderToko/dummy.jpg',
             'fotoHeaderToko' => isset($name_fotoHeaderToko) ? "/storage/fotoHeaderToko/".$name_fotoHeaderToko : '/storage/fotoHeaderToko/dummy.jpg',
