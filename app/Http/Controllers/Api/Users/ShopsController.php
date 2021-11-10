@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Users;
 
 use App\Http\Controllers\Api\BaseController;
+use App\Models\Design;
 use App\Models\Memberships;
 use App\Models\ShopPicture;
 use App\Models\Shops;
@@ -81,6 +82,10 @@ class ShopsController extends BaseController
             'description' => $request['descToko']
         ];
         $data = Shops::create($store);
+
+        $designUpdate = Design::find($request['design']);
+        $designUpdate->shop_id = $data->id;
+        $designUpdate->update();
 
         return $this->sendResponse($data, 'Success Create Shop.');
     }
