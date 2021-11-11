@@ -17,8 +17,14 @@ class UserToko extends Model
         'tokoCount',
         'marketplaceCount',
         'marketplaceSelect',
+        'shop_id'
     ];
     public $timestamps = true;
+
+    public function Shop()
+    {
+        return $this->belongsTo(Shops::class,'shop_id');
+    }
 
     public function Payment()
     {

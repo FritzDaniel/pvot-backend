@@ -8,25 +8,31 @@ use Illuminate\Http\Request;
 
 class TokoController extends Controller
 {
-    public function getDetailToko($id)
+    public function detail($id)
     {
-        $data = Shops::where('io','=',$id)->first();
-        return $this->sendResponse($data,'Shop Detail');
+        $data = Shops::where('id','=',$id)->first();
+        return view('admin.toko.detail',compact('data'));
     }
 
-    public function listToko()
+    public function edit($id)
     {
-        $data = Shops::orderBy('created_at','DESC')->get();
-        return $this->sendResponse($data,'List Shop Dropshipper');
+        $data = Shops::where('id','=',$id)->first();
+        return view('admin.toko.edit',compact('data'));
     }
 
-    public function changeStatus(Request $request,$id)
+    public function updateToko(Request $request,$id)
     {
-        $data = Shops::orderBy('id',$id)->first();
-        $data->url_tokopedia = $request['url_tokopedia'];
-        $data->url_shopee = $request['url_shopee'];
-        $data->status = "Created";
-        $data->update();
-        return $this->sendResponse($data,'Update Status Shop Dropshipper');
+        $this->validate($request,[
+            'url_tokopedia' => 'required',
+            'url_shopee' => 'required'
+        ]);
+
+        $update = Shops::where('id','=',$id)->first();
+        $update->url_tokopedia = $request['url_tokopedia'];
+        $update->url_shopee = $request['url_shopee'];
+        $update->status = "Active";
+        $update->update();
+
+        return redirect()->route('admin.toko')->with('message','Successfully update the Toko');
     }
 }

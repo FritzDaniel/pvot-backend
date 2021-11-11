@@ -22,6 +22,13 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
+                @if (session('message'))
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i> Success!</h4>
+                        {{ session('message') }}
+                    </div>
+                @endif
                 <!-- Default box -->
                 <div class="card">
                     <div class="card-header">
@@ -58,6 +65,9 @@
                                         <td></td>
                                         <td></td>
                                         <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
                                     </tr>
                                 @else
                                     @foreach($data as $key => $dt)
@@ -71,10 +81,10 @@
                                             <td>{{ $dt->url_shopee ? $dt->url_shopee : '-' }}</td>
                                             <td>{{ \Carbon\Carbon::parse($dt->created_at)->format('d-m-Y H:i:s') }}</td>
                                             <td>
-                                                <a href="#" class="btn btn-primary">
+                                                <a href="{{ route('admin.toko.detail',$dt->id) }}" class="btn btn-primary">
                                                     <i class="fa fa-eye"></i> Details
                                                 </a>
-                                                <a href="#" class="btn btn-success">
+                                                <a href="{{ route('admin.toko.edit',$dt->id) }}" class="btn btn-success">
                                                     <i class="fa fa-bookmark"></i> Add Marketplace
                                                 </a>
                                             </td>

@@ -54,7 +54,7 @@
                                 <tbody>
                                 @if($data->isEmpty())
                                     <tr>
-                                        <td></td>
+                                        <td>No Data</td>
                                         <td></td>
                                         <td></td>
                                         <td></td>

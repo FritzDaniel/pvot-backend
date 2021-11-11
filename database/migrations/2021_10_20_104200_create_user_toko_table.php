@@ -20,6 +20,7 @@ class CreateUserTokoTable extends Migration
             $table->integer('tokoCount');
             $table->integer('marketplaceCount');
             $table->integer('marketplaceSelect');
+            $table->integer('shop_id')->nullable();
             $table->timestamps();
         });
     }

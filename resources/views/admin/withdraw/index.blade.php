@@ -22,6 +22,13 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
+                @if (session('message'))
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i> Success!</h4>
+                        {{ session('message') }}
+                    </div>
+                @endif
                 <!-- Default box -->
                 <div class="card">
                     <div class="card-header">
@@ -44,6 +51,7 @@
                                     <th>Email</th>
                                     <th>Phone</th>
                                     <th>Bank</th>
+                                    <th>Account Number</th>
                                     <th>Withdraw Amount</th>
                                     <th>Created Date</th>
                                     <th>Actions</th>
@@ -53,6 +61,7 @@
                                 @if($data->isEmpty())
                                     <tr>
                                         <td>No Data</td>
+                                        <td></td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
@@ -71,6 +80,7 @@
                                             <td>{{ $dt->Supplier->email }}</td>
                                             <td>{{ $dt->Supplier->phone }}</td>
                                             <td>{{ $dt->bank }}</td>
+                                            <td>{{ $dt->no_rek }}</td>
                                             <td>Rp. {{ number_format($dt->amount) }}</td>
                                             <td>{{ \Carbon\Carbon::parse($dt->created_at)->format('d-M-Y H:i') }}</td>
                                             <td>

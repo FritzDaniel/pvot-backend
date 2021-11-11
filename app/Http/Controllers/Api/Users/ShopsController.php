@@ -92,6 +92,13 @@ class ShopsController extends BaseController
         $designUpdate->shop_id = $data->id;
         $designUpdate->update();
 
+        $userToko = UserToko::where('shop_id','!=',null)->first();
+        if($userToko)
+        {
+            $userToko->shop_id = $data->id;
+            $userToko->update();
+        }
+
         return $this->sendResponse($data, 'Success Create Shop.');
     }
 }

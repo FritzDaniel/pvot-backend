@@ -50,7 +50,7 @@
                                     <th>User</th>
                                     <th>Email</th>
                                     <th>Phone</th>
-                                    <th>Address</th>
+                                    <th>Category</th>
                                     <th>E-Wallet</th>
                                     <th>Created Date</th>
                                     <th>Actions</th>
@@ -66,6 +66,7 @@
                                         <td></td>
                                         <td></td>
                                         <td></td>
+                                        <td></td>
                                     </tr>
                                 @else
                                     @foreach($data as $key => $dt)
@@ -74,7 +75,7 @@
                                             <td>{{ $dt->name }}</td>
                                             <td>{{ $dt->email }}</td>
                                             <td>{{ $dt->phone }}</td>
-                                            <td>{{ $dt->alamat ? $dt->alamat : '-' }}</td>
+                                            <td>{{ $dt->category ? $dt->category : '-' }}</td>
                                             <td>{{ $dt->EWallet->balance !== 0 ? 'Rp. '.number_format($dt->EWallet->balance) : 0 }}</td>
                                             <td>{{ \Carbon\Carbon::parse($dt->created_at)->format('d-m-Y H:i:s') }}</td>
                                             <td>

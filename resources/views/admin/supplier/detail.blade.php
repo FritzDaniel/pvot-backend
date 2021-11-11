@@ -56,6 +56,7 @@
                         <p>Province : {{ $data->provinsi ? $data->provinsi : '-' }}</p>
                         <p>Postal code : {{ $data->kodepos ? $data->kodepos : '-' }}</p>
                         <p>Role : {{ $data->userRole }}</p>
+                        <p>Supplier Category : {{ $data->category }}</p>
                         <p>About Supplier : {{ $data->informasiTambahan ? $data->informasiTambahan : '-' }}</p>
                         <p>Created at : {{ \Carbon\Carbon::parse($data->created_at)->format('d-M-Y H:i') }}</p>
                     </div>
