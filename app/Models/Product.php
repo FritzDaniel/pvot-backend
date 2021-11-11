@@ -28,7 +28,7 @@ class Product extends Model
 
     public function productSold()
     {
-        $data = $this->hasMany(Transaction::class,'product_id','id');
+        $data = $this->hasMany(Transaction::class,'product_id','uuid');
         return $data;
     }
 
