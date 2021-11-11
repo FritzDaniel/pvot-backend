@@ -92,7 +92,7 @@ class ShopsController extends BaseController
         $designUpdate->shop_id = $data->id;
         $designUpdate->update();
 
-        $userToko = UserToko::where('shop_id','!=',null)->first();
+        $userToko = UserToko::where('shop_id','=',null)->first();
         if($userToko)
         {
             $userToko->shop_id = $data->id;
