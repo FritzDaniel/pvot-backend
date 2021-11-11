@@ -72,8 +72,8 @@
                                         <tr>
                                             <td>{{ $dt->id }}.</td>
                                             <td>{{ $dt->Shop ? $dt->Shop->User->name : '-' }}</td>
-                                            <td>{{ $dt->Shop->namaToko }}</td>
-                                            <td>{{ $dt->Shop->status }}</td>
+                                            <td>{{ $dt->Shop ? $dt->Shop->namaToko : '-' }}</td>
+                                            <td>{{ $dt->Shop ? $dt->Shop->status : '-' }}</td>
                                             <td>
                                                 @if($dt->marketplaceSelect == 1)
                                                     Tokopedia
@@ -85,16 +85,16 @@
                                             </td>
                                             <td>
                                                 @if($dt->marketplaceSelect == 1)
-                                                    Tokopedia: <br> <a target="_blank" href="{{ $dt->Shop->url_tokopedia ? $dt->Shop->url_tokopedia : '#' }}">{{ $dt->Shop->url_tokopedia ? $dt->Shop->url_tokopedia : '-' }}</a>
+                                                    Tokopedia: <br> <a target="_blank" href="{{ $dt->Shop ? $dt->Shop->url_tokopedia : '#' }}">{{ $dt->Shop ? $dt->Shop->url_tokopedia : '-' }}</a>
                                                 @elseif($dt->marketplaceSelect == 2)
-                                                    Shopee: <br> <a target="_blank" href="{{ $dt->Shop->url_shopee ? $dt->Shop->url_shopee : '#' }}">{{ $dt->Shop->url_shopee ? $dt->Shop->url_shopee : '-' }}</a>
+                                                    Shopee: <br> <a target="_blank" href="{{ $dt->Shop ? $dt->Shop->url_shopee : '#' }}">{{ $dt->Shop ? $dt->Shop->url_shopee : '-' }}</a>
                                                 @else
-                                                    Tokopedia:  <br> <a target="_blank" href="{{ $dt->Shop->url_tokopedia ? $dt->Shop->url_tokopedia : '#' }}">{{ $dt->Shop->url_tokopedia ? $dt->Shop->url_tokopedia : '-' }}</a>  <br>
-                                                    Shopee:  <br> <a target="_blank" href="{{ $dt->Shop->url_shopee ? $dt->Shop->url_shopee : '#' }}">{{ $dt->Shop->url_shopee ? $dt->Shop->url_shopee : '-' }}</a>
+                                                    Tokopedia:  <br> <a target="_blank" href="{{ $dt->Shop ? $dt->Shop->url_tokopedia : '#' }}">{{ $dt->Shop ? $dt->Shop->url_tokopedia : '-' }}</a>  <br>
+                                                    Shopee:  <br> <a target="_blank" href="{{ $dt->Shop ? $dt->Shop->url_shopee : '#' }}">{{ $dt->Shop ? $dt->Shop->url_shopee : '-' }}</a>
                                                 @endif
 
                                             </td>
-                                            <td>{{ \Carbon\Carbon::parse($dt->Shop->created_at)->format('d-M-Y H:i') }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($dt->Shop ? $dt->Shop->created_at : '-')->format('d-M-Y H:i') }}</td>
                                             <td>
                                                 <a href="{{ route('admin.toko.detail',$dt->id) }}" class="btn btn-primary">
                                                     <i class="fa fa-eye"></i> Details
