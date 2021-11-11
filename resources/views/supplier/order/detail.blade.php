@@ -67,7 +67,7 @@
                                     <td>{{ $itm->Product->productName }}</td>
                                     <td>Rp. {{ number_format($itm->Product->productPrice) }}</td>
                                     <td>{{ $itm->qty }} Barang</td>
-                                    <td>{{ $itm->variants }}</td>
+                                    <td>{{ $itm->variants ? $itm->variants : '-' }}</td>
                                     <td>Rp. {{ number_format($itm->Product->productPrice * $itm->qty) }}</td>
                                 </tr>
                             @endforeach
