@@ -93,21 +93,25 @@ class SupplierController extends Controller
 
     public function supplierPassword($id)
     {
+        $category = Category::orderBy('name','ASC')->get();
         $data = User::where('id','=',$id)->first();
-        return view('admin.supplier.password',compact('data'));
+        return view('admin.supplier.password',compact('data','category'));
     }
 
     public function passwordUpdate(Request $request,$id)
     {
-        $this->validate($request,[
-            'password' => 'required',
-        ]);
-
         $store = User::find($id);
-        $store->password = bcrypt($request['password']);
+        if($request['category'])
+        {
+            $store->category = $request['category'];
+        }
+        if($request['password'])
+        {
+            $store->password = bcrypt($request['password']);
+        }
         $store->update();
 
-        return redirect()->route('admin.supplier')->with('message','Success update supplier password');
+        return redirect()->route('admin.supplier')->with('message','Success update supplier data');
     }
 
     public function changeStatusWithdraw(Request $request,$id)

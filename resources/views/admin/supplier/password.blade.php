@@ -11,11 +11,11 @@
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
     <li class="breadcrumb-item"><a href="#">Supplier</a></li>
-    <li class="breadcrumb-item active">Password</li>
+    <li class="breadcrumb-item active">Edit</li>
 @endsection
 
 @section('headerTitle')
-    Supplier Password
+    Edit
 @endsection
 
 @section('content')
@@ -37,7 +37,7 @@
             <!-- Default box -->
                 <div class="card card-primary">
                     <div class="card-header">
-                        <h3 class="card-title">Change Password</h3>
+                        <h3 class="card-title">Edit Supplier</h3>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
@@ -46,6 +46,18 @@
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Email address</label>
                                 <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email" value="{{ $data->email }}" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Category</label>
+                                <select name="category" class="form-control">
+                                    <option value="">Select Category</option>
+                                    @foreach($category as $cats)
+                                        <option value="{{ $cats->name }}"
+                                            {{ $data->category == $cats->name ? 'selected' : '' }}>
+                                            {{ $cats->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
                             </div>
                             <div class="form-group">
                                 <label>Password</label>

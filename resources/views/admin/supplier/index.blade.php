@@ -86,7 +86,7 @@
                                                     <i class="fa fa-book"></i> Transactions
                                                 </a>
                                                 <a href="{{ route('admin.supplier.edit',$dt->id) }}" class="btn btn-warning">
-                                                    <i class="fa fa-cogs"></i> Edit Password
+                                                    <i class="fa fa-cogs"></i> Edit
                                                 </a>
                                                 <a href="{{ route('admin.supplier.delete',$dt->id) }}" class="btn btn-danger delete">
                                                     <i class="fa fa-trash"></i> Delete
