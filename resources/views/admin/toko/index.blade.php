@@ -71,7 +71,7 @@
                                     @foreach($data as $key => $dt)
                                         <tr>
                                             <td>{{ $dt->id }}.</td>
-                                            <td>{{ $dt->Shop->User->name }}</td>
+                                            <td>{{ $dt->Shop->user_id ? $dt->Shop->User->name : '-' }}</td>
                                             <td>{{ $dt->Shop->namaToko }}</td>
                                             <td>{{ $dt->Shop->status }}</td>
                                             <td>
