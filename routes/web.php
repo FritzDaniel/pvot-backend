@@ -31,7 +31,7 @@ Route::get('/verifikasi-sukses', function () {
 
 Auth::routes();
 
-Route::group(['namespace' => 'Admin','middleware' => 'auth'], function()
+Route::group(['namespace' => 'Admin'], function()
 {
     # Dashboard page route
     Route::get('/admin/dashboard', [DashboardController::class, 'dashboard'])->name('admin.dashboard');
@@ -107,7 +107,7 @@ Route::group(['namespace' => 'Admin','middleware' => 'auth'], function()
     Route::get('/admin/settings', [DashboardController::class, 'settings'])->name('admin.settings');
 });
 
-Route::group(['namespace' => 'Suppliers','middleware' => 'auth'], function()
+Route::group(['namespace' => 'Suppliers'], function()
 {
     # Dashboard page route
     Route::get('/supplier/dashboard', [SupplierDashboard::class,'dashboard'])->name('supplier.dashboard');
@@ -150,6 +150,7 @@ Route::group(['namespace' => 'Suppliers','middleware' => 'auth'], function()
     Route::post('/supplier/profile/update',[SupplierDashboard::class,'updateProfile'])->name('supplier.profile.update');
 
 });
+
 
 Route::get('/', function () {
     return redirect('/login');
