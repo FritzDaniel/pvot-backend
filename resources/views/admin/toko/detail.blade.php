@@ -19,7 +19,7 @@
 @endsection
 
 @section('headerTitle')
-    Template
+    Detail
 @endsection
 
 @section('content')
