@@ -48,10 +48,9 @@
                                     <th>ID</th>
                                     <th>Shop Owner</th>
                                     <th>Shop Name</th>
-                                    <th>Shop Email</th>
                                     <th>Status</th>
-                                    <th>URL tokopedia</th>
-                                    <th>URL shopee</th>
+                                    <th>Marketplace</th>
+                                    <th>URL Toko</th>
                                     <th>Created Date</th>
                                     <th>Action</th>
                                 </tr>
@@ -67,24 +66,40 @@
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                        <td></td>
                                     </tr>
                                 @else
                                     @foreach($data as $key => $dt)
                                         <tr>
                                             <td>{{ $dt->id }}.</td>
-                                            <td>{{ $dt->User->name }}</td>
-                                            <td>{{ $dt->namaToko }}</td>
-                                            <td>{{ $dt->emailToko }}</td>
-                                            <td>{{ $dt->status }}</td>
-                                            <td>{{ $dt->url_tokopedia ? $dt->url_tokopedia : '-' }}</td>
-                                            <td>{{ $dt->url_shopee ? $dt->url_shopee : '-' }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($dt->created_at)->format('d-m-Y H:i:s') }}</td>
+                                            <td>{{ $dt->Shop->User->name }}</td>
+                                            <td>{{ $dt->Shop->namaToko }}</td>
+                                            <td>{{ $dt->Shop->status }}</td>
+                                            <td>
+                                                @if($dt->marketplaceSelect == 1)
+                                                    Tokopedia
+                                                @elseif($dt->marketplaceSelect == 2)
+                                                    Shopee
+                                                @else
+                                                    Tokopedia & Shopee
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if($dt->marketplaceSelect == 1)
+                                                    Tokopedia: <br> <a target="_blank" href="{{ $dt->Shop->url_tokopedia ? $dt->Shop->url_tokopedia : '#' }}">{{ $dt->Shop->url_tokopedia ? $dt->Shop->url_tokopedia : '-' }}</a>
+                                                @elseif($dt->marketplaceSelect == 2)
+                                                    Shopee: <br> <a target="_blank" href="{{ $dt->Shop->url_shopee ? $dt->Shop->url_shopee : '#' }}">{{ $dt->Shop->url_shopee ? $dt->Shop->url_shopee : '-' }}</a>
+                                                @else
+                                                    Tokopedia:  <br> <a target="_blank" href="{{ $dt->Shop->url_tokopedia ? $dt->Shop->url_tokopedia : '#' }}">{{ $dt->Shop->url_tokopedia ? $dt->Shop->url_tokopedia : '-' }}</a>  <br>
+                                                    Shopee:  <br> <a target="_blank" href="{{ $dt->Shop->url_shopee ? $dt->Shop->url_shopee : '#' }}">{{ $dt->Shop->url_shopee ? $dt->Shop->url_shopee : '-' }}</a>
+                                                @endif
+
+                                            </td>
+                                            <td>{{ \Carbon\Carbon::parse($dt->Shop->created_at)->format('d-M-Y H:i') }}</td>
                                             <td>
                                                 <a href="{{ route('admin.toko.detail',$dt->id) }}" class="btn btn-primary">
                                                     <i class="fa fa-eye"></i> Details
                                                 </a>
-                                                <a href="{{ route('admin.toko.edit',$dt->id) }}" class="btn btn-success">
+                                                <a href="{{ route('admin.toko.edit',$dt->Shop->id) }}" class="btn btn-success">
                                                     <i class="fa fa-bookmark"></i> Add Marketplace
                                                 </a>
                                             </td>

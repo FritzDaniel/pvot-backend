@@ -92,7 +92,14 @@ class ShopsController extends BaseController
         $designUpdate->shop_id = $data->id;
         $designUpdate->update();
 
-        $userToko = UserToko::where('shop_id','=',null)->first();
+        $userToko = UserToko::whereHas('Payment', function ($q) {
+            $q->where('status','Paid');
+            }
+        )
+            ->where('user_id','=',$request->user()->id)
+            ->where('shop_id','=',null)
+            ->first();
+
         if($userToko)
         {
             $userToko->shop_id = $data->id;

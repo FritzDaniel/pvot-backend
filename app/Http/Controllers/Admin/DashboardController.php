@@ -9,8 +9,10 @@ use App\Models\Payment;
 use App\Models\Settings;
 use App\Models\Shops;
 use App\Models\Testimoni;
+use App\Models\Ticket;
 use App\Models\Transaction;
 use App\Models\User;
+use App\Models\UserToko;
 use App\Models\Variant;
 use App\Models\Withdraw;
 use Illuminate\Http\Request;
@@ -70,7 +72,7 @@ class DashboardController extends Controller
     #Toko
     public function toko()
     {
-        $data = Shops::orderBy('created_at','DESC')->get();
+        $data = UserToko::orderBy('created_at','DESC')->get();
         return view('admin.toko.index',compact('data'));
     }
 
@@ -137,5 +139,12 @@ class DashboardController extends Controller
     {
         $data = Settings::all();
         return view('admin.setting.index',compact('data'));
+    }
+
+    # Settings
+    public function ticket()
+    {
+        $data = Ticket::orderBy('created_at','DESC')->get();
+        return view('admin.ticket.index',compact('data'));
     }
 }

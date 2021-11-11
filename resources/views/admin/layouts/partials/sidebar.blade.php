@@ -114,6 +114,14 @@
                         </p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{ route('admin.ticket') }}" class="nav-link">
+                        <i class="nav-icon far fa-file"></i>
+                        <p>
+                            Ticket
+                        </p>
+                    </a>
+                </li>
                 <li class="nav-header">Settings</li>
                 <li class="nav-item">
                     <a href="{{ route('admin.settings') }}" class="nav-link">

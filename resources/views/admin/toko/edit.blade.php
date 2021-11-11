@@ -36,16 +36,29 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <form id="updatePassword" class="fpms" action="{{ route('admin.toko.update',$data->id) }}" method="POST">
+                        <form id="updatePassword" class="fpms" action="{{ route('admin.toko.update',$data->Shop->id) }}" method="POST">
                             @csrf
-                            <div class="form-group">
-                                <label for="">Url Tokopedia</label>
-                                <input placeholder="ex: https://www.tokopedia.com/test" name="url_tokopedia" type="text" class="form-control" value="{{ $data->url_tokopedia }}">
-                            </div>
-                            <div class="form-group">
-                                <label for="">Url Shopee</label>
-                                <input placeholder="ex: https://www.shopee.co.id/test" name="url_shopee" type="text" class="form-control" value="{{ $data->url_shopee }}">
-                            </div>
+
+                            @if($data->marketplaceSelect == 1)
+                                <div class="form-group">
+                                    <label for="">Url Tokopedia</label>
+                                    <input placeholder="ex: https://www.tokopedia.com/test" name="url_tokopedia" type="text" class="form-control" value="{{ $data->Shop->url_tokopedia }}">
+                                </div>
+                            @elseif($data->marketplaceSelect == 2)
+                                <div class="form-group">
+                                    <label for="">Url Shopee</label>
+                                    <input placeholder="ex: https://www.shopee.co.id/test" name="url_shopee" type="text" class="form-control" value="{{ $data->Shop->url_shopee }}">
+                                </div>
+                            @else
+                                <div class="form-group">
+                                    <label for="">Url Tokopedia</label>
+                                    <input placeholder="ex: https://www.tokopedia.com/test" name="url_tokopedia" type="text" class="form-control" value="{{ $data->Shop->url_tokopedia }}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="">Url Shopee</label>
+                                    <input placeholder="ex: https://www.shopee.co.id/test" name="url_shopee" type="text" class="form-control" value="{{ $data->Shop->url_shopee }}">
+                                </div>
+                            @endif
                         </form>
                     </div>
                     <!-- /.card-body -->

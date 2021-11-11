@@ -54,6 +54,7 @@ class LandingController extends BaseController
     {
         $data = Product::with('productVariant')
             ->where('supplier_id','=',$id)
+            ->where('productStock','>',1)
             ->where('status','=','Active')
             ->get();
 

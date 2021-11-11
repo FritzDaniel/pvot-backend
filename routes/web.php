@@ -99,6 +99,8 @@ Route::group(['namespace' => 'Admin','middleware' => 'auth'], function()
     Route::get('/admin/variant/delete/{id}', [VariantController::class, 'variantDelete'])->name('admin.variant.delete');
     # Logs
     Route::get('/admin/logs', [DashboardController::class, 'logs'])->name('admin.logs');
+    # Ticket
+    Route::get('/admin/ticket', [DashboardController::class, 'ticket'])->name('admin.ticket');
     # Mutation
     Route::get('/admin/mutation', [DashboardController::class, 'mutation'])->name('admin.mutation');
     # Settings
