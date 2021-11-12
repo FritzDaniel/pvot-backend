@@ -25,8 +25,6 @@ class CreatePaymentsTable extends Migration
             $table->double('price');
             $table->string('status')->default('Pending');
             $table->string('description')->nullable();
-            $table->string('receiptImage')->nullable();
-            $table->string('receiptNumber')->nullable();
             $table->timestamps();
         });
     }

@@ -72,11 +72,10 @@ class TokoController extends Controller
 
             if($update->fotoToko !== "/storage/img/dummy.jpg")
             {
-                dd(true);
                 $images_path = public_path().$update->fotoToko;
                 unlink($images_path);
             }
-            $update->fotoToko = isset($name_fotoToko) ? "/storage/fotoDesign/" . $name_fotoToko : '/storage/img/dummy.jpg';
+            $update->fotoToko = isset($name_fotoToko) ? "/storage/fotoToko/" . $name_fotoToko : '/storage/img/dummy.jpg';
         }
         if ($request->hasFile('fotoHeaderToko')) {
 
@@ -85,7 +84,7 @@ class TokoController extends Controller
                 $images_path = public_path().$update->fotoHeaderToko;
                 unlink($images_path);
             }
-            $update->fotoHeaderToko = isset($name_fotoHeaderToko) ? "/storage/fotoDesign/" . $name_fotoHeaderToko : '/storage/img/dummy.jpg';
+            $update->fotoHeaderToko = isset($name_fotoHeaderToko) ? "/storage/fotoHeaderToko/" . $name_fotoHeaderToko : '/storage/img/dummy.jpg';
         }
         $update->update();
 
