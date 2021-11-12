@@ -13,7 +13,7 @@ use Xendit\Xendit;
 
 class XenditController extends BaseController
 {
-    private $token = "xnd_public_production_eJedjpnvixoEKA4rpNwhWqrsZl2W1tjkeAoUxnFp9VvHKDZvFeq7FconcQ3";
+    private $token = "xnd_production_MzWocU45WH6PXbFiqURguaPr32UEnmIdM0bQGKjoSrxLt7PbM2zEyhaCJQpsXtaE";
 
     // Virtual Account
     public function getListVa() {

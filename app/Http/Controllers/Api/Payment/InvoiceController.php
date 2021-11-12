@@ -13,7 +13,7 @@ use Xendit\Xendit;
 
 class InvoiceController extends BaseController
 {
-    private $token = "xnd_development_we3wcctrm3DWwxOgXN6b3xNuGjn2Ycgnp2wVjcUmZq9J2pmXA5bRBErNjOL9c";
+    private $token = "xnd_production_MzWocU45WH6PXbFiqURguaPr32UEnmIdM0bQGKjoSrxLt7PbM2zEyhaCJQpsXtaE";
 
     public function getInvoice($id)
     {

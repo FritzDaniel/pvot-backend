@@ -14,7 +14,7 @@ use Xendit\Xendit;
 
 class MembershipController extends BaseController
 {
-    private $token = "xnd_development_we3wcctrm3DWwxOgXN6b3xNuGjn2Ycgnp2wVjcUmZq9J2pmXA5bRBErNjOL9c";
+    private $token = "xnd_production_MzWocU45WH6PXbFiqURguaPr32UEnmIdM0bQGKjoSrxLt7PbM2zEyhaCJQpsXtaE";
 
     public function detailPayment(Request $request)
     {
@@ -120,7 +120,7 @@ class MembershipController extends BaseController
                 'mobile_number' => $user->phone,
                 //'address' => $request->address
             ],
-            "success_redirect_url" => "https://dashboard.pvotdigital.com/public/api/v1/payment/retrieve/".$external_id,
+            "success_redirect_url" => "https://dashboard.pvotdigital.com/api/v1/payment/retrieve/".$external_id,
             "invoice_duration" => 3600,
             "customer_notification_preference" => [
                 "invoice_created" => ["email"],
