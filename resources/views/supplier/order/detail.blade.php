@@ -49,7 +49,7 @@
                         <br>
                         @if($data->Receipt)
                             <p>Receipt Number : {{ $data->Receipt->receiptNumber }}</p>
-                            <p>Receipt File : <a href="{{ asset($data->Receipt->receiptImage) }}">Download</a></p>
+                            <p>Receipt File : <a target="_blank" href="{{ asset($data->Receipt->receiptImage) }}">Download</a></p>
                             <br>
                         @endif
                         <p>Order :</p>
