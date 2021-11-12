@@ -24,6 +24,15 @@
         <a href="{{ route('admin.toko') }}" class="btn btn-primary mb-3"><i class="fa fa-angle-left"></i> Back</a>
         <div class="row">
             <div class="col-12">
+                @if (count($errors) > 0)
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-ban"></i> There were some problems with your input!</h4>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </div>
+                @endif
                 <!-- Default box -->
                 <div class="card">
                     <div class="card-header">
@@ -76,9 +85,17 @@
 
 @section('js')
 
+    <script src="{{ asset('assets/adminlte/plugins/bs-custom-file-input/bs-custom-file-input.min.js') }}"></script>
+
     <script>
         $('#submitForm').on('click',function(){
             $('#updatePassword').submit();
+        });
+    </script>
+
+    <script>
+        $(function () {
+            bsCustomFileInput.init();
         });
     </script>
 

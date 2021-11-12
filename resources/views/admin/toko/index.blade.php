@@ -99,8 +99,11 @@
                                                 <a href="{{ route('admin.toko.detail',$dt->id) }}" class="btn btn-primary">
                                                     <i class="fa fa-eye"></i> Details
                                                 </a>
-                                                <a href="{{ route('admin.toko.edit',$dt->Shop ? $dt->Shop->id : 0 ) }}" class="btn btn-success">
+                                                <a href="{{ route('admin.toko.edit',$dt->Shop->id) }}" class="btn btn-success">
                                                     <i class="fa fa-bookmark"></i> Add Marketplace
+                                                </a>
+                                                <a href="{{ route('admin.toko.editData',$dt->Shop->id) }}" class="btn btn-info">
+                                                    <i class="fa fa-edit"></i> Edit
                                                 </a>
                                             </td>
                                         </tr>
