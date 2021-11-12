@@ -80,8 +80,8 @@ class ShopsController extends BaseController
             'namaToko' => $request['namaToko'] ? $request['namaToko'] : 'No Name',
             'alamatToko' => $request['alamatToko'] ? $request['alamatToko'] : $request->user()->alamat,
             'category_id' => $request['kategoriToko'],
-            'fotoToko' => isset($name_fotoToko) ? "/storage/fotoToko/".$name_fotoToko : '/storage/fotoHeaderToko/dummy.jpg',
-            'fotoHeaderToko' => isset($name_fotoHeaderToko) ? "/storage/fotoHeaderToko/".$name_fotoHeaderToko : '/storage/fotoHeaderToko/dummy.jpg',
+            'fotoToko' => isset($name_fotoToko) ? "/storage/fotoToko/".$name_fotoToko : '/storage/img/dummy.jpg',
+            'fotoHeaderToko' => isset($name_fotoHeaderToko) ? "/storage/fotoHeaderToko/".$name_fotoHeaderToko : '/storage/img/dummy.jpg',
             'design_id' => $request['design'],
             'supplier_id' => $request['supplier'],
             'description' => $request['descToko']

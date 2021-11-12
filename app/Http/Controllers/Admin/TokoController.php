@@ -70,7 +70,7 @@ class TokoController extends Controller
         $update->description = $request['description'];
         if ($request->hasFile('fotoToko')) {
 
-            if($update->fotoToko !== "/storage/fotoToko/dummy.jpg")
+            if($update->fotoToko !== "/storage/img/dummy.jpg")
             {
                 dd(true);
                 $images_path = public_path().$update->fotoToko;
@@ -80,7 +80,7 @@ class TokoController extends Controller
         }
         if ($request->hasFile('fotoHeaderToko')) {
 
-            if($update->fotoHeaderToko !== "/storage/fotoHeaderToko/dummy.jpg")
+            if($update->fotoHeaderToko !== "/storage/img/dummy.jpg")
             {
                 $images_path = public_path().$update->fotoHeaderToko;
                 unlink($images_path);
