@@ -94,12 +94,12 @@
                                                 @endif
 
                                             </td>
-                                            <td>{{ \Carbon\Carbon::parse($dt->Shop ? $dt->Shop->created_at : '-')->format('d-M-Y H:i') }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($dt->created_at ? $dt->created_at : '-')->format('d-M-Y H:i') }}</td>
                                             <td>
                                                 <a href="{{ route('admin.toko.detail',$dt->id) }}" class="btn btn-primary">
                                                     <i class="fa fa-eye"></i> Details
                                                 </a>
-                                                <a href="{{ route('admin.toko.edit',$dt->Shop->id) }}" class="btn btn-success">
+                                                <a href="{{ route('admin.toko.edit',$dt->Shop ? $dt->Shop->id : 0 ) }}" class="btn btn-success">
                                                     <i class="fa fa-bookmark"></i> Add Marketplace
                                                 </a>
                                             </td>
