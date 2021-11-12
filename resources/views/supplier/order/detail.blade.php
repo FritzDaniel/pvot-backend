@@ -47,6 +47,11 @@
                         <p>Address : {{ $data->User->alamat }}</p>
                         <p>Phone : <a href="https://wa.me/{{ $data->User->phone }}">{{ $data->User->phone }}</a></p>
                         <br>
+                        @if($data->Receipt)
+                            <p>Receipt Number : {{ $data->Receipt->receiptNumber }}</p>
+                            <p>Receipt File : <a href="{{ asset($data->Receipt->receiptImage) }}">Download</a></p>
+                            <br>
+                        @endif
                         <p>Order :</p>
                         <table class="table table-hover text-nowrap">
                             <thead>

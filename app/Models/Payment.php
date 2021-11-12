@@ -32,6 +32,11 @@ class Payment extends Model
         return $this->hasMany(Transaction::class,'transaction_id','external_id')->with('Product');
     }
 
+    public function Receipt()
+    {
+        return $this->hasOne(ReceiptPayment::class,'payment_id','external_id');
+    }
+
     public function User()
     {
         return $this->belongsTo(User::class,'user_id');
