@@ -23,9 +23,7 @@ class Payment extends Model
         'email',
         'price',
         'status',
-        'description',
-        'receiptImage',
-        'receiptNumber'
+        'description'
     ];
     public $timestamps = true;
 

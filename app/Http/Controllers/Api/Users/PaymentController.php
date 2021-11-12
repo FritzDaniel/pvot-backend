@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\BaseController;
 use App\Models\Mutation;
 use App\Models\Payment;
 use App\Models\Product;
+use App\Models\ReceiptPayment;
 use App\Models\Transaction;
 use App\Models\TransactionSequence;
 use App\Models\Wallet;
@@ -238,14 +239,6 @@ class PaymentController extends BaseController
             'payment_bank' => 'required'
         ]);
 
-        if ($request->hasFile('bukti_resi')){
-            if ($request->file('bukti_resi')->isValid()){
-                $name = Carbon::now()->timestamp.'.'.$request->file('bukti_resi')->getClientOriginalExtension();
-                $store_path = 'public/buktiResi';
-                $request->file('bukti_resi')->storeAs($store_path,$name);
-            }
-        }
-
         if($validator->fails()){
             return $this->sendError($validator->errors(),'Error',400);
         }
@@ -295,8 +288,6 @@ class PaymentController extends BaseController
             'email' => $user->email,
             'price' => $amount,
             'description' => 'Pembayaran Product',
-            'receiptImage' => isset($name) ? 'storage/buktiResi/'.$name : null,
-            'receiptNumber' => $request['no_resi']
         ];
         $payment = Payment::create($dataPayment);
 
@@ -322,5 +313,34 @@ class PaymentController extends BaseController
         $updateSequence->update();
 
         return $this->sendResponse($payment,'Store cart success');
+    }
+
+    public function createReceipt(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'bukti_resi' => 'required',
+            'no_resi' => 'required',
+            'payment_id' => 'required'
+        ]);
+
+        if($validator->fails()){
+            return $this->sendError($validator->errors(),'Error',400);
+        }
+
+        if ($request->hasFile('bukti_resi')){
+            if ($request->file('bukti_resi')->isValid()){
+                $name = Carbon::now()->timestamp.'.'.$request->file('bukti_resi')->getClientOriginalExtension();
+                $store_path = 'public/buktiResi';
+                $request->file('bukti_resi')->storeAs($store_path,$name);
+            }
+        }
+
+        $dataResi = new ReceiptPayment();
+        $dataResi->payment_id = $request['payment_id'];
+        $dataResi->receiptImage = isset($name) ? 'storage/buktiResi/'.$name : null;
+        $dataResi->receiptNumber = $request['no_resi'];
+        $dataResi->save();
+
+        return $this->sendResponse($dataResi,'Success');
     }
 }

@@ -73,6 +73,11 @@ Route::group([ 'prefix' => 'v1'], function () {
                 'cart/store',
                 [PaymentController::class, 'beliProduct']
             );
+            # Receipt Store
+            Route::post(
+                'cart/receipt',
+                [PaymentController::class,'createReceipt']
+            );
             # Create Shop
             Route::get(
                 'shop/list',
