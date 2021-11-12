@@ -42,7 +42,6 @@ class TokoController extends Controller
     public function updateDataToko(Request $request,$id)
     {
         $this->validate($request,[
-            'emailToko' => 'required',
             'handphoneToko' => 'required',
             'namaToko' => "required",
             'alamatToko' => "required",
@@ -65,7 +64,6 @@ class TokoController extends Controller
         }
 
         $update = Shops::where('id','=',$id)->first();
-        $update->emailToko = $request['emailToko'];
         $update->handphoneToko = $request['handphoneToko'];
         $update->namaToko = $request['namaToko'];
         $update->alamatToko = $request['alamatToko'];

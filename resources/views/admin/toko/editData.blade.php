@@ -46,7 +46,7 @@
 
                                 <div class="form-group">
                                     <label for="">Toko Email</label>
-                                    <input type="text" name="emailToko" value="{{ $data->emailToko }}" class="form-control">
+                                    <input type="text" value="{{ $data->emailToko }}" class="form-control" disabled>
                                 </div>
 
                                 <div class="form-group">
