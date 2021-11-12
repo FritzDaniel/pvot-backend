@@ -225,7 +225,7 @@ class PaymentController extends BaseController
 
     public function cartSummary($id)
     {
-        $data = Payment::with('Transaction')
+        $data = Payment::with(['Transaction','Receipt'])
             ->where('external_id','=',$id)->first();
         return $this->sendResponse($data,'Success');
     }
