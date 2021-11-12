@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
+use App\Mail\DropshipperRegisteredMail;
 use App\Models\Memberships;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
@@ -9,6 +10,7 @@ use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rules\Password;
 use Validator;
 use App\Http\Controllers\Api\BaseController as BaseController;
@@ -93,7 +95,10 @@ class AuthController extends BaseController
             'membership' => false,
             'status' => 'Not Active',
         ];
-        Memberships::create($dataMembership);
+        $data = Memberships::create($dataMembership);
+
+        Mail::to('support@pvotdigital.com')
+            ->send(new DropshipperRegisteredMail($user));
 
         activity()
             ->causedBy($user->id)

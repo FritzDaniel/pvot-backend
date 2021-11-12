@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Landing;
 
 use App\Http\Controllers\Api\BaseController;
+use App\Mail\TicketMail;
 use App\Models\Category;
 use App\Models\Design;
 use App\Models\DesignChild;
@@ -11,6 +12,7 @@ use App\Models\Testimoni;
 use App\Models\Ticket;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Validator;
 
 class LandingController extends BaseController
@@ -142,6 +144,8 @@ class LandingController extends BaseController
         $store->email = $request['email'];
         $store->pesan = $request['pesan'];
         $store->save();
+
+        Mail::to('support@pvotdigital.com')->send(new TicketMail($store));
 
         return $this->sendResponse($store,'Success');
     }

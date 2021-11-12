@@ -29,6 +29,11 @@ Route::get('/verifikasi-sukses', function () {
     return view('verification-success');
 })->name('verify-success');
 
+//Route::get('/email',function (){
+//    $data = \App\Models\User::where('id','=',1)->first();
+//    return new \App\Mail\DropshipperRegisteredMail($data);
+//});
+
 Auth::routes();
 
 Route::group(['namespace' => 'Admin'], function()

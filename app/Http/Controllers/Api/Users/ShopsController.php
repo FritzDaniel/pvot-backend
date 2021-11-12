@@ -3,13 +3,17 @@
 namespace App\Http\Controllers\Api\Users;
 
 use App\Http\Controllers\Api\BaseController;
+use App\Mail\ShopCreateMail;
+use App\Models\Category;
 use App\Models\Design;
 use App\Models\Memberships;
 use App\Models\ShopPicture;
 use App\Models\Shops;
+use App\Models\User;
 use App\Models\UserToko;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Validator;
 
 class ShopsController extends BaseController
@@ -105,6 +109,15 @@ class ShopsController extends BaseController
             $userToko->shop_id = $data->id;
             $userToko->update();
         }
+
+        $marketplace = $userToko->marketplaceSelect == 3 ? "Tokopedia & Shopee" : $userToko == 1 ? "Tokopedia" : "Shopee";
+        $category = Category::find($data->category_id);
+        $supplier = User::find($data->supplier_id);
+        Mail::to('support@pvotdigital.com')->send(new ShopCreateMail(
+            $data->namaToko,$marketplace,$category->name,
+            $supplier->name,$designUpdate->designName
+            )
+        );
 
         return $this->sendResponse($data, 'Success Create Shop.');
     }
