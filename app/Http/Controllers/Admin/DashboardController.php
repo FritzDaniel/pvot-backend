@@ -17,6 +17,7 @@ use App\Models\Variant;
 use App\Models\Withdraw;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Spatie\Activitylog\Models\Activity;
 
 class DashboardController extends Controller
@@ -72,7 +73,10 @@ class DashboardController extends Controller
     #Toko
     public function toko()
     {
-        $data = UserToko::orderBy('created_at','DESC')->get();
+        $data = UserToko::whereHas('Payment', function ($q) {
+            $q->where('status','Paid');
+        })
+        ->get();
         return view('admin.toko.index',compact('data'));
     }
 
