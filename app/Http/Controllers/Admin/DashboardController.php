@@ -76,6 +76,7 @@ class DashboardController extends Controller
         $data = UserToko::whereHas('Payment', function ($q) {
             $q->where('status','Paid');
         })
+        ->where('shop_id','!=',null)
         ->get();
         return view('admin.toko.index',compact('data'));
     }
