@@ -10,22 +10,24 @@
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-    <li class="breadcrumb-item active">Template</li>
+    <li class="breadcrumb-item active"><a href="#">Settings</a></li>
+    <li class="breadcrumb-item active">Edit</li>
 @endsection
 
 @section('headerTitle')
-    Template
+    Edit
 @endsection
 
 @section('content')
 
     <div class="container-fluid">
+        <a href="{{ route('admin.settings') }}" class="btn btn-primary mb-3"><i class="fa fa-angle-left"></i> Back</a>
         <div class="row">
             <div class="col-12">
                 <!-- Default box -->
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Title</h3>
+                        <h3 class="card-title">Edit Settings</h3>
 
                         <div class="card-tools">
                             <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
