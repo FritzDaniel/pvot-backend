@@ -83,6 +83,10 @@ Route::group([ 'prefix' => 'v1'], function () {
                 'shop/list',
                 [ShopsController::class, 'myShop']
             );
+            Route::get(
+                'shop/canBuatToko',
+                [ShopsController::class,'canBuatToko']
+            );
             # Create Shop
             Route::post(
                 'shop/store',

@@ -97,8 +97,8 @@ class AuthController extends BaseController
         ];
         $data = Memberships::create($dataMembership);
 
-        Mail::to('support@pvotdigital.com')
-            ->send(new DropshipperRegisteredMail($user));
+        //Mail::to('support@pvotdigital.com')
+            //->send(new DropshipperRegisteredMail($user));
 
         activity()
             ->causedBy($user->id)

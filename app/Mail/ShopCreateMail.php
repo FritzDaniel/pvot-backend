@@ -10,6 +10,11 @@ use Illuminate\Queue\SerializesModels;
 class ShopCreateMail extends Mailable
 {
     use Queueable, SerializesModels;
+
+    public $name;
+    public $email;
+    public $phone;
+
     public $namaToko;
     public $marketplace;
     public $kategoriToko;
@@ -20,8 +25,11 @@ class ShopCreateMail extends Mailable
      *
      * @return void
      */
-    public function __construct($namaToko,$marketplace,$kategoriToko,$supplier,$design)
+    public function __construct($name,$email,$phone,$namaToko,$marketplace,$kategoriToko,$supplier,$design)
     {
+        $this->name = $name;
+        $this->email = $email;
+        $this->phone = $phone;
         $this->namaToko = $namaToko;
         $this->marketplace = $marketplace;
         $this->kategoriToko = $kategoriToko;
@@ -41,11 +49,14 @@ class ShopCreateMail extends Mailable
             ->subject('New Shop')
             ->with(
                 [
+                    'name', $this->name,
+                    'email', $this->email,
+                    'phone', $this->phone,
                     'namaToko', $this->namaToko,
-                    'marketplace' => $this->marketplace,
-                    'kategoriToko' => $this->kategoriToko,
-                    'supplier' => $this->supplier,
-                    'design' => $this->design
+                    'marketplace', $this->marketplace,
+                    'kategoriToko', $this->kategoriToko,
+                    'supplier', $this->supplier,
+                    'design', $this->design
                 ]
             );
     }

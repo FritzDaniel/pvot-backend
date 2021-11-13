@@ -18,6 +18,26 @@ use Validator;
 
 class ShopsController extends BaseController
 {
+    public function canBuatToko(Request $request)
+    {
+        $user = $request->user();
+        $checkShopcCanCreate = UserToko::whereHas('Payment', function ($q) {
+            $q->where('status','Paid');
+        })
+            ->where('user_id','=',$user->id)
+            ->count();
+        $checkTokoList = Shops::where('user_id','=',$user->id)->count();
+        if($checkShopcCanCreate == $checkTokoList)
+        {
+            return $this->sendResponse([
+                'buatToko' => false
+            ],'Success');
+        }else {
+            return $this->sendResponse([
+                'buatToko' => true
+            ],'Success');
+        }
+    }
     public function myShop(Request $request)
     {
         $user = $request->user();
@@ -113,7 +133,9 @@ class ShopsController extends BaseController
         $marketplace = $userToko->marketplaceSelect == 3 ? "Tokopedia & Shopee" : $userToko == 1 ? "Tokopedia" : "Shopee";
         $category = Category::find($data->category_id);
         $supplier = User::find($data->supplier_id);
+
         Mail::to('support@pvotdigital.com')->send(new ShopCreateMail(
+            $user->name,$user->email,$user->phone,
             $data->namaToko,$marketplace,$category->name,
             $supplier->name,$designUpdate->designName
             )

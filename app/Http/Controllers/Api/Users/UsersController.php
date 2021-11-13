@@ -19,6 +19,7 @@ use Validator;
 
 class UsersController extends BaseController
 {
+
     public function getWallet(Request $request)
     {
         try {
