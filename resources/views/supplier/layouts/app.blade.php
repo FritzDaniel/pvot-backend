@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title')</title>
-
+    <link rel="shortcut icon" type="image/jpg" href="{{ asset('favicon.png') }}"/>
     @include('supplier.layouts.partials.css')
 </head>
 <body class="hold-transition sidebar-mini layout-navbar-fixed">
