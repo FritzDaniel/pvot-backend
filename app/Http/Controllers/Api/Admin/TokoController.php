@@ -11,7 +11,7 @@ class TokoController extends BaseController
 {
     public function getDetailToko($id)
     {
-        $data = Shops::where('io','=',$id)->first();
+        $data = Shops::where('id','=',$id)->first();
         return $this->sendResponse($data,'Shop Detail');
     }
 
