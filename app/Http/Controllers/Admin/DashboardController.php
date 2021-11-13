@@ -147,6 +147,22 @@ class DashboardController extends Controller
     }
 
     # Settings
+    public function settingEdit($id)
+    {
+        $data = Settings::find($id);
+        return view('admin.setting.edit',compact('data'));
+    }
+
+    # Settings
+    public function settingUpdate(Request $request,$id)
+    {
+        $data = Settings::find($id);
+        $data->value = $request['value'];
+        $data->update();
+        return redirect()->route('admin.settings')->with('message','Update settings success');
+    }
+
+    # Ticket
     public function ticket()
     {
         $data = Ticket::orderBy('created_at','DESC')->get();

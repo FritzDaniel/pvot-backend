@@ -22,6 +22,13 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
+                @if (session('message'))
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i> Success!</h4>
+                        {{ session('message') }}
+                    </div>
+                @endif
                 <!-- Default box -->
                 <div class="card">
                     <div class="card-header">
@@ -43,12 +50,14 @@
                                     <th>Value</th>
                                     <th>Type</th>
                                     <th>Created Date</th>
+                                    <th>Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 @if($data->isEmpty())
                                     <tr>
                                         <td>No Data</td>
+                                        <td></td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
@@ -62,6 +71,9 @@
                                             <td>{{ $dt->value }}</td>
                                             <td>{{ $dt->tipe }}</td>
                                             <td>{{ $dt->created_at }}</td>
+                                            <td>
+                                                <a href="{{ route('admin.settings.edit',$dt->id) }}" class="btn btn-primary">Edit</a>
+                                            </td>
                                         </tr>
                                     @endforeach
                                 @endif
@@ -83,5 +95,17 @@
 @endsection
 
 @section('js')
-
+    <script>
+        $(function () {
+            $('#datatable').DataTable({
+                "paging": true,
+                "lengthChange": false,
+                "searching": true,
+                "ordering": true,
+                "info": true,
+                "autoWidth": true,
+                "responsive": true,
+            });
+        });
+    </script>
 @endsection

@@ -112,6 +112,8 @@ Route::group(['namespace' => 'Admin'], function()
     Route::get('/admin/mutation', [DashboardController::class, 'mutation'])->name('admin.mutation');
     # Settings
     Route::get('/admin/settings', [DashboardController::class, 'settings'])->name('admin.settings');
+    Route::get('/admin/settings/edit/{id}', [DashboardController::class, 'settingEdit'])->name('admin.settings.edit');
+    Route::post('/admin/settings/update/{id}', [DashboardController::class, 'settingUpdate'])->name('admin.settings.update');
 });
 
 Route::group(['namespace' => 'Suppliers'], function()
