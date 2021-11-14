@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\Design;
 use App\Models\Payment;
 use App\Models\Product;
 use App\Models\Shops;
@@ -182,7 +183,7 @@ class SupplierController extends Controller
         if(count($dataPayment) > 0)
         {
             foreach ($dataPayment as $pay) {
-                $pay->supplier_id = 0;
+                $pay->supplier_id = null;
                 $pay->update();
             }
         }
@@ -207,11 +208,19 @@ class SupplierController extends Controller
         if(count($dataShop) > 0)
         {
             foreach ($dataShop as $ds) {
-                $ds->supplier_id = 0;
+                $ds->supplier_id = null;
                 $ds->update();
             }
         }
 
+        $design = Design::where('supplier_id','=',$id)->get();
+        if(count($design) > 0)
+        {
+            foreach ($design as $dsgn) {
+                $dsgn->supplier_id = null;
+                $dsgn->update();
+            }
+        }
         $data->delete();
         return redirect()->route('admin.supplier')->with('message','Delete supplier success');
     }
