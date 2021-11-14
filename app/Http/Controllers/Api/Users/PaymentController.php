@@ -147,8 +147,6 @@ class PaymentController extends BaseController
 
                 $data = array(
                     'bank_id' => $jquin['bank_id'],
-                    'account_number' => $jquin['account_number'],
-                    'bank_type' => $jquin['bank']['label'],
                     'date' => date('Y-m-d H:i:s'),
                     'amount' => $jquin['amount'],
                     'description' => $jquin['description'],

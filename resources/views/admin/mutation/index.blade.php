@@ -39,10 +39,8 @@
                                 <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Bank</th>
-                                    <th>Account Number</th>
-                                    <th>Amount</th>
                                     <th>Description</th>
+                                    <th>Amount</th>
                                     <th>Type</th>
                                     <th>Balance</th>
                                     <th>Uniq Code</th>
@@ -63,17 +61,13 @@
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                        <td></td>
-                                        <td></td>
                                     </tr>
                                 @else
                                     @foreach($data as $key => $dt)
                                         <tr>
                                             <td>{{ $key+1 }}.</td>
-                                            <td>{{ strtoupper($dt->bank_type) }}</td>
-                                            <td>{{ $dt->account_number }}</td>
-                                            <td>Rp. {{ number_format($dt->amount) }}</td>
                                             <td>{{ $dt->description }}</td>
+                                            <td>Rp. {{ number_format($dt->amount) }}</td>
                                             <td>{{ $dt->type }}</td>
                                             <td>Rp. {{ number_format($dt->balance) }}</td>
                                             <td>{{ $dt->kode_unik }}</td>
