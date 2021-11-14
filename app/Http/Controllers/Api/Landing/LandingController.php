@@ -8,6 +8,7 @@ use App\Mail\TicketMail;
 use App\Models\Category;
 use App\Models\Design;
 use App\Models\DesignChild;
+use App\Models\Education;
 use App\Models\Product;
 use App\Models\Testimoni;
 use App\Models\Ticket;
@@ -151,5 +152,13 @@ class LandingController extends BaseController
         Mail::to('support@pvotdigital.com')->send(new TicketMail($store));
 
         return $this->sendResponse($store,'Success');
+    }
+
+    public function getEducation($group)
+    {
+        $data = Education::where('group','=',$group)
+            ->orderBy('title','ASC')
+            ->get();
+        return $this->sendResponse($data,'Success');
     }
 }

@@ -236,5 +236,10 @@ Route::group([ 'prefix' => 'v1'], function () {
             'ticket/send',
             [LandingController::class,'sendTicket']
         );
+        # Get Education
+        Route::get(
+            'education/{group}',
+            [LandingController::class,'getEducation']
+        );
     });
 });

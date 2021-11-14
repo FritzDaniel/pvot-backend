@@ -10,7 +10,7 @@
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-    <li class="breadcrumb-item active">Category</li>
+    <li class="breadcrumb-item active">Education</li>
 @endsection
 
 @section('headerTitle')
@@ -32,7 +32,7 @@
                 <!-- Default box -->
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Category List</h3>
+                        <h3 class="card-title">Education</h3>
 
                         <div class="card-tools">
                             <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -41,14 +41,15 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <a href="{{ route('admin.category.create') }}" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Add Category</a>
+                        <a href="{{ route('admin.education.create') }}" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Add Education</a>
                         <div class="dataTables_wrapper dt-bootstrap4">
                             <table id="datatable" class="table table-bordered table-hover dataTable dtr-inline">
                                 <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Category Name</th>
-                                    <th>Logo</th>
+                                    <th>Group</th>
+                                    <th>Title</th>
+                                    <th>Url</th>
                                     <th>Created Date</th>
                                     <th>Actions</th>
                                 </tr>
@@ -61,23 +62,33 @@
                                         <td></td>
                                         <td></td>
                                         <td></td>
+                                        <td></td>
                                     </tr>
                                 @else
                                     @foreach($data as $key => $dt)
                                         <tr>
                                             <td>{{ $key+1 }}.</td>
-                                            <td>{{ $dt->name }}</td>
                                             <td>
-                                                <img src="{{ asset($dt->logo) }}" alt="" style="width: 50px; height: 50px;">
+                                                @if($dt->group == 1)
+                                                    Pengenalan Dropshipper
+                                                @elseif($dt->group == 2)
+                                                    Konsep Toko Online
+                                                @elseif($dt->group == 3)
+                                                    Materi Tambahan Penting
+                                                @elseif($dt->group == 4)
+                                                    Materi Edukasi Marketplace
+                                                @endif
                                             </td>
+                                            <td>{{ $dt->title }}</td>
+                                            <td><a href="{{ $dt->url_youtube }}">{{ $dt->url_youtube }}</a></td>
                                             <td>{{ \Carbon\Carbon::parse($dt->created_at)->format('d-m-Y H:i:s') }}</td>
                                             <td>
-                                                <a href="{{ route('admin.category.edit',$dt->id) }}" class="btn btn-primary">
+                                                <a href="{{ route('admin.education.edit',$dt->id) }}" class="btn btn-primary">
                                                     <i class="fa fa-edit"></i> Edit
                                                 </a>
-                                                <!--<a href="{{ route('admin.category.delete',$dt->id) }}" class="btn btn-danger">
+                                                <a href="{{ route('admin.education.delete',$dt->id) }}" class="btn btn-danger delete">
                                                     <i class="fa fa-trash"></i> Delete
-                                                </a>-->
+                                                </a>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -111,6 +122,18 @@
                 "info": true,
                 "autoWidth": true,
                 "responsive": true,
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function(){
+            $("a.delete").click(function(e){
+                if(!confirm('Are you sure want to delete this education?')){
+                    e.preventDefault();
+                    return false;
+                }
+                return true;
             });
         });
     </script>

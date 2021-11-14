@@ -98,6 +98,14 @@
                         </p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{ route('admin.education') }}" class="nav-link">
+                        <i class="nav-icon far fa-file-archive"></i>
+                        <p>
+                            Education
+                        </p>
+                    </a>
+                </li>
                 <li class="nav-header">Logs</li>
                 <li class="nav-item">
                     <a href="{{ route('admin.mutation') }}" class="nav-link">

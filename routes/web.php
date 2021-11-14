@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DesignController;
+use App\Http\Controllers\Admin\EducationController;
 use App\Http\Controllers\Admin\TestimoniController;
 use App\Http\Controllers\Admin\TokoController;
 use App\Http\Controllers\Admin\VariantController;
@@ -114,6 +115,14 @@ Route::group(['namespace' => 'Admin'], function()
     Route::get('/admin/settings', [DashboardController::class, 'settings'])->name('admin.settings');
     Route::get('/admin/settings/edit/{id}', [DashboardController::class, 'settingEdit'])->name('admin.settings.edit');
     Route::post('/admin/settings/update/{id}', [DashboardController::class, 'settingUpdate'])->name('admin.settings.update');
+
+    # Education
+    Route::get('/admin/education', [EducationController::class, 'index'])->name('admin.education');
+    Route::get('/admin/education/create', [EducationController::class, 'create'])->name('admin.education.create');
+    Route::post('/admin/education/store', [EducationController::class, 'store'])->name('admin.education.store');
+    Route::get('/admin/education/edit/{id}', [EducationController::class, 'edit'])->name('admin.education.edit');
+    Route::post('/admin/education/update/{id}', [EducationController::class, 'update'])->name('admin.education.update');
+    Route::get('/admin/education/delete/{id}', [EducationController::class, 'delete'])->name('admin.education.delete');
 });
 
 Route::group(['namespace' => 'Suppliers'], function()
