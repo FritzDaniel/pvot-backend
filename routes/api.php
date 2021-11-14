@@ -92,6 +92,11 @@ Route::group([ 'prefix' => 'v1'], function () {
                 'shop/store',
                 [ShopsController::class, 'shopCreate']
             );
+            # Update Shop
+            Route::post(
+                'shop/update/{id}',
+                [ShopsController::class, 'shopUpdate']
+            );
         });
     });
     // Route for guest
