@@ -98,7 +98,7 @@ class AuthController extends BaseController
         ];
         Memberships::create($dataMembership);
 
-        $this->dispatch(new NewDropshipperJob($user));
+//        $this->dispatch(new NewDropshipperJob($user));
 
         activity()
             ->causedBy($user->id)

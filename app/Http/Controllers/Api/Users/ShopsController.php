@@ -135,7 +135,12 @@ class ShopsController extends BaseController
         $category = Category::find($data->category_id);
         $supplier = User::find($data->supplier_id);
 
-        $this->dispatch(new NewCreateShopJob(
+//        $this->dispatch(new NewCreateShopJob(
+//            $user->name,$user->email,$user->phone,
+//            $data->namaToko,$marketplace,$category->name,
+//            $supplier->name,$designUpdate->designName
+//        ));
+        Mail::to('support@pvotdigital.com')->send(new ShopCreateMail(
             $user->name,$user->email,$user->phone,
             $data->namaToko,$marketplace,$category->name,
             $supplier->name,$designUpdate->designName
