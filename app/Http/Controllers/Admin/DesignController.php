@@ -92,7 +92,9 @@ class DesignController extends Controller
             if($data->designImage !== "/storage/img/dummy.jpg")
             {
                 $images_path = public_path().$data->designImage;
-                unlink($images_path);
+                if (is_file($images_path)) {
+                    unlink($images_path);
+                }
             }
             $data->designImage = isset($name) ? "/storage/fotoDesign/" . $name : '/storage/img/dummy.jpg';
         }
@@ -151,10 +153,12 @@ class DesignController extends Controller
         }
         if ($request->hasFile('designImage')) {
 
-            if($data->designImage !== "/storage/img/dummy.jpg")
-            {
-                $images_path = public_path().$data->designImage;
-                unlink($images_path);
+            if($data->designImage !== "/storage/img/dummy.jpg") {
+
+                $images_path = public_path() . $data->designImage;
+                if (is_file($images_path)) {
+                    unlink($images_path);
+                }
             }
             $data->designImage = isset($name) ? "/storage/fotoSubDesign/" . $name : '/storage/img/dummy.jpg';
         }

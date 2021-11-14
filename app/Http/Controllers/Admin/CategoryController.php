@@ -67,7 +67,9 @@ class CategoryController extends Controller
             if($data->logo !== "/storage/img/dummy.jpg")
             {
                 $images_path = public_path().$data->logo;
-                unlink($images_path);
+                if (is_file($images_path)) {
+                    unlink($images_path);
+                }
             }
             $data->logo = isset($name) ? "/storage/fotoKategori/" . $name : '/storage/img/dummy.jpg';
         }
@@ -82,7 +84,9 @@ class CategoryController extends Controller
         if($data->logo !== "/storage/img/dummy.jpg")
         {
             $images_path = public_path().$data->logo;
-            unlink($images_path);
+            if (is_file($images_path)) {
+                unlink($images_path);
+            }
         }
         $data->delete();
 

@@ -78,7 +78,9 @@ class TestimoniController extends Controller
             if($data->photo !== "/storage/img/dummyUser.jpg")
             {
                 $images_path = public_path().$data->photo;
-                unlink($images_path);
+                if (is_file($images_path)) {
+                    unlink($images_path);
+                }
             }
             $data->photo = isset($name) ? "/storage/fotoTestimoni/" . $name : '/storage/img/dummyUser.jpg';
         }

@@ -135,7 +135,9 @@ class DashboardController extends Controller
             if($store->profilePicture !== "/storage/img/dummyUser.jpg")
             {
                 $images_path = public_path().$store->profilePicture;
-                unlink($images_path);
+                if (is_file($images_path)) {
+                    unlink($images_path);
+                }
             }
             $store->profilePicture = isset($name) ? '/storage/fotoUser/'.$name : '/storage/img/dummyUser.jpg';
         }

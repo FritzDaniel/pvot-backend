@@ -73,7 +73,9 @@ class TokoController extends Controller
             if($update->fotoToko !== "/storage/img/dummy.jpg")
             {
                 $images_path = public_path().$update->fotoToko;
-                unlink($images_path);
+                if (is_file($images_path)) {
+                    unlink($images_path);
+                }
             }
             $update->fotoToko = isset($name_fotoToko) ? "/storage/fotoToko/" . $name_fotoToko : '/storage/img/dummy.jpg';
         }
@@ -82,7 +84,9 @@ class TokoController extends Controller
             if($update->fotoHeaderToko !== "/storage/img/dummy.jpg")
             {
                 $images_path = public_path().$update->fotoHeaderToko;
-                unlink($images_path);
+                if (is_file($images_path)) {
+                    unlink($images_path);
+                }
             }
             $update->fotoHeaderToko = isset($name_fotoHeaderToko) ? "/storage/fotoHeaderToko/" . $name_fotoHeaderToko : '/storage/img/dummy.jpg';
         }

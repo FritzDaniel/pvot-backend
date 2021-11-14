@@ -175,7 +175,9 @@ class SupplierController extends Controller
         if($data->profilePicture !== "/storage/img/dummy.jpg")
         {
             $images_path = public_path().$data->profilePicture;
-            unlink($images_path);
+            if (is_file($images_path)) {
+                unlink($images_path);
+            }
         }
 
         $dataPayment = Payment::where('supplier_id','=',$id)->get();
@@ -198,7 +200,9 @@ class SupplierController extends Controller
                 if($pr->productPicture !== "/storage/img/dummy.jpg")
                 {
                     $images_path = public_path().$pr->productPicture;
-                    unlink($images_path);
+                    if (is_file($images_path)) {
+                        unlink($images_path);
+                    }
                 }
                 $pr->delete();
             }

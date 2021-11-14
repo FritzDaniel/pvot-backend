@@ -125,7 +125,9 @@ class ProductController extends Controller
             if($data->productPicture !== "/storage/img/dummy.jpg")
             {
                 $images_path = public_path().$data->productPicture;
-                unlink($images_path);
+                if (is_file($images_path)) {
+                    unlink($images_path);
+                }
             }
             $data->productPicture = isset($name) ? "/storage/fotoProduct/" . $name : '/storage/img/dummy.jpg';
         }

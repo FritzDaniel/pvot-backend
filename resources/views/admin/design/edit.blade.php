@@ -52,7 +52,10 @@
                                 <select name="supplier" class="form-control select2">
                                     <option value="">- Choose Supplier -</option>
                                     @foreach($supplier as $sup)
-                                        <option value="{{ $sup->id }}">{{ $sup->name }}</option>
+                                        <option value="{{ $sup->id }}"
+                                            {{ $data->supplier_id == $sup->id ? 'selected' : '' }}>
+                                            {{ $sup->name }}
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>
