@@ -205,6 +205,7 @@ class ShopsController extends BaseController
             }
             $update->fotoHeaderToko = isset($name_fotoHeaderToko) ? "/storage/fotoHeaderToko/".$name_fotoHeaderToko : '/storage/img/dummy.jpg';
         }
+        $update->update();
 
         return $this->sendResponse($update, 'Success');
     }
