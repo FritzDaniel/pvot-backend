@@ -178,7 +178,7 @@ class ShopsController extends BaseController
         }
 
         $update = Shops::where('id','=',$id)->first();
-        $update->emailToko = $request['emailToko'] ? $request['emailToko'] ? $request['emailToko'] : $update->emailToko;
+        $update->emailToko = $request['emailToko'] ? $request['emailToko'] : $update->emailToko;
         $update->handphoneToko = $request['handphoneToko'] ? $request['handphoneToko'] : $update->handphoneToko;
         $update->namaToko = $request['namaToko'] ? $request['namaToko'] : $update->namaToko;
         $update->alamatToko = $request['alamatToko'] ? $request['alamatToko'] : $update->alamatToko;
