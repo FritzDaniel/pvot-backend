@@ -148,4 +148,64 @@ class ShopsController extends BaseController
 
         return $this->sendResponse($data, 'Success Create Shop.');
     }
+
+    public function shopUpdate(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'namaToko' => 'required',
+            'handphoneToko' => 'required',
+            'alamatToko' => 'required'
+        ]);
+
+        if($validator->fails()) {
+            return $this->sendError($validator->errors(),'Validation Error.',400);
+        }
+
+        if ($request->hasFile('fotoToko')){
+            if ($request->file('fotoToko')->isValid()){
+                $name_fotoToko = Carbon::now()->timestamp.'.'.$request->file('fotoToko')->getClientOriginalExtension();
+                $store_path = 'public/fotoToko';
+                $request->file('fotoToko')->storeAs($store_path,$name_fotoToko);
+            }
+        }
+
+        if ($request->hasFile('fotoHeaderToko')){
+            if ($request->file('fotoHeaderToko')->isValid()){
+                $name_fotoHeaderToko = Carbon::now()->timestamp.'.'.$request->file('fotoHeaderToko')->getClientOriginalExtension();
+                $store_path = 'public/fotoHeaderToko';
+                $request->file('fotoHeaderToko')->storeAs($store_path,$name_fotoHeaderToko);
+            }
+        }
+
+        $update = Shops::where('id','=',$id)->first();
+        $update->emailToko = $request['emailToko'] ? $request['emailToko'] ? $request['emailToko'] : $update->emailToko;
+        $update->handphoneToko = $request['handphoneToko'] ? $request['handphoneToko'] : $update->handphoneToko;
+        $update->namaToko = $request['namaToko'] ? $request['namaToko'] : $update->namaToko;
+        $update->alamatToko = $request['alamatToko'] ? $request['alamatToko'] : $update->alamatToko;
+        $update->description = $request['description'] ? $request['description'] : $update->description;
+
+        if ($request->hasFile('fotoToko')) {
+
+            if ($update->fotoToko !== "/storage/img/dummy.jpg") {
+                $images_path = public_path() . $update->fotoToko;
+                if (is_file($images_path)) {
+                    unlink($images_path);
+                }
+            }
+            $update->fotoToko = isset($name_fotoToko) ? "/storage/fotoToko/" . $name_fotoToko : '/storage/img/dummy.jpg';
+        }
+
+        if ($request->hasFile('fotoHeaderToko')) {
+
+            if ($update->fotoHeaderToko !== "/storage/img/dummy.jpg") {
+                $images_path = public_path() . $update->fotoHeaderToko;
+                if (is_file($images_path)) {
+                    unlink($images_path);
+                }
+            }
+            $update->fotoHeaderToko = isset($name_fotoHeaderToko) ? "/storage/fotoHeaderToko/".$name_fotoHeaderToko : '/storage/img/dummy.jpg';
+        }
+
+        return $this->sendResponse($update, 'Success');
+    }
 }
