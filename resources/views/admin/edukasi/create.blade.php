@@ -60,7 +60,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Url</label>
-                                <input type="text" name="url" class="form-control" placeholder="Url Video (YOUTUBE)" value="{{ old('url') }}">
+                                <input type="text" name="url" class="form-control" placeholder="Embed Url Video *(EMBED YOUTUBE URL)" value="{{ old('url') }}">
                             </div>
                         </form>
                     </div>
