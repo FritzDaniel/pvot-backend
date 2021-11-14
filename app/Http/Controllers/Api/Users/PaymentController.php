@@ -141,7 +141,6 @@ class PaymentController extends BaseController
                 $jOrder = Payment::where('uniq_code','=',$kode_unik)
                                 ->where('status','=','Pending')
                                 ->where('price','=',$jquin['amount'])
-                                ->whereDate('created_at', Carbon::today())
                                 ->first();
                 $idOrder = $jOrder->external_id;
 
