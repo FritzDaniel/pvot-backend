@@ -132,6 +132,7 @@ class PaymentController extends BaseController
 
         $neko = json_decode($notification, TRUE);
 
+
         if($notification)
         {
             foreach ($neko as $jquin)
@@ -147,7 +148,7 @@ class PaymentController extends BaseController
                 $data = array(
                     'bank_id' => $jquin['bank_id'],
                     'account_number' => $jquin['account_number'],
-                    'bank_type' => $jquin['bank']['bank_type'],
+                    'bank_type' => $jquin['label'],
                     'date' => date('Y-m-d H:i:s'),
                     'amount' => $jquin['amount'],
                     'description' => $jquin['description'],
