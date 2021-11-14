@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
+use App\Jobs\NewDropshipperJob;
 use App\Mail\DropshipperRegisteredMail;
 use App\Models\Memberships;
 use App\Models\User;
@@ -95,10 +96,9 @@ class AuthController extends BaseController
             'membership' => false,
             'status' => 'Not Active',
         ];
-        $data = Memberships::create($dataMembership);
+        Memberships::create($dataMembership);
 
-        //Mail::to('support@pvotdigital.com')
-            //->send(new DropshipperRegisteredMail($user));
+        $this->dispatch(new NewDropshipperJob($user));
 
         activity()
             ->causedBy($user->id)

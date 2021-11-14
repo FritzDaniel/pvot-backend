@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Landing;
 
 use App\Http\Controllers\Api\BaseController;
+use App\Jobs\NewTicketJob;
 use App\Mail\TicketMail;
 use App\Models\Category;
 use App\Models\Design;
@@ -145,7 +146,7 @@ class LandingController extends BaseController
         $store->pesan = $request['pesan'];
         $store->save();
 
-        Mail::to('support@pvotdigital.com')->send(new TicketMail($store));
+        $this->dispatch(new NewTicketJob($store));
 
         return $this->sendResponse($store,'Success');
     }

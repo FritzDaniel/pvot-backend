@@ -8,7 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class DropshipperRegisteredMail extends Mailable
+class DropshipperRegisteredMail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 

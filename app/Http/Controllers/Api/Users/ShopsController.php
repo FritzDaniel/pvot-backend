@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Users;
 
 use App\Http\Controllers\Api\BaseController;
+use App\Jobs\NewCreateShopJob;
 use App\Mail\ShopCreateMail;
 use App\Models\Category;
 use App\Models\Design;
@@ -134,12 +135,11 @@ class ShopsController extends BaseController
         $category = Category::find($data->category_id);
         $supplier = User::find($data->supplier_id);
 
-        Mail::to('support@pvotdigital.com')->send(new ShopCreateMail(
+        $this->dispatch(new NewCreateShopJob(
             $user->name,$user->email,$user->phone,
             $data->namaToko,$marketplace,$category->name,
             $supplier->name,$designUpdate->designName
-            )
-        );
+        ));
 
         return $this->sendResponse($data, 'Success Create Shop.');
     }
