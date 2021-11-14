@@ -76,7 +76,9 @@
                                                 @elseif($dt->group == 3)
                                                     Materi Tambahan Penting
                                                 @elseif($dt->group == 4)
-                                                    Materi Edukasi Marketplace
+                                                    Materi Edukasi Marketplace (Shopee)
+                                                @elseif($dt->group == 5)
+                                                    Materi Edukasi Marketplace (Tokopedia)
                                                 @endif
                                             </td>
                                             <td>{{ $dt->title }}</td>
