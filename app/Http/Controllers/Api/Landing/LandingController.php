@@ -10,6 +10,7 @@ use App\Models\Design;
 use App\Models\DesignChild;
 use App\Models\Education;
 use App\Models\Product;
+use App\Models\Shops;
 use App\Models\Testimoni;
 use App\Models\Ticket;
 use App\Models\User;
@@ -19,6 +20,13 @@ use Validator;
 
 class LandingController extends BaseController
 {
+    public function getMarketplaceShop($id)
+    {
+        $data = Shops::with('UserToko')->where('id','=',$id)
+            ->first();
+        return $this->sendResponse($data,'Success');
+    }
+
     public function getCategory()
     {
         $data = Category::orderBy('name','ASC')
@@ -161,4 +169,6 @@ class LandingController extends BaseController
             ->get();
         return $this->sendResponse($data,'Success');
     }
+
+
 }

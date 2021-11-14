@@ -101,6 +101,11 @@ Route::group([ 'prefix' => 'v1'], function () {
     });
     // Route for guest
     Route::group(['middleware' => ['guest:api']], function () {
+        # Get Marketplace
+        Route::get(
+            'getMarketplace/shop/{id}',
+            [LandingController::class,'getMarketplaceShop']
+        );
         # Get Summary Product
         Route::get(
             'cartSummary/{id}',

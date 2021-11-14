@@ -64,4 +64,9 @@ class Shops extends Model
     {
         return $this->belongsTo(Category::class,'category_id');
     }
+
+    public function UserToko()
+    {
+        return $this->hasOne(UserToko::class,'id','shop_id');
+    }
 }
