@@ -88,7 +88,9 @@ class SupplierController extends Controller
 
     public function supplierTransaction($id)
     {
-        $data = Payment::where('supplier_id','=',$id)->get();
+        $data = Payment::where('supplier_id','=',$id)
+            ->orderBy('created_at','DESC')
+            ->get();
         return view('admin.supplier.transaction',compact('data'));
     }
 

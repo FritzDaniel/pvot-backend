@@ -143,10 +143,12 @@ class PaymentController extends BaseController
                                 ->where('status','=','Pending')
                                 ->where('price','=',$jquin['amount'])
                                 ->first();
+
                 $idOrder = $jOrder->external_id;
 
                 $data = array(
                     'bank_id' => $jquin['bank_id'],
+                    'account_number' => $jquin['account_number'],
                     'date' => date('Y-m-d H:i:s'),
                     'amount' => $jquin['amount'],
                     'description' => $jquin['description'],

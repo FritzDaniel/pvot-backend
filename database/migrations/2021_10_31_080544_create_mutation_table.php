@@ -16,8 +16,7 @@ class CreateMutationTable extends Migration
         Schema::create('mutation', function (Blueprint $table) {
             $table->id();
             $table->string('bank_id');
-            $table->string('account_number');
-            $table->string('bank_type');
+            $table->string('account_number')->nullable();
             $table->timestamp('date');
             $table->double('amount');
             $table->string('description');

@@ -14,7 +14,6 @@ class Mutation extends Model
     protected $fillable = [
         'bank_id',
         'account_number',
-        'bank_type',
         'date',
         'amount',
         'description',
