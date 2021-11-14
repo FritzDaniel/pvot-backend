@@ -67,6 +67,6 @@ class Shops extends Model
 
     public function UserToko()
     {
-        return $this->hasOne(UserToko::class,'id','shop_id');
+        return $this->hasOne(UserToko::class,'shop_id','id');
     }
 }
