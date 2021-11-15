@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Category;
 use App\Models\Design;
+use App\Models\Education;
 use App\Models\Mutation;
 use App\Models\Payment;
 use App\Models\Settings;
@@ -33,9 +34,14 @@ class DashboardController extends Controller
         $paidOrders = Payment::all();
         $dropshipper = User::where('userRole','=','Dropshipper')->count();
         $supplier = User::where('userRole','=','Supplier')->count();
+        $category = Category::all();
+        $design = Design::all();
+        $ticket = Ticket::all();
+        $education = Education::all();
         return view('admin.dashboard',compact(
             'orders','paidOrders',
-            'supplier','dropshipper'
+            'supplier','dropshipper','category','design',
+            'ticket','education'
         ));
     }
 
