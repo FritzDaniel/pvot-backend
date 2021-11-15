@@ -10,12 +10,12 @@
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-    <li class="breadcrumb-item"><a href="#">Category</a></li>
-    <li class="breadcrumb-item active">Create</li>
+    <li class="breadcrumb-item"><a href="#">Education</a></li>
+    <li class="breadcrumb-item active">Edit</li>
 @endsection
 
 @section('headerTitle')
-    Create Category
+    Edit Education
 @endsection
 
 @section('content')
@@ -37,7 +37,7 @@
             <!-- Default box -->
                 <div class="card card-primary">
                     <div class="card-header">
-                        <h3 class="card-title">Create Education</h3>
+                        <h3 class="card-title">Edit Education</h3>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">

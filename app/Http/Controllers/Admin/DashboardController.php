@@ -29,7 +29,14 @@ class DashboardController extends Controller
 
     public function dashboard()
     {
-        return view('admin.dashboard');
+        $orders = Payment::where('status','!=','Pending')->count();
+        $paidOrders = Payment::all();
+        $dropshipper = User::where('userRole','=','Dropshipper')->count();
+        $supplier = User::where('userRole','=','Supplier')->count();
+        return view('admin.dashboard',compact(
+            'orders','paidOrders',
+            'supplier','dropshipper'
+        ));
     }
 
     # Dropshipper

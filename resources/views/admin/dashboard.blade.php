@@ -22,58 +22,54 @@
         <div class="row">
             <div class="col-lg-3 col-6">
                 <!-- small box -->
-                <div class="small-box bg-success">
+                <div class="small-box bg-danger">
                     <div class="inner">
-                        <h3><sup style="font-size: 20px">Rp</sup> {{ number_format(500000) }}</h3>
+                        <h3>{{ $paidOrders->count() }}</h3>
 
-                        <p>Balance</p>
+                        <p>All Order</p>
                     </div>
                     <div class="icon">
-                        <i class="fa fa-money-bill-wave"></i>
+                        <i class="fa fa-cart-plus"></i>
                     </div>
-                    <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
             <div class="col-lg-3 col-6">
                 <!-- small box -->
                 <div class="small-box bg-info">
                     <div class="inner">
-                        <h3>4</h3>
+                        <h3>{{ $orders }}</h3>
 
-                        <p>Total Orders</p>
-                    </div>
-                    <div class="icon">
-                        <i class="fa fa-cart-plus"></i>
-                    </div>
-                    <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                </div>
-            </div>
-            <div class="col-lg-3 col-6">
-                <!-- small box -->
-                <div class="small-box bg-danger">
-                    <div class="inner">
-                        <h3>3</h3>
-
-                        <p>Transaction</p>
+                        <p>Paid Orders</p>
                     </div>
                     <div class="icon">
                         <i class="fa fa-cart-arrow-down"></i>
                     </div>
-                    <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
             <div class="col-lg-3 col-6">
                 <!-- small box -->
                 <div class="small-box bg-warning">
                     <div class="inner">
-                        <h3>3</h3>
+                        <h3>{{ $dropshipper }}</h3>
 
-                        <p>User Registrations</p>
+                        <p>Dropshipper</p>
                     </div>
                     <div class="icon">
-                        <i class="fa fa-user"></i>
+                        <i class="fa fa-users"></i>
                     </div>
-                    <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box bg-warning">
+                    <div class="inner">
+                        <h3>{{ $supplier }}</h3>
+
+                        <p>Supplier</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fa fa-users"></i>
+                    </div>
                 </div>
             </div>
         </div>
