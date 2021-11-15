@@ -155,9 +155,9 @@ class LandingController extends BaseController
         $store->pesan = $request['pesan'];
         $store->save();
 
-//        $this->dispatch(new NewTicketJob($store));
+        $this->dispatch(new NewTicketJob($store));
 
-        Mail::to('support@pvotdigital.com')->send(new TicketMail($store));
+//        Mail::to('support@pvotdigital.com')->send(new TicketMail($store));
 
         return $this->sendResponse($store,'Success');
     }
