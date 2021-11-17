@@ -157,7 +157,7 @@ class LandingController extends BaseController
 
 //        $this->dispatch(new NewTicketJob($store));
 
-        Mail::to('support@pvotdigital.com')->send(new TicketMail($store));
+        Mail::to('danielsinaga53@gmail.com')->send(new TicketMail($store));
 
         return $this->sendResponse($store,'Success');
     }
