@@ -47,7 +47,7 @@
                     <div class="card-body">
                         <form id="updatePassword" class="fpms" action="{{ route('admin.toko.update',$data->id) }}" method="POST">
                             @csrf
-
+                            {{ $data }}
                             @if($data->marketplaceSelect == 1)
                                 <div class="form-group">
                                     <label for="">Url Tokopedia</label>
