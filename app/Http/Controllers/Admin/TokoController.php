@@ -18,7 +18,7 @@ class TokoController extends Controller
 
     public function edit($id)
     {
-        $data = UserToko::where('id','=',$id)->first();
+        $data = Shops::where('id','=',$id)->first();
         return view('admin.toko.edit',compact('data'));
     }
 
