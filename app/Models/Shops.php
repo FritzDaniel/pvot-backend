@@ -21,6 +21,8 @@ class Shops extends Model
         'fotoHeaderToko',
         'category_id',
         'supplier_id',
+        'url_tokopedia',
+        'url_shopee',
         'design_id',
         'description',
         'status'
