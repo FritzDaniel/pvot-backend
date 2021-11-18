@@ -31,6 +31,14 @@ class MessageController extends Controller
         $store->content = $request['content'];
         $store->save();
 
-        return redirect()->route('admin.message')->with('message','Message has created and sent successfully');
+        return redirect()->route('admin.message')->with('message','Message has been created and sent successfully');
+    }
+
+    public function delete($id)
+    {
+        $data = Message::find($id);
+        $data->delete();
+
+        return redirect()->route('admin.message')->with('message','Message has successfully deleted');
     }
 }

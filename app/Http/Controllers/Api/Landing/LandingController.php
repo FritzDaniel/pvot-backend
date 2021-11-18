@@ -63,13 +63,35 @@ class LandingController extends BaseController
         return $this->sendResponse($data, 'Supplier Category.');
     }
 
-    public function getSupplierProduct($id)
+    public function getSupplierProduct(Request $request,$id)
     {
-        $data = Product::with('productVariant')
-            ->where('supplier_id','=',$id)
-            ->where('productStock','>',1)
-            ->where('status','=','Active')
-            ->get();
+        $sortBy = $request->query('sortBy');
+
+        if($sortBy == "Populer")
+        {
+            $data = Product::with(['productVariant','productCategory'])
+                ->withCount('productSold')
+                ->where('supplier_id','=',$id)
+                ->where('productStock','>',1)
+                ->where('status','=','Active')
+                ->get();
+        }
+        else if($sortBy == "Terbaru") {
+            $data = Product::with(['productVariant','productCategory'])
+                ->where('supplier_id','=',$id)
+                ->where('productStock','>',1)
+                ->where('status','=','Active')
+                ->orderBy('created_at','DESC')
+                ->get();
+        }
+        else {
+            $data = Product::with(['productVariant','productCategory'])
+                ->where('supplier_id','=',$id)
+                ->where('productStock','>',1)
+                ->where('status','=','Active')
+                ->orderBy('showPrice','ASC')
+                ->get();
+        }
 
         return $this->sendResponse($data, 'Product Supplier List.');
     }
@@ -98,9 +120,9 @@ class LandingController extends BaseController
     public function getProduct(Request $request)
     {
         $limit = $request->query('limit');
-        $sortBy = $request->query('sortBy'); //popular|newest|mostBuy|highPrice|lowPrice|search
+        $sortBy = $request->query('sortBy');
 
-        if($sortBy == "popular")
+        if($sortBy == "Populer")
         {
             $data = Product::with([
                 'productCategory'
@@ -110,12 +132,24 @@ class LandingController extends BaseController
                 ->orderBy('product_sold_count','DESC')
                 ->limit($limit)
                 ->get();
-        }else {
+        }
+        else if($sortBy == "Terbaru") {
             $data = Product::with([
                 'productCategory'
             ])
                 ->withCount('productSold')
-//                ->orderBy('productName','ASC')
+                ->orderBy('created_at','DESC')
+                ->where('status','=','Active')
+                ->limit($limit)
+                ->get();
+        }
+        else {
+            $data = Product::with([
+                'productCategory'
+            ])
+                ->withCount('productSold')
+                ->orderBy('showPrice','ASC')
+                ->where('status','=','Active')
                 ->limit($limit)
                 ->get();
         }

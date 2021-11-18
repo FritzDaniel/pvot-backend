@@ -22,6 +22,13 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
+                @if (session('message'))
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i> Success!</h4>
+                        {{ session('message') }}
+                    </div>
+                @endif
                 <!-- Default box -->
                 <div class="card">
                     <div class="card-header">
@@ -44,6 +51,7 @@
                                     <th>Content</th>
                                     <th>Sent To</th>
                                     <th>Created At</th>
+                                    <th>Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -54,15 +62,19 @@
                                         <td></td>
                                         <td></td>
                                         <td></td>
+                                        <td></td>
                                     </tr>
                                 @else
                                     @foreach($data as $key => $dt)
                                         <tr>
-                                            <td>{{ $dt->id }}.</td>
+                                            <td>{{ $key + 1 }}.</td>
                                             <td>{{ $dt->title }}</td>
                                             <td>{{ $dt->content }}</td>
                                             <td>All Dropshipper</td>
                                             <td>{{ \Carbon\Carbon::parse($dt->created_at)->format('d-M-Y H:i') }}</td>
+                                            <td>
+                                                <a href="{{ route('admin.message.delete',$dt->id) }}" class="btn btn-danger delete"><i class="fa fa-trash"></i> Delete</a>
+                                            </td>
                                         </tr>
                                     @endforeach
                                 @endif
@@ -95,6 +107,18 @@
                 "info": true,
                 "autoWidth": true,
                 "responsive": true,
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function(){
+            $("a.delete").click(function(e){
+                if(!confirm('Are you sure want to delete this message?')){
+                    e.preventDefault();
+                    return false;
+                }
+                return true;
             });
         });
     </script>

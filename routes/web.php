@@ -112,6 +112,7 @@ Route::group(['namespace' => 'Admin'], function()
     Route::get('/admin/message', [MessageController::class, 'message'])->name('admin.message');
     Route::get('/admin/message/create', [MessageController::class, 'create'])->name('admin.message.create');
     Route::post('/admin/message/store', [MessageController::class, 'store'])->name('admin.message.store');
+    Route::get('/admin/message/delete/{id}', [MessageController::class, 'delete'])->name('admin.message.delete');
 
     # Ticket
     Route::get('/admin/ticket', [DashboardController::class, 'ticket'])->name('admin.ticket');
