@@ -165,7 +165,7 @@ class LandingController extends BaseController
     public function getEducation($group)
     {
         $data = Education::where('group','=',$group)
-            ->orderByRaw('LENGTH(title)', 'ASC')
+            ->orderByRaw("CAST(title as UNSIGNED) ASC")
             ->get();
         return $this->sendResponse($data,'Success');
     }
