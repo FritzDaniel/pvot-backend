@@ -97,6 +97,11 @@ Route::group([ 'prefix' => 'v1'], function () {
                 'shop/update/{id}',
                 [ShopsController::class, 'shopUpdate']
             );
+            # Update Shop
+            Route::get(
+                'getOmset',
+                [UsersController::class, 'getOmset']
+            );
         });
     });
     // Route for guest

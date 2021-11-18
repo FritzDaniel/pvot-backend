@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Users;
 
 use App\Http\Controllers\Api\BaseController;
+use App\Models\Payment;
 use App\Models\Product;
 use App\Models\Transaction;
 use App\Models\User;
@@ -244,5 +245,21 @@ class UsersController extends BaseController
             ->first();
 
         return $this->sendResponse($data,'Success');
+    }
+
+    public function getOmset(Request $request)
+    {
+        $user = $request->user();
+        $data = Payment::where('user_id','=',$user->id)
+            ->where('status','!=','Pending')
+            ->where('description','=','Pembayaran Product')
+            ->get();
+
+        $dataResult = [
+            'count' => count($data),
+            'omset' => $data->sum('price')
+        ];
+
+        return $this->sendResponse($dataResult,'Success');
     }
 }
