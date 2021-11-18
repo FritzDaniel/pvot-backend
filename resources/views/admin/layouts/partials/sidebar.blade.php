@@ -67,6 +67,14 @@
                 </li>
                 <li class="nav-header">Data</li>
                 <li class="nav-item">
+                    <a href="{{ route('admin.message') }}" class="nav-link">
+                        <i class="nav-icon far fa-envelope"></i>
+                        <p>
+                            Message
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="{{ route('admin.category') }}" class="nav-link">
                         <i class="nav-icon far fa-bookmark"></i>
                         <p>

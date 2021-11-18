@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DesignController;
 use App\Http\Controllers\Admin\EducationController;
+use App\Http\Controllers\Admin\MessageController;
 use App\Http\Controllers\Admin\TestimoniController;
 use App\Http\Controllers\Admin\TokoController;
 use App\Http\Controllers\Admin\VariantController;
@@ -107,6 +108,11 @@ Route::group(['namespace' => 'Admin'], function()
     Route::get('/admin/variant/delete/{id}', [VariantController::class, 'variantDelete'])->name('admin.variant.delete');
     # Logs
     Route::get('/admin/logs', [DashboardController::class, 'logs'])->name('admin.logs');
+    # Message
+    Route::get('/admin/message', [MessageController::class, 'message'])->name('admin.message');
+    Route::get('/admin/message/create', [MessageController::class, 'create'])->name('admin.message.create');
+    Route::post('/admin/message/store', [MessageController::class, 'store'])->name('admin.message.store');
+
     # Ticket
     Route::get('/admin/ticket', [DashboardController::class, 'ticket'])->name('admin.ticket');
     # Mutation

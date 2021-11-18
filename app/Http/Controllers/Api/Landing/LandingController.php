@@ -9,6 +9,7 @@ use App\Models\Category;
 use App\Models\Design;
 use App\Models\DesignChild;
 use App\Models\Education;
+use App\Models\Message;
 use App\Models\Product;
 use App\Models\Shops;
 use App\Models\Testimoni;
@@ -170,5 +171,11 @@ class LandingController extends BaseController
         return $this->sendResponse($data,'Success');
     }
 
+    public function getMessage()
+    {
+        $data = Message::orderBy('created_at','DESC')
+            ->get();
 
+        return $this->sendResponse($data,'Success');
+    }
 }
