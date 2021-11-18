@@ -66,31 +66,43 @@ class LandingController extends BaseController
     public function getSupplierProduct(Request $request,$id)
     {
         $sortBy = $request->query('sortBy');
+        $search = $request->query('search');
 
-        if($sortBy == "Populer")
+        if($search !== '')
         {
             $data = Product::with(['productVariant','productCategory'])
-                ->withCount('productSold')
                 ->where('supplier_id','=',$id)
                 ->where('productStock','>',1)
                 ->where('status','=','Active')
-                ->get();
-        }
-        else if($sortBy == "Terbaru") {
-            $data = Product::with(['productVariant','productCategory'])
-                ->where('supplier_id','=',$id)
-                ->where('productStock','>',1)
-                ->where('status','=','Active')
-                ->orderBy('created_at','DESC')
+                ->orWhere('productName', 'LIKE', '%' . $search . '%')
                 ->get();
         }
         else {
-            $data = Product::with(['productVariant','productCategory'])
-                ->where('supplier_id','=',$id)
-                ->where('productStock','>',1)
-                ->where('status','=','Active')
-                ->orderBy('showPrice','ASC')
-                ->get();
+            if($sortBy == "Populer")
+            {
+                $data = Product::with(['productVariant','productCategory'])
+                    ->withCount('productSold')
+                    ->where('supplier_id','=',$id)
+                    ->where('productStock','>',1)
+                    ->where('status','=','Active')
+                    ->get();
+            }
+            else if($sortBy == "Terbaru") {
+                $data = Product::with(['productVariant','productCategory'])
+                    ->where('supplier_id','=',$id)
+                    ->where('productStock','>',1)
+                    ->where('status','=','Active')
+                    ->orderBy('created_at','DESC')
+                    ->get();
+            }
+            else {
+                $data = Product::with(['productVariant','productCategory'])
+                    ->where('supplier_id','=',$id)
+                    ->where('productStock','>',1)
+                    ->where('status','=','Active')
+                    ->orderBy('showPrice','ASC')
+                    ->get();
+            }
         }
 
         return $this->sendResponse($data, 'Product Supplier List.');
