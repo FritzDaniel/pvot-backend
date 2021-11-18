@@ -166,7 +166,6 @@ class LandingController extends BaseController
     {
         $data = Education::where('group','=',$group)
             ->orderBy('LENGTH(title)', 'ASC')
-            ->orderBy('title','ASC')
             ->get();
         return $this->sendResponse($data,'Success');
     }
