@@ -85,12 +85,19 @@ class LandingController extends BaseController
                 ->orderBy('created_at','DESC')
                 ->get();
         }
-        else {
+        else if($sortBy == "Harga"){
             $data = Product::with(['productVariant','productCategory'])
                 ->where('supplier_id','=',$id)
                 ->where('productStock','>',1)
                 ->where('status','=','Active')
                 ->orderBy('showPrice','ASC')
+                ->get();
+        }else {
+            $data = Product::with(['productVariant','productCategory'])
+                ->Where('productName', 'like', '%' . $search . '%')
+                ->where('supplier_id','=',$id)
+                ->where('productStock','>',1)
+                ->where('status','=','Active')
                 ->get();
         }
 
