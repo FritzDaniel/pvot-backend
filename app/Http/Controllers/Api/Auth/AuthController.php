@@ -132,7 +132,7 @@ class AuthController extends BaseController
         $user = User::find($request->route('id'));
 
         if ($user->hasVerifiedEmail()) {
-            return redirect('https://pvotdigital.com/');
+            return redirect('https://pvotdigital.com/login');
         }
 
         if ($user->markEmailAsVerified()) {
@@ -144,7 +144,7 @@ class AuthController extends BaseController
             ->createdAt(now())
             ->log($user->name.' Email is Verified');
 
-        return redirect( 'https://pvotdigital.com/');
+        return redirect( 'https://pvotdigital.com/login');
     }
 
     public function logout(Request $request)
