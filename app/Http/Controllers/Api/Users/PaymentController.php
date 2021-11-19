@@ -126,7 +126,7 @@ class PaymentController extends BaseController
         return $this->sendResponse($data,'Success');
     }
 
-    public function getWebhookCallback()
+    public function getWebhookCallback($bank)
     {
         $notification = file_get_contents("php://input");
 
@@ -144,26 +144,29 @@ class PaymentController extends BaseController
                                 ->where('price','=',$jquin['amount'])
                                 ->first();
 
-                $idOrder = $jOrder->external_id;
-
-                $data = array(
-                    'bank_id' => $jquin['bank_id'],
-                    'account_number' => $jquin['account_number'],
-                    'date' => date('Y-m-d H:i:s'),
-                    'amount' => $jquin['amount'],
-                    'description' => $jquin['description'],
-                    'type' => $jquin['type'],
-                    'balance' => $jquin['balance'],
-                    'kode_unik' => $kode_unik,
-                    'id_order' => $idOrder,
-                    'user_id' => $jOrder->user_id
-                );
-                Mutation::create($data);
-
-                if($jOrder->status == "Pending")
+                if($jOrder !== null)
                 {
-                    $jOrder->status = "Paid";
-                    $jOrder->update();
+                    $idOrder = $jOrder->external_id;
+
+                    $data = array(
+                        'bank_id' => $bank,
+                        'account_number' => $jquin['account_number'],
+                        'date' => date('Y-m-d H:i:s'),
+                        'amount' => $jquin['amount'],
+                        'description' => $jquin['description'],
+                        'type' => $jquin['type'],
+                        'balance' => $jquin['balance'],
+                        'kode_unik' => $kode_unik,
+                        'id_order' => $idOrder,
+                        'user_id' => $jOrder->user_id
+                    );
+                    Mutation::create($data);
+
+                    if($jOrder->status == "Pending")
+                    {
+                        $jOrder->status = "Paid";
+                        $jOrder->update();
+                    }
                 }
             }
 

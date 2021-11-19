@@ -118,12 +118,7 @@ Route::group([ 'prefix' => 'v1'], function () {
         );
         # Get Payment Callback Moota
         Route::post(
-            '/webhook/callback/BCA',
-            [PaymentController::class, 'getWebhookCallback']
-        );
-        # Get Payment Callback Moota
-        Route::post(
-            '/webhook/callback/Mandiri',
+            '/webhook/callback/{bank}',
             [PaymentController::class, 'getWebhookCallback']
         );
         # Check Payment Moota

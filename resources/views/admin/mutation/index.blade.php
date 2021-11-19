@@ -39,6 +39,7 @@
                                 <thead>
                                 <tr>
                                     <th>No</th>
+                                    <th>Bank</th>
                                     <th>Description</th>
                                     <th>Amount</th>
                                     <th>Type</th>
@@ -61,11 +62,13 @@
                                         <td></td>
                                         <td></td>
                                         <td></td>
+                                        <td></td>
                                     </tr>
                                 @else
                                     @foreach($data as $key => $dt)
                                         <tr>
                                             <td>{{ $key+1 }}.</td>
+                                            <td>{{ $dt->bank_id }}</td>
                                             <td>{{ $dt->description }}</td>
                                             <td>Rp. {{ number_format($dt->amount) }}</td>
                                             <td>{{ $dt->type }}</td>
