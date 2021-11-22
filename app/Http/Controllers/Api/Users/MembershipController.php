@@ -18,6 +18,8 @@ class MembershipController extends BaseController
 
     public function detailPayment(Request $request)
     {
+        Xendit::setApiKey($this->token);
+
         $validator = Validator::make($request->all(), [
             'nama' => 'required',
             'email' => 'required',
@@ -34,6 +36,7 @@ class MembershipController extends BaseController
         if($validator->fails()){
             return $this->sendError($validator->errors(),'Validation Error.',400);
         }
+
         $user = User::where('email','=',$request['email'])->first();
 
         $store = $user;
@@ -46,7 +49,26 @@ class MembershipController extends BaseController
         $store->informasiTambahan = isset($request['informasiTambahan']) ? $request['informasiTambahan'] : $user->informasiTambahan;
         $store->update();
 
-        Xendit::setApiKey($this->token);
+        $checkPayment = Payment::where('user_id','=',$user->id)
+            ->where('xendit_id','!=',null)
+            ->where('status','=','Pending')
+            ->first();
+
+        if($checkPayment !== null)
+        {
+            $dataInvoice = \Xendit\Invoice::retrieve($checkPayment->xendit_id);
+            if($dataInvoice['status'] == "PENDING")
+            {
+                return $this->sendResponse($dataInvoice,'Success');
+            }
+            else if($dataInvoice['status'] == "EXPIRED")
+            {
+                // Update Payment Membership to Expired
+                $updatePayment = Payment::where('xendit_id','=',$checkPayment->xendit_id)->first();
+                $updatePayment->status = "Expired";
+                $updatePayment->update();
+            }
+        }
 
         $runningSeq = TransactionSequence::where('user_id','=',$user->id)->first();
 

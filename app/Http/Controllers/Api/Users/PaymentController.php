@@ -220,7 +220,8 @@ class PaymentController extends BaseController
         }
 
         $wallet = Wallet::where('user_id','=',$supplier_id)->first();
-        $wallet->balance = $total;
+        $sumBalance = $wallet->balance + $total;
+        $wallet->balance = $sumBalance;
         $wallet->update();
 
         return $this->sendResponse($Order,'Success');

@@ -65,6 +65,7 @@ class ShopsController extends BaseController
         })
             ->where('user_id','=',$request->user()->id)
             ->count();
+
         $checkTokoList = Shops::where('user_id','=',$user->id)->count();
 
         if($checkShopcCanCreate == $checkTokoList)
