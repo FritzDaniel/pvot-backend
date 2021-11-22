@@ -34,6 +34,6 @@ class Transaction extends Model
 
     public function Payment()
     {
-        return $this->belongsTo(Payment::class,'transaction_id');
+        return $this->belongsTo(Payment::class,'transaction_id','external_id');
     }
 }
