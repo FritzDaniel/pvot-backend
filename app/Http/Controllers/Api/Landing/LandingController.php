@@ -13,6 +13,7 @@ use App\Models\Message;
 use App\Models\Mutation;
 use App\Models\Payment;
 use App\Models\Product;
+use App\Models\Settings;
 use App\Models\Shops;
 use App\Models\Testimoni;
 use App\Models\Ticket;
@@ -269,5 +270,11 @@ class LandingController extends BaseController
         }
 
         return $this->sendResponse(null, 'Success Reset Data');
+    }
+
+    public function getSetting($id)
+    {
+        $data = Settings::find($id);
+        return $this->sendResponse($data,'Success');
     }
 }

@@ -19,5 +19,11 @@ class SettingsSeeder extends Seeder
             'value' => 5,
             'tipe' => 'percentage'
         ]);
+
+        DB::table('settings')->insert([
+            'name' => 'Admin Fee Product',
+            'value' => 0,
+            'tipe' => 'Rupiah'
+        ]);
     }
 }

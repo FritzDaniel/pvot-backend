@@ -256,5 +256,10 @@ Route::group([ 'prefix' => 'v1'], function () {
             '/clear/data',
             [LandingController::class,'clearData']
         );
+        # Clear Data Membership
+        Route::get(
+            '/getSettings/{id}',
+            [LandingController::class,'getSetting']
+        );
     });
 });
