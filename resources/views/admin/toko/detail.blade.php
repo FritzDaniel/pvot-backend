@@ -25,6 +25,13 @@
 @section('content')
 
     <div class="container-fluid">
+        @if (session('message'))
+            <div class="alert alert-success alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <h4><i class="icon fa fa-check"></i> Success!</h4>
+                {{ session('message') }}
+            </div>
+        @endif
         <a href="{{ route('admin.toko') }}" class="btn btn-primary mb-3"><i class="fa fa-angle-left"></i> Back</a>
         <div class="row">
             <div class="col-12">
