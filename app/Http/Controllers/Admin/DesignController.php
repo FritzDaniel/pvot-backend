@@ -147,6 +147,7 @@ class DesignController extends Controller
         }
 
         $data = DesignChild::where('id','=',$id)->first();
+
         if($request['designName'])
         {
             $data->designName = $request['designName'];

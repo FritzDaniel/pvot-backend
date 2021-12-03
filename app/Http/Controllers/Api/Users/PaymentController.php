@@ -279,8 +279,10 @@ class PaymentController extends BaseController
         }
 
         $external_id = $uuid;
+
         $biayaAdminProduct = Settings::find(2);
         $amount = $totalPrice + $biayaAdminProduct->value;
+
         $user_id = $user->id;
 
         $dataPayment = [

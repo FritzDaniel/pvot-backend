@@ -132,7 +132,7 @@ class ShopsController extends BaseController
             $userToko->update();
         }
 
-        $marketplace = $userToko->marketplaceSelect == 3 ? "Tokopedia & Shopee" : $userToko == 1 ? "Tokopedia" : "Shopee";
+        $marketplace = $userToko->marketplaceSelect == 3 ? "Tokopedia & Shopee" : $userToko->marketplaceSelect == 1 ? "Tokopedia" : "Shopee";
         $category = Category::find($data->category_id);
         $supplier = User::find($data->supplier_id);
 
