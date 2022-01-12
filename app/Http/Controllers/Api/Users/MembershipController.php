@@ -121,7 +121,7 @@ class MembershipController extends BaseController
                 //'address' => $request->address
             ],
             "success_redirect_url" => "https://dashboard.pvotdigital.com/api/v1/payment/retrieve/".$external_id,
-            "invoice_duration" => 3600,
+            "invoice_duration" => 86400,
             "customer_notification_preference" => [
                 "invoice_created" => ["email"],
                 //"invoice_reminder" => ["email"],
@@ -129,7 +129,6 @@ class MembershipController extends BaseController
                 //"invoice_expired" => ["email"]
             ],
             "currency" => "IDR",
-            "fixed_va" => true,
             "items" => $items,
             "fees" => $feeAdmin
         ];

@@ -132,7 +132,6 @@ class PaymentController extends BaseController
 
         $neko = json_decode($notification, TRUE);
 
-
         if($notification)
         {
             foreach ($neko as $jquin)
