@@ -7,6 +7,7 @@ use App\Models\Mutation;
 use App\Models\Payment;
 use App\Models\Product;
 use App\Models\ReceiptPayment;
+use App\Models\Settings;
 use App\Models\Transaction;
 use App\Models\TransactionSequence;
 use App\Models\Wallet;
@@ -219,7 +220,8 @@ class PaymentController extends BaseController
         }
 
         $wallet = Wallet::where('user_id','=',$supplier_id)->first();
-        $wallet->balance = $total;
+        $sumBalance = $wallet->balance + $total;
+        $wallet->balance = $sumBalance;
         $wallet->update();
 
         return $this->sendResponse($Order,'Success');
@@ -276,7 +278,10 @@ class PaymentController extends BaseController
         }
 
         $external_id = $uuid;
-        $amount = $totalPrice + 2500; // 2500 biaya tambahan
+
+        $biayaAdminProduct = Settings::find(2);
+        $amount = $totalPrice + $biayaAdminProduct->value;
+
         $user_id = $user->id;
 
         $dataPayment = [

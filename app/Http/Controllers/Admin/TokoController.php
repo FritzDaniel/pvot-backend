@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Design;
 use App\Models\Shops;
 use App\Models\UserToko;
 use Carbon\Carbon;
@@ -13,7 +14,11 @@ class TokoController extends Controller
     public function detail($id)
     {
         $data = UserToko::where('id','=',$id)->first();
-        return view('admin.toko.detail',compact('data'));
+        $design = Design::where('supplier_id','=',$data->Shop->supplier_id)
+            ->where('shop_id','=',null)
+            ->orderBy('created_at','ASC')
+            ->get();
+        return view('admin.toko.detail',compact('data','design'));
     }
 
     public function edit($id)
@@ -93,5 +98,29 @@ class TokoController extends Controller
         $update->update();
 
         return redirect()->route('admin.toko')->with('message','Successfully update the Toko');
+    }
+
+    public function updateDesignToko(Request $request,$id)
+    {
+        $this->validate($request,[
+            'design' => 'required',
+        ]);
+
+        $designUpdate = Design::where('shop_id','=',$id)->first();
+        if($designUpdate !== null)
+        {
+            $designUpdate->shop_id = null;
+            $designUpdate->update();
+        }
+
+        $data = Shops::find($id);
+        $data->design_id = $request['design'];
+        $data->update();
+
+        $designUpdate = Design::find($request['design']);
+        $designUpdate->shop_id = $data->id;
+        $designUpdate->update();
+
+        return redirect()->back()->with('message','Data Design Successfully Updated');
     }
 }

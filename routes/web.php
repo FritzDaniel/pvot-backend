@@ -57,6 +57,7 @@ Route::group(['namespace' => 'Admin'], function()
     Route::get('/admin/toko/detail/{id}', [TokoController::class, 'detail'])->name('admin.toko.detail');
     Route::post('/admin/toko/update/{id}', [TokoController::class, 'updateToko'])->name('admin.toko.update');
     Route::post('/admin/toko/updateData/{id}', [TokoController::class, 'updateDataToko'])->name('admin.toko.updateData');
+    Route::post('/admin/toko/updateDesign/{id}',[TokoController::class, 'updateDesignToko'])->name('admin.toko.updateDesignToko');
     # Supplier
     Route::get('/admin/supplier', [DashboardController::class, 'supplier'])->name('admin.supplier');
     Route::get('/admin/supplier/detail/{id}', [AdminSupplier::class, 'supplierDetail'])->name('admin.supplier.detail');

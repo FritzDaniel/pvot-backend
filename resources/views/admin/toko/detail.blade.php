@@ -25,6 +25,13 @@
 @section('content')
 
     <div class="container-fluid">
+        @if (session('message'))
+            <div class="alert alert-success alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <h4><i class="icon fa fa-check"></i> Success!</h4>
+                {{ session('message') }}
+            </div>
+        @endif
         <a href="{{ route('admin.toko') }}" class="btn btn-primary mb-3"><i class="fa fa-angle-left"></i> Back</a>
         <div class="row">
             <div class="col-12">
@@ -78,7 +85,7 @@
                             Supplier : {{ $data->Shop->Supplier ? $data->Shop->Supplier->name : '-'}}
                         </p>
                         <p>
-                            Design Toko : {{ $data->Shop->Design ? $data->Shop->Design->designName : '-'}}
+                            Design Toko : {{ $data->Shop->Design ? $data->Shop->Design->designName : '-'}} <i type="button" data-toggle="modal" data-target="#modal-default" class="fa fa-edit"></i>
                         </p>
                         <p>
                             Description : {{ $data->Shop->description ? $data->Shop->description : '-'}}
@@ -96,10 +103,47 @@
                 <!-- /.card -->
             </div>
         </div>
+        {{--Modal Edit Design--}}
+        <div class="modal fade" id="modal-default" style="display: none;" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Edit Design</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="updateDesign" class="fpms" action="{{ route('admin.toko.updateDesignToko',$data->Shop->id) }}" method="POST">
+                            @csrf
+                            <div class="form-group">
+                                <label for="">Design</label>
+                                <select class="form-control" name="design" id="">
+                                    <option value="">Select Design</option>
+                                    @foreach($design as $dsgn)
+                                        <option value="{{ $dsgn->id }}">{{ $dsgn->designName }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" id="submitForm" class="btn btn-primary bpms">Save changes</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
     </div>
 
 @endsection
 
 @section('js')
-
+    <script>
+        $('#submitForm').on('click',function(){
+            $('#updateDesign').submit();
+        });
+    </script>
 @endsection

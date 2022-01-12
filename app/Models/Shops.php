@@ -59,7 +59,7 @@ class Shops extends Model
 
     public function Design()
     {
-        return $this->belongsTo(DesignChild::class,'design_id')->with('DesignParent');
+        return $this->belongsTo(Design::class,'design_id');
     }
 
     public function Category()

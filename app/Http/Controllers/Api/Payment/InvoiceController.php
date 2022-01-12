@@ -46,11 +46,6 @@ class InvoiceController extends BaseController
                     $user->notify(new SuccessPaymentMembership());
                 }
 
-                if($update->description == "Pembayaran Membership")
-                {
-
-                }
-
                 return $this->sendResponse($update,'Sukses Membayar.');
             }
         }else {

@@ -10,11 +10,16 @@ use App\Models\Design;
 use App\Models\DesignChild;
 use App\Models\Education;
 use App\Models\Message;
+use App\Models\Mutation;
+use App\Models\Payment;
 use App\Models\Product;
+use App\Models\Settings;
 use App\Models\Shops;
 use App\Models\Testimoni;
 use App\Models\Ticket;
+use App\Models\Transaction;
 use App\Models\User;
+use App\Models\UserToko;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Validator;
@@ -218,6 +223,58 @@ class LandingController extends BaseController
         $data = Message::orderBy('created_at','DESC')
             ->get();
 
+        return $this->sendResponse($data,'Success');
+    }
+
+    public function clearData()
+    {
+        $userTokoPending = UserToko::whereHas('Payment', function ($q) {
+            $q->where('status','Pending');
+        })->get();
+
+        if(count($userTokoPending) > 0)
+        {
+            foreach ($userTokoPending as $utp)
+            {
+                $utp->delete();
+            }
+        }
+
+        $transaksiPending = Transaction::whereHas('Payment', function ($q) {
+            $q->where('status','Pending');
+        })->get();
+        if(count($transaksiPending) > 0)
+        {
+            foreach ($transaksiPending as $tp)
+            {
+                $tp->delete();
+            }
+        }
+
+        $paymentPending = Payment::where('status','=','Pending')->get();
+        if(count($paymentPending) > 0)
+        {
+            foreach ($paymentPending as $pp)
+            {
+                $pp->delete();
+            }
+        }
+
+        $mutation = Mutation::all();
+        if(count($mutation) > 0)
+        {
+            foreach ($mutation as $mn)
+            {
+                $mn->delete();
+            }
+        }
+
+        return $this->sendResponse(null, 'Success Reset Data');
+    }
+
+    public function getSetting($id)
+    {
+        $data = Settings::find($id);
         return $this->sendResponse($data,'Success');
     }
 }

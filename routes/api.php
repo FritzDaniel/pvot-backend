@@ -251,5 +251,15 @@ Route::group([ 'prefix' => 'v1'], function () {
             'message',
             [LandingController::class,'getMessage']
         );
+        # Clear Data Membership
+        Route::get(
+            '/clear/data',
+            [LandingController::class,'clearData']
+        );
+        # Clear Data Membership
+        Route::get(
+            '/getSettings/{id}',
+            [LandingController::class,'getSetting']
+        );
     });
 });

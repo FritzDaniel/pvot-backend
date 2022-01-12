@@ -51,25 +51,24 @@ class ShopsController extends BaseController
     {
         $user = $request->user();
 
-        $checkMembership = Memberships::where('user_id','=',$user->id)
-            ->where('status','=','Active')
+        $checkMembership = Memberships::where('user_id', '=', $user->id)
+            ->where('status', '=', 'Active')
             ->first();
 
-        if(!$checkMembership)
-        {
-            return $this->sendError(null,'Please create membership first.',400);
+        if (!$checkMembership) {
+            return $this->sendError(null, 'Please create membership first.', 400);
         }
 
         $checkShopcCanCreate = UserToko::whereHas('Payment', function ($q) {
-            $q->where('status','Paid');
+            $q->where('status', 'Paid');
         })
-            ->where('user_id','=',$request->user()->id)
+            ->where('user_id', '=', $request->user()->id)
             ->count();
-        $checkTokoList = Shops::where('user_id','=',$user->id)->count();
 
-        if($checkShopcCanCreate == $checkTokoList)
-        {
-            return $this->sendError(['error' => 'You only can create '.$checkShopcCanCreate.' shop.'],'Error',400);
+        $checkTokoList = Shops::where('user_id', '=', $user->id)->count();
+
+        if ($checkShopcCanCreate == $checkTokoList) {
+            return $this->sendError(['error' => 'You only can create ' . $checkShopcCanCreate . ' shop.'], 'Error', 400);
         }
 
         $validator = Validator::make($request->all(), [
@@ -78,23 +77,23 @@ class ShopsController extends BaseController
             'design' => 'required'
         ]);
 
-        if($validator->fails()) {
-            return $this->sendError($validator->errors(),'Validation Error.',400);
+        if ($validator->fails()) {
+            return $this->sendError($validator->errors(), 'Validation Error.', 400);
         }
 
-        if ($request->hasFile('fotoToko')){
-            if ($request->file('fotoToko')->isValid()){
-                $name_fotoToko = Carbon::now()->timestamp.'.'.$request->file('fotoToko')->getClientOriginalExtension();
+        if ($request->hasFile('fotoToko')) {
+            if ($request->file('fotoToko')->isValid()) {
+                $name_fotoToko = Carbon::now()->timestamp . '.' . $request->file('fotoToko')->getClientOriginalExtension();
                 $store_path = 'public/fotoToko';
-                $request->file('fotoToko')->storeAs($store_path,$name_fotoToko);
+                $request->file('fotoToko')->storeAs($store_path, $name_fotoToko);
             }
         }
 
-        if ($request->hasFile('fotoHeaderToko')){
-            if ($request->file('fotoHeaderToko')->isValid()){
-                $name_fotoHeaderToko = Carbon::now()->timestamp.'.'.$request->file('fotoHeaderToko')->getClientOriginalExtension();
+        if ($request->hasFile('fotoHeaderToko')) {
+            if ($request->file('fotoHeaderToko')->isValid()) {
+                $name_fotoHeaderToko = Carbon::now()->timestamp . '.' . $request->file('fotoHeaderToko')->getClientOriginalExtension();
                 $store_path = 'public/fotoHeaderToko';
-                $request->file('fotoHeaderToko')->storeAs($store_path,$name_fotoHeaderToko);
+                $request->file('fotoHeaderToko')->storeAs($store_path, $name_fotoHeaderToko);
             }
         }
 
@@ -105,8 +104,8 @@ class ShopsController extends BaseController
             'namaToko' => $request['namaToko'] ? $request['namaToko'] : 'No Name',
             'alamatToko' => $request['alamatToko'] ? $request['alamatToko'] : $request->user()->alamat,
             'category_id' => $request['kategoriToko'],
-            'fotoToko' => isset($name_fotoToko) ? "/storage/fotoToko/".$name_fotoToko : '/storage/img/dummy.jpg',
-            'fotoHeaderToko' => isset($name_fotoHeaderToko) ? "/storage/fotoHeaderToko/".$name_fotoHeaderToko : '/storage/img/dummy.jpg',
+            'fotoToko' => isset($name_fotoToko) ? "/storage/fotoToko/" . $name_fotoToko : '/storage/img/dummy.jpg',
+            'fotoHeaderToko' => isset($name_fotoHeaderToko) ? "/storage/fotoHeaderToko/" . $name_fotoHeaderToko : '/storage/img/dummy.jpg',
             'design_id' => $request['design'],
             'supplier_id' => $request['supplier'],
             'description' => $request['descToko']
@@ -118,20 +117,27 @@ class ShopsController extends BaseController
         $designUpdate->update();
 
         $userToko = UserToko::whereHas('Payment', function ($q) {
-            $q->where('status','Paid');
-            }
-        )
-            ->where('user_id','=',$request->user()->id)
-            ->where('shop_id','=',null)
+            $q->where('status', 'Paid');
+        })
+            ->where('user_id', '=', $request->user()->id)
+            ->where('shop_id', '=', null)
             ->first();
 
-        if($userToko)
-        {
+        if ($userToko) {
             $userToko->shop_id = $data->id;
             $userToko->update();
         }
 
-        $marketplace = $userToko->marketplaceSelect == 3 ? "Tokopedia & Shopee" : $userToko == 1 ? "Tokopedia" : "Shopee";
+        if ($userToko->marketplaceSelect == 3) {
+            $marketplace = "Tokopedia & Shopee";
+        }
+        else if ($userToko->marketplaceSelect == 2) {
+            $marketplace = "Tokopedia";
+        }
+        else {
+            $marketplace = "Shopee";
+        }
+
         $category = Category::find($data->category_id);
         $supplier = User::find($data->supplier_id);
 
