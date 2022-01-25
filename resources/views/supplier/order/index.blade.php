@@ -94,14 +94,17 @@
 
                                             </td>
                                             <td>{{ \Carbon\Carbon::parse($dt->created_at)->format('d-M-Y H:i') }}</td>
-                                            <td>
+                                            <td class="fpms">
                                                 @if($dt->status !== "Complete")
                                                     <a href="{{ route('supplier.orders.status',$dt->external_id )}}" class="btn btn-primary"><i class="fa fa-arrow-circle-right"></i> Change Status</a>
                                                 @endif
                                                 <a href="{{ route('supplier.orders.detail',$dt->external_id) }}" class="btn btn-info"><i class="fa fa-eye"></i> Detail</a>
                                                 @if($dt->status == "Sent")
                                                     @if($dt->getDaysSent() >= 3)
-                                                        <a href="{{ route('supplier.orders.complete',$dt->external_id) }}" class="btn btn-success"><i class="fa fa-check"></i> Manual Complete</a>
+                                                        <form action={{ route('supplier.orders.complete',$dt->external_id) }} class="fpms">
+                                                            @csrf
+                                                            <button type="submit" class="btn btn-success bpms"><i class="fa fa-check"></i> Manual Complete</button>
+                                                        </form>
                                                     @endif
                                                 @endif
                                             </td>
