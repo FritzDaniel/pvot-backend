@@ -102,14 +102,18 @@
                                                     <a href="{{ route('supplier.orders.status',$dt->external_id )}}" class="btn btn-primary"><i class="fa fa-arrow-circle-right"></i> Change Status</a>
                                                 @endif
                                                 <a href="{{ route('supplier.orders.detail',$dt->external_id) }}" class="btn btn-info"><i class="fa fa-eye"></i> Detail</a>
-                                                @if($dt->status == "Sent")
-                                                    @if($dt->getDaysSent() >= 3)
-                                                        <form action={{ route('supplier.orders.complete',$dt->external_id) }} class="fpms">
-                                                            @csrf
-                                                            <button type="submit" class="btn btn-success bpms"><i class="fa fa-check"></i> Manual Complete</button>
-                                                        </form>
+                                                <div style="margin-top: 10px;">
+                                                    @if($dt->status == "Sent")
+                                                        @if($dt->getDaysSent() >= 3)
+                                                            <form action={{ route('supplier.orders.complete',$dt->external_id) }} class="fpms">
+                                                                @csrf
+                                                                <button type="submit" class="btn btn-success bpms"><i class="fa fa-check"></i> Manual Complete</button>
+                                                            </form>
+                                                        @else
+                                                            <button data-toggle="tooltip" data-placement="top" title="Button Manual Complete order akan muncul 3 hari setelah diganti status ke sent! atau otomatis success pada saat user sudah menekan selesai melakukan order" class="btn btn-success bpms" disabled><i class="fa fa-check"></i> Manual Complete</button>
+                                                        @endif
                                                     @endif
-                                                @endif
+                                                </div>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -120,7 +124,6 @@
                     </div>
                     <!-- /.card-body -->
                     <div class="card-footer">
-                        * Button Manual Complete order akan muncul 3 hari setelah diganti status ke sent! atau otomatis success pada saat user sudah menekan selesai melakukan pembayaran<br>
                         Updated at {{ \Carbon\Carbon::now()->format('d-m-Y') }}
                     </div>
                     <!-- /.card-footer-->
