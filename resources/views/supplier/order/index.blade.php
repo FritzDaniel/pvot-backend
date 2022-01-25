@@ -99,6 +99,11 @@
                                                     <a href="{{ route('supplier.orders.status',$dt->external_id )}}" class="btn btn-primary"><i class="fa fa-arrow-circle-right"></i> Change Status</a>
                                                 @endif
                                                 <a href="{{ route('supplier.orders.detail',$dt->external_id) }}" class="btn btn-info"><i class="fa fa-eye"></i> Detail</a>
+                                                @if($dt->status == "Sent")
+                                                    @if($dt->getDaysSent() >= 3)
+                                                        <a href="{{ route('supplier.orders.complete',$dt->external_id) }}" class="btn btn-success"><i class="fa fa-check"></i> Manual Complete</a>
+                                                    @endif
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach

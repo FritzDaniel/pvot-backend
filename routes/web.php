@@ -157,6 +157,7 @@ Route::group(['namespace' => 'Suppliers'], function()
     Route::get('/supplier/orders/status/{id}',[OrderController::class,'changeStatus'])->name('supplier.orders.status');
     Route::get('/supplier/orders/detail/{id}',[OrderController::class,'detailTransaction'])->name('supplier.orders.detail');
     Route::post('/supplier/orders/update/{id}',[OrderController::class,'updateStatus'])->name('supplier.orders.update');
+    Route::get('/supplier/orders/complete/{id}',[OrderController::class,'orderComplete'])->name('supplier.orders.complete');
 
     # Dropshipper
     Route::get('/supplier/dropshipper',[SupplierDashboard::class,'Dropshipper'])->name('supplier.dropshipper');
