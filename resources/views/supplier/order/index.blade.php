@@ -59,6 +59,7 @@
                                     <th>Shop Name</th>
                                     <th>Status</th>
                                     <th>Transaction Date</th>
+                                    <th>Updated At</th>
                                     <th>Action</th>
                                 </tr>
                                 </thead>
@@ -66,6 +67,7 @@
                                 @if($data->isEmpty())
                                     <tr>
                                         <td>No Data</td>
+                                        <td></td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
@@ -94,6 +96,7 @@
 
                                             </td>
                                             <td>{{ \Carbon\Carbon::parse($dt->created_at)->format('d-M-Y H:i') }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($dt->updated_at)->format('d-M-Y H:i') }}</td>
                                             <td class="fpms">
                                                 @if($dt->status !== "Complete")
                                                     <a href="{{ route('supplier.orders.status',$dt->external_id )}}" class="btn btn-primary"><i class="fa fa-arrow-circle-right"></i> Change Status</a>
@@ -117,6 +120,7 @@
                     </div>
                     <!-- /.card-body -->
                     <div class="card-footer">
+                        * Button Manual Complete order akan muncul 3 hari setelah diganti status ke sent! atau otomatis success pada saat user sudah menekan selesai melakukan pembayaran<br>
                         Updated at {{ \Carbon\Carbon::now()->format('d-m-Y') }}
                     </div>
                     <!-- /.card-footer-->

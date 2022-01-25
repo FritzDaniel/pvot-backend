@@ -52,7 +52,7 @@ class Payment extends Model
     public function getDaysSent()
     {
         $fdate = Carbon::now();
-        $tdate = Carbon::parse($this->created_at);
+        $tdate = Carbon::parse($this->updated_at);
         $datetime1 = new DateTime($fdate);
         $datetime2 = new DateTime($tdate);
         $interval = $datetime1->diff($datetime2);
