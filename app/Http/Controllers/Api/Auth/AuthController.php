@@ -53,16 +53,16 @@ class AuthController extends BaseController
             'name' => 'required',
             'email' => 'required|email|unique:users',
             'password' => [
-                'required',
-                Password::min(6)
-                    ->mixedCase()
-                    ->numbers()
-                    ->symbols()
-                    ->uncompromised(),
+                'required','min:6',
+                'regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[@$!%*#?&]).*$/'
             ],
             'c_password' => 'required|same:password',
             'phone' => 'required|unique:users|regex:/^([0-9\s\-\+\(\)]*)$/'
-        ]);
+        ],
+            [
+                'password.regex' => 'Password harus mengandung setidaknya satu huruf kapital, angka, dan symbol',
+            ]
+        );
 
         if($validator->fails()){
             return $this->sendError($validator->errors(),'Validation Error.',400);
