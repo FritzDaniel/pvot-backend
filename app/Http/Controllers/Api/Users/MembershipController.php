@@ -105,12 +105,12 @@ class MembershipController extends BaseController
                 [
                     "name" => "Penambahan 1 Toko",
                     "quantity" => 1,
-                    "price" => 299999
+                    "price" => 300000
                 ],
                 [
                     "name" => "Pembuatan 1 Toko di ".$request['marketplaceCount']." Marketplace",
                     "quantity" => 1,
-                    "price" => $request['marketplaceCount'] == 1 ? 0 : 100000
+                    "price" => $request['marketplaceCount'] == 1 ? 0 : 150000
                 ]
             ];
         }else {
@@ -118,18 +118,18 @@ class MembershipController extends BaseController
                 [
                     "name" => "Membership PVOT Digital 1 Years",
                     "quantity" => 1,
-                    "price" => 299999
+                    "price" => 300000
                 ],
                 [
                     "name" => "Pembuatan 1 Toko di ".$request['marketplaceCount']." Marketplace",
                     "quantity" => 1,
-                    "price" => $request['marketplaceCount'] == 1 ? 0 : 100000
+                    "price" => $request['marketplaceCount'] == 1 ? 0 : 150000
                 ]
             ];
         }
 
-        $marketplaceCountPrice = $request['marketplaceCount'] == 1 ? 0 : 100000;
-        $amount = 299999 + $marketplaceCountPrice + $biayaAdmin;
+        $marketplaceCountPrice = $request['marketplaceCount'] == 1 ? 0 : 150000;
+        $amount = 300000 + $marketplaceCountPrice + $biayaAdmin;
 
         $params = [
             'external_id' => $external_id,
