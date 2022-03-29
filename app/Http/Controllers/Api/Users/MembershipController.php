@@ -59,11 +59,6 @@ class MembershipController extends BaseController
             $dataInvoice = \Xendit\Invoice::retrieve($checkPayment->xendit_id);
             if($dataInvoice['status'] == "PENDING")
             {
-                return $this->sendResponse($dataInvoice,'Success');
-            }
-            else if($dataInvoice['status'] == "EXPIRED")
-            {
-                // Update Payment Membership to Expired
                 $updatePayment = Payment::where('xendit_id','=',$checkPayment->xendit_id)->first();
                 $updatePayment->status = "Expired";
                 $updatePayment->update();
